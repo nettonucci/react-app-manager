@@ -5,6 +5,7 @@ import { Bar } from 'react-chartjs-2';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
+  IconButton,
   CardHeader,
   CardContent,
   CardActions,
@@ -13,6 +14,7 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 import { data, options } from './chart';
 
@@ -39,14 +41,11 @@ const LatestSales = props => {
     >
       <CardHeader
         action={
-          <Button
-            size="small"
-            variant="text"
-          >
-            Last 7 days <ArrowDropDownIcon />
-          </Button>
+          <IconButton size="small">
+            <RefreshIcon />
+          </IconButton>
         }
-        title="Latest Sales"
+        title="Quantidade por base"
       />
       <Divider />
       <CardContent>
@@ -58,15 +57,6 @@ const LatestSales = props => {
         </div>
       </CardContent>
       <Divider />
-      <CardActions className={classes.actions}>
-        <Button
-          color="primary"
-          size="small"
-          variant="text"
-        >
-          Overview <ArrowRightIcon />
-        </Button>
-      </CardActions>
     </Card>
   );
 };
