@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable quotes */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -69,6 +70,7 @@ const UsersByDevice = props => {
 
   const plataform = () => {
     setload(true);
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     api.get('porcentagemplataforma').then(response => {
       const plataforma = response.data;
       setIos(plataforma[0].ios);
