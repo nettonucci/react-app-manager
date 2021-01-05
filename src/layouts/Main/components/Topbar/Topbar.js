@@ -31,6 +31,7 @@ const Topbar = props => {
     <AppBar
       {...rest}
       className={clsx(classes.root, className)}
+      color="secondary"
     >
       <Toolbar>
         <RouterLink to="/">

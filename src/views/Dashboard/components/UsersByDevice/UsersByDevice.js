@@ -5,11 +5,14 @@ import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import clsx from 'clsx';
 import api from '../../../../server/api';
+import Spinner from 'react-activity/lib/Spinner';
+import 'react-activity/lib/Spinner/Spinner.css';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { getPlataform } from '../../../../store/plataformReducer';
 import { makeStyles, useTheme } from '@material-ui/styles';
+import palette from 'theme/palette';
 import {
   Card,
   CardHeader,
@@ -42,6 +45,10 @@ const useStyles = makeStyles(theme => ({
   },
   deviceIcon: {
     color: theme.palette.icon
+  },
+  load: {
+    marginLeft: '45%',
+    marginTop: 10
   }
 }));
 
@@ -50,6 +57,7 @@ const UsersByDevice = props => {
   const dispatch = useDispatch();
   const [ios, setIos] = useState(0);
   const [android, setAndroid] = useState(0);
+  const [load, setload] = useState(false);
 
   useEffect(() => {
     plataform();
@@ -60,12 +68,15 @@ const UsersByDevice = props => {
   // console.log('Get ->', plataform);
 
   const plataform = () => {
-    console.log('reload');
+    setload(true);
     api.get('porcentagemplataforma').then(response => {
       const plataforma = response.data;
       setIos(plataforma[0].ios);
       setAndroid(plataforma[0].android);
     });
+    setTimeout(() => {
+      setload(false);
+    }, 1000);
   };
 
   const classes = useStyles();
@@ -114,7 +125,7 @@ const UsersByDevice = props => {
       title: 'Android',
       value: android,
       icon: <AndroidIcon />,
-      color: theme.palette.primary.main
+      color: theme.palette.secondary.main
     },
     {
       title: 'IOS',
@@ -141,31 +152,42 @@ const UsersByDevice = props => {
         title="Porcentagem de aparelhos"
       />
       <Divider />
-      <CardContent>
-        <div className={classes.chartContainer}>
-          <Doughnut
-            data={data}
-            options={options}
+      {load ? (
+        <div className={classes.load}>
+          <Spinner
+            animating
+            color={palette.secondary.main}
+            size={40}
+            speed={1}
           />
         </div>
-        <div className={classes.stats}>
-          {devices.map(device => (
-            <div
-              className={classes.device}
-              key={device.title}
-            >
-              <span className={classes.deviceIcon}>{device.icon}</span>
-              <Typography variant="body1">{device.title}</Typography>
-              <Typography
-                style={{ color: device.color }}
-                variant="h2"
+      ) : (
+        <CardContent>
+          <div className={classes.chartContainer}>
+            <Doughnut
+              data={data}
+              options={options}
+            />
+          </div>
+          <div className={classes.stats}>
+            {devices.map(device => (
+              <div
+                className={classes.device}
+                key={device.title}
               >
-                {device.value}%
-              </Typography>
-            </div>
-          ))}
-        </div>
-      </CardContent>
+                <span className={classes.deviceIcon}>{device.icon}</span>
+                <Typography variant="body1">{device.title}</Typography>
+                <Typography
+                  style={{ color: device.color }}
+                  variant="h2"
+                >
+                  {device.value}%
+                </Typography>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      )}
     </Card>
   );
 };

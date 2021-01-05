@@ -1,10 +1,22 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Spinner from 'react-activity/lib/Spinner';
+import 'react-activity/lib/Spinner/Spinner.css';
+import palette from 'theme/palette';
+import {
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Avatar,
+  IconButton
+} from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import api from '../../../../server/api';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,11 +49,31 @@ const useStyles = makeStyles(theme => ({
   differenceValue: {
     color: theme.palette.success.dark,
     marginRight: theme.spacing(1)
+  },
+  load: {
+    marginLeft: '40%',
+    marginTop: 10
   }
 }));
 
 const TotalUsers = props => {
   const { className, ...rest } = props;
+  const [user, setUsers] = useState(0);
+  const [load, setload] = useState(false);
+
+  useEffect(() => {
+    count();
+  }, []);
+
+  const count = () => {
+    setload(true);
+    api.get('contadorclientes').then(response => {
+      setUsers(response.data);
+    });
+    setTimeout(() => {
+      setload(false);
+    }, 1000);
+  };
 
   const classes = useStyles();
 
@@ -50,44 +82,48 @@ const TotalUsers = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <CardContent>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid item>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-              variant="body2"
-            >
-              TOTAL USERS
-            </Typography>
-            <Typography variant="h3">1,600</Typography>
-          </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <PeopleIcon className={classes.icon} />
-            </Avatar>
-          </Grid>
-        </Grid>
-        <div className={classes.difference}>
-          <ArrowUpwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            16%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
+      {load ? (
+        <div className={classes.load}>
+          <Spinner
+            animating
+            color={palette.secondary.main}
+            size={40}
+            speed={1}
+          />
         </div>
-      </CardContent>
+      ) : (
+        <CardContent>
+          <Grid
+            container
+            justify="space-between"
+          >
+            <Grid item>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+                variant="body2"
+              >
+                USUÁRIOS TOTAIS
+              </Typography>
+              <Typography variant="h3">{user}</Typography>
+            </Grid>
+            <Grid item>
+              <Avatar className={classes.avatar}>
+                <PeopleIcon className={classes.icon} />
+              </Avatar>
+            </Grid>
+          </Grid>
+          <div className={classes.difference}>
+            <IconButton
+              onClick={count}
+              size="small"
+            >
+              <RefreshIcon />
+            </IconButton>
+          </div>
+        </CardContent>
+      )}
     </Card>
   );
 };

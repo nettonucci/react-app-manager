@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { makeStyles } from '@material-ui/styles';
+import Spinner from 'react-activity/lib/Spinner';
+import 'react-activity/lib/Spinner/Spinner.css';
 import palette from 'theme/palette';
 import api from '../../../../server/api';
 import {
@@ -32,6 +34,11 @@ const useStyles = makeStyles(() => ({
   },
   actions: {
     justifyContent: 'flex-end'
+  },
+  load: {
+    alignSelf: 'center',
+    marginLeft: '50%',
+    marginTop: 10
   }
 }));
 
@@ -41,13 +48,14 @@ const LatestSales = props => {
   const [giga, setGiga] = useState(0);
   const [rr, setRr] = useState(0);
   const [tupa, setTupa] = useState(0);
+  const [load, setload] = useState(false);
 
   useEffect(() => {
     base();
   }, []);
 
   const base = () => {
-    console.log("Reload bases")
+    setload(true);
     api.get('clientesbase').then(response => {
       const base = response.data;
       setRr(base[0].RR);
@@ -55,6 +63,10 @@ const LatestSales = props => {
       setAssis(base[0].TVC_Assis);
       setTupa(base[0].TVC_Tupã);
     });
+    setTimeout(() => {
+      setload(false);
+    }, 1000);
+    // setload(false)
   };
 
   const data = {
@@ -62,7 +74,7 @@ const LatestSales = props => {
     datasets: [
       {
         label: 'Clientes',
-        backgroundColor: palette.primary.main,
+        backgroundColor: palette.secondary.main,
         data: [assis, rr, giga, tupa]
       }
     ]
@@ -86,15 +98,28 @@ const LatestSales = props => {
         }
         title="Quantidade por base"
       />
+
       <Divider />
-      <CardContent>
-        <div className={classes.chartContainer}>
-          <Bar
-            data={data}
-            options={options}
+      {load ? (
+        <div className={classes.load}>
+          <Spinner
+            animating
+            color={palette.secondary.main}
+            size={40}
+            speed={1}
           />
         </div>
-      </CardContent>
+      ) : (
+        <CardContent>
+          <div className={classes.chartContainer}>
+            <Bar
+              data={data}
+              options={options}
+            />
+          </div>
+        </CardContent>
+      )}
+
       <Divider />
     </Card>
   );
