@@ -53,32 +53,18 @@ const UsersByDevice = props => {
 
   useEffect(() => {
     plataform();
+    // getPlataform()
   }, []);
+
+  // const plataform = useSelector(state => state.plataform);
+  // console.log('Get ->', plataform);
 
   const plataform = () => {
     console.log('reload');
     api.get('porcentagemplataforma').then(response => {
-      let android = 0;
-      let ios = 0;
-      let total = 0;
-      const resposta = response.data;
-      total = resposta.length;
-      resposta.forEach(function(plataforma) {
-        if (plataforma.plataforma === 'ios') {
-          ios++;
-        }
-        if (plataforma.plataforma === 'android') {
-          android++;
-        }
-      });
-      ios = (ios * 100) / total;
-      android = (android * 100) / total;
-
-      ios = ios.toFixed(2);
-      android = android.toFixed(2);
-
-      setIos(ios);
-      setAndroid(android);
+      const plataforma = response.data;
+      setIos(plataforma[0].ios);
+      setAndroid(plataforma[0].android);
     });
   };
 
@@ -90,7 +76,7 @@ const UsersByDevice = props => {
       {
         data: [android, ios],
         backgroundColor: [
-          theme.palette.primary.main,
+          theme.palette.secondary.main,
           theme.palette.warning.main
         ],
         borderWidth: 8,

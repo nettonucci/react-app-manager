@@ -1,15 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+import React, { useEffect, useState } from 'react';
 import palette from 'theme/palette';
-
-export const data = {
-  labels: ['TVC Assis', 'R&R', 'Giga TV', 'TVC Tupã'],
-  datasets: [
-    {
-      label: 'Clientes',
-      backgroundColor: palette.primary.main,
-      data: [18, 5, 100, 27]
-    }
-  ]
-};
 
 export const options = {
   responsive: true,
@@ -32,8 +25,8 @@ export const options = {
   scales: {
     xAxes: [
       {
-        barThickness: 12,
-        maxBarThickness: 10,
+        barThickness: 15,
+        maxBarThickness: 30,
         barPercentage: 0.5,
         categoryPercentage: 0.5,
         ticks: {
