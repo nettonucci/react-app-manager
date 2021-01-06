@@ -5,12 +5,13 @@ import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
 import { Profile, SidebarNav } from './components';
 
@@ -49,40 +50,41 @@ const Sidebar = props => {
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
+      title: 'Usuários',
       href: '/users',
       icon: <PeopleIcon />
     },
     {
-      title: 'Products',
+      title: 'Banners',
       href: '/products',
-      icon: <ShoppingBasketIcon />
+      icon: <ViewCarouselIcon />
     },
     {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
-    },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
+      title: 'Videos',
       href: '/icons',
-      icon: <ImageIcon />
-    },
-    {
-      title: 'Account',
-      href: '/account',
-      icon: <AccountBoxIcon />
-    },
-    {
-      title: 'Settings',
-      href: '/settings',
-      icon: <SettingsIcon />
+      icon: <VideoLibraryIcon />
     }
+    // {
+    //   title: 'Authentication',
+    //   href: '/sign-in',
+    //   icon: <LockOpenIcon />
+    // },
+    // {
+    //   title: 'Typography',
+    //   href: '/typography',
+    //   icon: <TextFieldsIcon />
+    // },
+
+    // {
+    //   title: 'Account',
+    //   href: '/account',
+    //   icon: <AccountBoxIcon />
+    // },
+    // {
+    //   title: 'Settings',
+    //   href: '/settings',
+    //   icon: <SettingsIcon />
+    // }
   ];
 
   return (

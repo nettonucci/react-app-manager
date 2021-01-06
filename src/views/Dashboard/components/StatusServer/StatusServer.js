@@ -89,9 +89,10 @@ const StatusServer = props => {
         setStatus('On-Line');
       }
     });
-    setTimeout(() => {
-      setload(false);
-    }, 1000);
+    setload(false);
+    // setTimeout(() => {
+    //   setload(false);
+    // }, 300);
   };
 
   const classes = useStyles();
