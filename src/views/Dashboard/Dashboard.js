@@ -10,7 +10,8 @@ import {
   LatestSales,
   UsersByDevice,
   LatestProducts,
-  LatestOrders
+  LatestOrders,
+  StatusServer
 } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +29,43 @@ const Dashboard = () => {
         container
         spacing={4}
       >
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <StatusServer />
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Budget />
+        </Grid>
+
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <TasksProgress />
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <TotalProfit />
+        </Grid>
         <Grid
           item
           lg={3}

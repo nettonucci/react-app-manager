@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const api = axios.create({
   baseURL: 'http://app1.cabonnet.com.br:3333',
   headers: {
