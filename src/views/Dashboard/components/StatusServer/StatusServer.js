@@ -33,7 +33,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex'
   },
   title: {
-    fontWeight: 700
+    fontWeight: 700,
+    color: '#fff'
+  },
+  status: {
+    color: '#fff'
   },
   avatar: {
     backgroundColor: theme.palette.success.main,
@@ -123,7 +127,12 @@ const StatusServer = props => {
                   >
                     STATUS DO SERVIDOR
                   </Typography>
-                  <Typography variant="h3">{status}</Typography>
+                  <Typography
+                    className={classes.status}
+                    variant="h3"
+                  >
+                    {status}
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Avatar className={classes.avatar2}>
@@ -136,7 +145,7 @@ const StatusServer = props => {
                   onClick={statusServer}
                   size="small"
                 >
-                  <RefreshIcon />
+                  <RefreshIcon style={{ color: '#fff' }} />
                 </IconButton>
               </div>
             </CardContent>
@@ -171,7 +180,12 @@ const StatusServer = props => {
                   >
                     STATUS DO SERVIDOR
                   </Typography>
-                  <Typography variant="h3">{status}</Typography>
+                  <Typography
+                    className={classes.status}
+                    variant="h3"
+                  >
+                    {status}
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Avatar className={classes.avatar}>
@@ -184,7 +198,7 @@ const StatusServer = props => {
                   onClick={statusServer}
                   size="small"
                 >
-                  <RefreshIcon />
+                  <RefreshIcon style={{ color: '#fff' }} />
                 </IconButton>
               </div>
             </CardContent>
