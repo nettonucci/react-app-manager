@@ -29,7 +29,7 @@ import { options } from './chart';
 const useStyles = makeStyles(() => ({
   root: {},
   chartContainer: {
-    height: 800,
+    height: 400,
     position: 'relative'
   },
   actions: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const MaisAcessadas = props => {
+const MenosAcessadas = props => {
   const { className, ...rest } = props;
   const [datas, setData] = useState([
     0,
@@ -121,30 +121,6 @@ const MaisAcessadas = props => {
       datas[7].acesso,
       datas[8].acesso,
       datas[9].acesso,
-      datas[10].acesso,
-      datas[11].acesso,
-      datas[12].acesso,
-      datas[13].acesso,
-      datas[14].acesso,
-      datas[15].acesso,
-      datas[16].acesso,
-      datas[17].acesso,
-      datas[18].acesso,
-      datas[19].acesso,
-      datas[20].acesso,
-      datas[21].acesso,
-      datas[22].acesso,
-      datas[23].acesso,
-      datas[24].acesso,
-      datas[25].acesso,
-      datas[26].acesso,
-      datas[27].acesso,
-      datas[28].acesso,
-      datas[29].acesso,
-      datas[30].acesso,
-      datas[31].acesso,
-      datas[32].acesso,
-      datas[33].acesso,
       datas[34].acesso,
       datas[35].acesso,
       datas[36].acesso,
@@ -171,30 +147,6 @@ const MaisAcessadas = props => {
           datas[7].QTD,
           datas[8].QTD,
           datas[9].QTD,
-          datas[10].QTD,
-          datas[11].QTD,
-          datas[12].QTD,
-          datas[13].QTD,
-          datas[14].QTD,
-          datas[15].QTD,
-          datas[16].QTD,
-          datas[17].QTD,
-          datas[18].QTD,
-          datas[19].QTD,
-          datas[20].QTD,
-          datas[21].QTD,
-          datas[22].QTD,
-          datas[23].QTD,
-          datas[24].QTD,
-          datas[25].QTD,
-          datas[26].QTD,
-          datas[27].QTD,
-          datas[28].QTD,
-          datas[29].QTD,
-          datas[30].QTD,
-          datas[31].QTD,
-          datas[32].QTD,
-          datas[33].QTD,
           datas[34].QTD,
           datas[35].QTD,
           datas[36].QTD,
@@ -226,7 +178,7 @@ const MaisAcessadas = props => {
             <RefreshIcon />
           </IconButton>
         }
-        title="Logs"
+        title="Top Logs"
       />
 
       <Divider />
@@ -255,8 +207,8 @@ const MaisAcessadas = props => {
   );
 };
 
-MaisAcessadas.propTypes = {
+MenosAcessadas.propTypes = {
   className: PropTypes.string
 };
 
-export default MaisAcessadas;
+export default MenosAcessadas;

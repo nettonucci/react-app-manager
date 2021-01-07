@@ -10,7 +10,7 @@ import {
   QuantidadePorBase,
   UsersByDevice,
   MaisAcessadas,
-  LatestOrders,
+  MenosAcessadas,
   StatusServer
 } from './components';
 
@@ -96,21 +96,12 @@ const Dashboard = () => {
         </Grid>
         <Grid
           item
-          lg={6}
-          md={6}
-          xl={6}
+          lg={12}
+          md={12}
+          xl={12}
           xs={12}
         >
           <MaisAcessadas />
-        </Grid>
-        <Grid
-          item
-          lg={6}
-          md={6}
-          xl={6}
-          xs={12}
-        >
-          <LatestOrders />
         </Grid>
       </Grid>
     </div>

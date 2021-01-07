@@ -30,24 +30,17 @@ export const options = {
         barPercentage: 0.5,
         categoryPercentage: 0.5,
         ticks: {
-          fontColor: palette.text.secondary,
-          beginAtZero: true,
-          min: 0
+          fontColor: palette.text.secondary
         },
         gridLines: {
-          borderDash: [2],
-          borderDashOffset: [2],
-          color: palette.divider,
-          drawBorder: false,
-          zeroLineBorderDash: [2],
-          zeroLineBorderDashOffset: [2],
-          zeroLineColor: palette.divider
+          display: false,
+          drawBorder: false
         }
       }
     ],
     yAxes: [
       {
-        barThickness: 5,
+        barThickness: 10,
         maxBarThickness: 30,
         ticks: {
           fontColor: palette.text.secondary,

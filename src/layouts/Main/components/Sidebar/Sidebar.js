@@ -63,12 +63,12 @@ const Sidebar = props => {
       title: 'Videos',
       href: '/videos',
       icon: <VideoLibraryIcon />
+    },
+    {
+      title: 'Authentication',
+      href: '/sign-in',
+      icon: <LockOpenIcon />
     }
-    // {
-    //   title: 'Authentication',
-    //   href: '/sign-in',
-    //   icon: <LockOpenIcon />
-    // },
     // {
     //   title: 'Typography',
     //   href: '/typography',

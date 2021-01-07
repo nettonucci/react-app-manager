@@ -1,5 +1,5 @@
 export { default as Budget } from './Budget';
-export { default as LatestOrders } from './LatestOrders';
+export { default as MenosAcessadas } from './MenosAcessadas';
 export { default as MaisAcessadas } from './MaisAcessadas';
 export { default as QuantidadePorBase } from './QuantidadePorBase';
 export { default as TasksProgress } from './TasksProgress';
