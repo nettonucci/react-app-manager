@@ -56,12 +56,12 @@ const Sidebar = props => {
     },
     {
       title: 'Banners',
-      href: '/products',
+      href: '/banners',
       icon: <ViewCarouselIcon />
     },
     {
       title: 'Videos',
-      href: '/icons',
+      href: '/videos',
       icon: <VideoLibraryIcon />
     }
     // {

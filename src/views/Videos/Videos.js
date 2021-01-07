@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Icons = () => {
+const Videos = () => {
   const classes = useStyles();
   const [videos, setVideos] = useState([]);
 
@@ -106,4 +106,4 @@ const Icons = () => {
   );
 };
 
-export default Icons;
+export default Videos;
