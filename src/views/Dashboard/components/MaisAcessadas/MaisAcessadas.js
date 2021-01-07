@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const LatestSales = props => {
+const MaisAcessadas = props => {
   const { className, ...rest } = props;
   const [assis, setAssis] = useState(0);
   const [giga, setGiga] = useState(0);
@@ -96,7 +96,7 @@ const LatestSales = props => {
             <RefreshIcon />
           </IconButton>
         }
-        title="Quantidade por base"
+        title="Mais Acessadas"
       />
 
       <Divider />
@@ -125,8 +125,8 @@ const LatestSales = props => {
   );
 };
 
-LatestSales.propTypes = {
+MaisAcessadas.propTypes = {
   className: PropTypes.string
 };
 
-export default LatestSales;
+export default MaisAcessadas;

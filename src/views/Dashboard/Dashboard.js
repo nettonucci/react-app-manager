@@ -7,9 +7,9 @@ import {
   TotalUsers,
   TasksProgress,
   TotalProfit,
-  LatestSales,
+  QuantidadePorBase,
   UsersByDevice,
-  LatestProducts,
+  MaisAcessadas,
   LatestOrders,
   StatusServer
 } from './components';
@@ -32,8 +32,8 @@ const Dashboard = () => {
         <Grid
           item
           lg={12}
-          sm={6}
-          xl={3}
+          sm={12}
+          xl={12}
           xs={12}
         >
           <StatusServer />
@@ -78,36 +78,36 @@ const Dashboard = () => {
         </Grid>
         <Grid
           item
-          lg={8}
-          md={12}
-          xl={9}
+          lg={7}
+          md={7}
+          xl={7}
           xs={12}
         >
-          <LatestSales />
+          <QuantidadePorBase />
         </Grid>
         <Grid
           item
-          lg={4}
-          md={6}
-          xl={3}
+          lg={5}
+          md={5}
+          xl={5}
           xs={12}
         >
           <UsersByDevice />
         </Grid>
         <Grid
           item
-          lg={4}
+          lg={6}
           md={6}
-          xl={3}
+          xl={6}
           xs={12}
         >
-          <LatestProducts />
+          <MaisAcessadas />
         </Grid>
         <Grid
           item
-          lg={8}
-          md={12}
-          xl={9}
+          lg={6}
+          md={6}
+          xl={6}
           xs={12}
         >
           <LatestOrders />
