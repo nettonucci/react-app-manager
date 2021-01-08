@@ -73,8 +73,8 @@ const UsersByDevice = props => {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     api.get('porcentagemplataforma').then(response => {
       const plataforma = response.data;
-      setIos(plataforma[0].ios);
-      setAndroid(plataforma[0].android);
+      setIos(plataforma[1].Porcentagem);
+      setAndroid(plataforma[0].Porcentagem);
     });
     setTimeout(() => {
       setload(false);

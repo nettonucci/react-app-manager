@@ -2,7 +2,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+/* eslint-disable quotes */
 import React, { useEffect, useState } from 'react';
+import * as am4core from '@amcharts/amcharts4/core';
+import * as am4charts from '@amcharts/amcharts4/charts';
+import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import api from '../../../../server/api';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Bar, Doughnut, Pie, HorizontalBar } from 'react-chartjs-2';
@@ -10,7 +15,6 @@ import { makeStyles } from '@material-ui/styles';
 import Spinner from 'react-activity/lib/Spinner';
 import 'react-activity/lib/Spinner/Spinner.css';
 import palette from 'theme/palette';
-import api from '../../../../server/api';
 import {
   Card,
   IconButton,
@@ -44,170 +48,60 @@ const useStyles = makeStyles(() => ({
 
 const MaisAcessadas = props => {
   const { className, ...rest } = props;
-  const [datas, setData] = useState([
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-  ]);
   const [load, setload] = useState(false);
+
   useEffect(() => {
-    base();
-  }, []);
+    am4core.useTheme(am4themes_animated);
+    // Themes end
 
-  const base = () => {
-    setload(true);
+    // Create chart instance
+    let chart = am4core.create('chartdiv', am4charts.XYChart3D);
+
     api.get('acessocount').then(response => {
-      const data = response.data;
-      console.log(data);
-      const divider = response.data.length / 2;
-      setData(data);
+      const dados = response.data;
+      chart.data = dados;
     });
-    setTimeout(() => {
-      setload(false);
-    }, 1000);
-    // setload(false)
-  };
+    /* Chart code */
+    // Themes begin
 
-  const data = {
-    labels: [
-      datas[0].acesso,
-      datas[1].acesso,
-      datas[2].acesso,
-      datas[3].acesso,
-      datas[4].acesso,
-      datas[5].acesso,
-      datas[6].acesso,
-      datas[7].acesso,
-      datas[8].acesso,
-      datas[9].acesso,
-      datas[10].acesso,
-      datas[11].acesso,
-      datas[12].acesso,
-      datas[13].acesso,
-      datas[14].acesso,
-      datas[15].acesso,
-      datas[16].acesso,
-      datas[17].acesso,
-      datas[18].acesso,
-      datas[19].acesso,
-      datas[20].acesso,
-      datas[21].acesso,
-      datas[22].acesso,
-      datas[23].acesso,
-      datas[24].acesso,
-      datas[25].acesso,
-      datas[26].acesso,
-      datas[27].acesso,
-      datas[28].acesso,
-      datas[29].acesso,
-      datas[30].acesso,
-      datas[31].acesso,
-      datas[32].acesso,
-      datas[33].acesso,
-      datas[34].acesso,
-      datas[35].acesso,
-      datas[36].acesso,
-      datas[37].acesso,
-      datas[38].acesso,
-      datas[39].acesso,
-      datas[40].acesso,
-      datas[41].acesso,
-      datas[42].acesso,
-      datas[43].acesso
-    ],
-    datasets: [
-      {
-        label: 'Logs',
-        backgroundColor: palette.secondary.main,
-        data: [
-          datas[0].QTD,
-          datas[1].QTD,
-          datas[2].QTD,
-          datas[3].QTD,
-          datas[4].QTD,
-          datas[5].QTD,
-          datas[6].QTD,
-          datas[7].QTD,
-          datas[8].QTD,
-          datas[9].QTD,
-          datas[10].QTD,
-          datas[11].QTD,
-          datas[12].QTD,
-          datas[13].QTD,
-          datas[14].QTD,
-          datas[15].QTD,
-          datas[16].QTD,
-          datas[17].QTD,
-          datas[18].QTD,
-          datas[19].QTD,
-          datas[20].QTD,
-          datas[21].QTD,
-          datas[22].QTD,
-          datas[23].QTD,
-          datas[24].QTD,
-          datas[25].QTD,
-          datas[26].QTD,
-          datas[27].QTD,
-          datas[28].QTD,
-          datas[29].QTD,
-          datas[30].QTD,
-          datas[31].QTD,
-          datas[32].QTD,
-          datas[33].QTD,
-          datas[34].QTD,
-          datas[35].QTD,
-          datas[36].QTD,
-          datas[37].QTD,
-          datas[38].QTD,
-          datas[39].QTD,
-          datas[40].QTD,
-          datas[41].QTD,
-          datas[42].QTD,
-          datas[43].QTD
-        ]
-      }
-    ]
+    // Create axes
+    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = 'acesso';
+    categoryAxis.renderer.labels.template.visible = false;
+
+    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.title.text = 'Logs';
+    valueAxis.title.fontWeight = 'bold';
+
+    // Create series
+    let series = chart.series.push(new am4charts.ColumnSeries3D());
+    series.dataFields.valueY = 'QTD';
+    series.dataFields.categoryX = 'acesso';
+    series.name = 'QTD';
+    series.tooltipText = '{categoryX}: [bold]{valueY}[/]';
+    series.columns.template.fillOpacity = 0.8;
+
+    let columnTemplate = series.columns.template;
+    columnTemplate.strokeWidth = 2;
+    columnTemplate.strokeOpacity = 1;
+    columnTemplate.stroke = am4core.color('#FFFFFF');
+
+    columnTemplate.adapter.add('fill', function(fill, target) {
+      return chart.colors.getIndex(target.dataItem.index);
+    });
+
+    columnTemplate.adapter.add('stroke', function(stroke, target) {
+      return chart.colors.getIndex(target.dataItem.index);
+    });
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineX.strokeOpacity = 0;
+    chart.cursor.lineY.strokeOpacity = 0;
+    setload(false);
+  }, [load]);
+
+  const logs = () => {
+    setload(true);
   };
 
   const classes = useStyles();
@@ -220,7 +114,7 @@ const MaisAcessadas = props => {
       <CardHeader
         action={
           <IconButton
-            onClick={base}
+            onClick={logs}
             size="small"
           >
             <RefreshIcon />
@@ -241,12 +135,10 @@ const MaisAcessadas = props => {
         </div>
       ) : (
         <CardContent>
-          <div className={classes.chartContainer}>
-            <HorizontalBar
-              data={data}
-              options={options}
-            />
-          </div>
+          <div
+            id="chartdiv"
+            style={{ width: '100%', height: '500px' }}
+          />
         </CardContent>
       )}
 

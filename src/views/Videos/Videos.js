@@ -8,6 +8,9 @@ import { VideosToolbar } from './components';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +24,13 @@ const useStyles = makeStyles(theme => ({
   boxTitle: {},
   title: {
     marginTop: 10
+  },
+  videoOpt: {
+    backgroundColor: '#f1f',
+    height: '100%'
+  },
+  title: {
+    fontWeight: 'bold'
   }
 }));
 
@@ -45,6 +55,10 @@ const Videos = () => {
     });
   };
 
+  const delVideo = video => {
+    console.log(video);
+  };
+
   return (
     <div className={classes.root}>
       <VideosToolbar />
@@ -67,11 +81,13 @@ const Videos = () => {
           </Paper>
         </Grid>
       </Grid>
+      <br />
       {videos.map(video => (
         <>
           <Grid
             container
-            spacing={4}
+            direction="row"
+            spacing={0}
           >
             <Grid
               item
@@ -82,7 +98,7 @@ const Videos = () => {
             >
               <Paper className={classes.paper}>
                 <ReactPlayer
-                  heigth={200}
+                  heigth={150}
                   url={`https://www.youtube.com/watch?v=${video.url_video}`}
                   width="100%"
                 />
@@ -95,7 +111,16 @@ const Videos = () => {
               xl={6}
               xs={12}
             >
-              <Paper className={classes.paper}>OLa</Paper>
+              <div className={classes.videoOpt}>
+                <a className={classes.title}>{video.nome_video}</a>
+                <IconButton
+                  aria-label="delete"
+                  className={classes.margin}
+                  onClick={()=>delVideo(video)}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </div>
             </Grid>
           </Grid>
 
