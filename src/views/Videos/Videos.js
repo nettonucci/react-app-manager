@@ -50,7 +50,20 @@ const useStyles = makeStyles(theme => ({
     color: '#4287f5',
     fontWeight: 'bold',
     textDecorationLine: 'underline'
-  }
+  },
+  boxButton: {
+    backgroundColor: '#f1f',
+    width: 100,
+  },
+  boxVideoTitle: {
+    backgroundColor: '#ff1',
+    width: 100
+  },
+  divRow: {
+    flexDirection: 'row',
+    backgroundColor: '#000',
+  },
+ 
 }));
 
 const Videos = () => {
@@ -77,6 +90,19 @@ const Videos = () => {
   const delVideo = video => {
     console.log(video);
   };
+
+  const handleAddisPrincipal = video => {
+    console.log("click")
+    const {id} = video
+    api.patch(`videos/${id}`).then(response => {
+      api.get('videos').then(response => {
+        setVideos(response.data);
+      });
+      
+    });
+  }
+
+
 
   return (
     <div className={classes.root}>
@@ -115,7 +141,7 @@ const Videos = () => {
               xl={6}
               xs={12}
             >
-              <div className={classes.videoOpt}>
+              <div className={classes.videoOpt}>    
                 <ReactPlayer
                   
                   height="100%"
@@ -132,29 +158,64 @@ const Videos = () => {
               xs={12}
             >
               <div className={classes.videoOpt}>
-                <a className={classes.videoTitle}>{video.nome_video}</a>
-                <IconButton
-                  aria-label="delete"
-                  className={classes.margin}
-                  onClick={()=>delVideo(video)}
-                >
-                  <CreateIcon fontSize="small" />
-                </IconButton>
-                <IconButton
-                  aria-label="delete"
-                  className={classes.margin}
-                  onClick={()=>delVideo(video)}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
+              
+                <table >
+                  <tr>
+                    <td><a className={classes.videoTitle}>{video.nome_video}</a></td>
+                    {video.isPrincipal && <td style={{width: 110, borderRadius:5, backgroundColor: '#32cd32', JustfyContent: 'center', color:"#fff"}}><a style={{fontWeight: 'bold'}}>Video Principal</a></td>}
+                  
+                    <td> 
+                      <IconButton
+                        aria-label="delete"
+                        className={classes.margin}
+                        onClick={()=>delVideo(video)}
+                      >
+                        <CreateIcon
+                          fontSize="small"
+                          style={{ color: 'green' }}
+                        />
+                      </IconButton>
+                      {video.isPrincipal !== true &&
+                      <IconButton
+                        aria-label="delete"
+                        className={classes.margin}
+                        onClick={()=>delVideo(video)}
+                      >
+                        <DeleteIcon
+                          fontSize="small"
+                          style={{ color: 'red' }}
+                        />
+                      </IconButton>
+                      }
+                    </td>
+                  </tr>
+                </table>
+                
                 <div className={classes.videoURL}>
-                  <p className={classes.url}>URL:</p>
+                  <p className={classes.url}>Link:</p>
                   <a
                     className={classes.link}
                     href={`https://www.youtube.com/watch?v=${video.url_video}`}
                     target="_blank"
-                  >https://www.youtube.com/watch?v=${video.url_video}</a>
+                  >Clique aqui</a>
                 </div>
+                {video.isPrincipal !== true && 
+                  <Button
+                    onClick={()=>handleAddisPrincipal(video)}
+                    style={{
+                      backgroundColor: '#4287f5', 
+                      width:150, 
+                      height: 40, 
+                      borderRadius: 5, 
+                      marginLeft: 10, 
+                      marginBottom: 10
+                    }}
+                  >
+                    <a style={{color: '#fff'}}>
+                Tornar principal
+                    </a>
+                  </Button>}
+                
               </div>
             </Grid>
           </Grid>
