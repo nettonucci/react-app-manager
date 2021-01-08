@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CreateIcon from '@material-ui/icons/Create';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
@@ -26,11 +27,29 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10
   },
   videoOpt: {
-    backgroundColor: '#f1f',
+    backgroundColor: '#fff',
     height: '100%'
   },
-  title: {
-    fontWeight: 'bold'
+  videoTitle: {
+    fontWeight: 'bold',
+    marginLeft: 10
+  },
+  videoURL: {
+    marginTop: 10,
+    backgroundColor: '#fff',
+    width: '100%',
+    height: 50
+  },
+  url: {
+    marginLeft: 10,
+    color: '#5f5f5f',
+    fontWeight: 'bold',
+  },
+  link:{
+    marginLeft: 10,
+    color: '#4287f5',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline'
   }
 }));
 
@@ -96,13 +115,14 @@ const Videos = () => {
               xl={6}
               xs={12}
             >
-              <Paper className={classes.paper}>
+              <div className={classes.videoOpt}>
                 <ReactPlayer
-                  heigth={150}
+                  
+                  height="100%"
                   url={`https://www.youtube.com/watch?v=${video.url_video}`}
                   width="100%"
                 />
-              </Paper>
+              </div>
             </Grid>
             <Grid
               item
@@ -112,7 +132,14 @@ const Videos = () => {
               xs={12}
             >
               <div className={classes.videoOpt}>
-                <a className={classes.title}>{video.nome_video}</a>
+                <a className={classes.videoTitle}>{video.nome_video}</a>
+                <IconButton
+                  aria-label="delete"
+                  className={classes.margin}
+                  onClick={()=>delVideo(video)}
+                >
+                  <CreateIcon fontSize="small" />
+                </IconButton>
                 <IconButton
                   aria-label="delete"
                   className={classes.margin}
@@ -120,6 +147,14 @@ const Videos = () => {
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
+                <div className={classes.videoURL}>
+                  <p className={classes.url}>URL:</p>
+                  <a
+                    className={classes.link}
+                    href={`https://www.youtube.com/watch?v=${video.url_video}`}
+                    target="_blank"
+                  >https://www.youtube.com/watch?v=${video.url_video}</a>
+                </div>
               </div>
             </Grid>
           </Grid>
