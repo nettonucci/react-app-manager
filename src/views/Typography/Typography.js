@@ -1,76 +1,65 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-props-no-multi-spaces */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-disable quotes */
 import React, { useEffect } from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
-import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import api from '../../server/api';
+import ReactPlayer from 'react-player';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CreateIcon from '@material-ui/icons/Create';
+import {
+  Container, DivRow, DivRow2, Box, IsPrincial, Box2, Button, Link, URL, Title,
+} from "./styles";
 
-const Typography = () => {
-  useEffect(() => {
-    /* Chart code */
-    // Themes begin
-    am4core.useTheme(am4themes_animated);
-    // Themes end
+const Typography = () => (
+  <Container>
+    <DivRow>
 
-    // Create chart instance
-    let chart = am4core.create('chartdiv', am4charts.PieChart);
+      <ReactPlayer
 
-    api.get('porcentagemplataforma').then(response => {
-      const dados = response.data;
-      chart.data = dados;
-    });
+        height="100%"
+        url="https://www.youtube.com/watch?v=75fK0iwhxdE"
+        width="100%"
+      />
 
-    // Add and configure Series
-    let pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = 'Porcentagem';
-    pieSeries.dataFields.category = 'Plataforma';
+      <DivRow2>
+        <Box2><Title>Video 1</Title></Box2>
+        <Box><IsPrincial>Video Principal</IsPrincial></Box>
+        <Box>
+          {' '}
+          <IconButton
+            aria-label="edit"
+          >
+            <CreateIcon
+              fontSize="small"
+              style={{ color: 'green' }}
+            />
+          </IconButton>
 
-    // Let's cut a hole in our Pie chart the size of 30% the radius
-    chart.innerRadius = am4core.percent(30);
+          <IconButton
+            aria-label="delete"
+          >
+            <DeleteIcon
+              fontSize="small"
+              style={{ color: 'red' }}
+            />
+          </IconButton>
+        </Box>
+        <Box2>
+          <URL>URL:&nbsp;</URL>
 
-    // Put a thick white border around each Slice
-    pieSeries.slices.template.stroke = am4core.color('#fff');
-    pieSeries.slices.template.strokeWidth = 2;
-    pieSeries.slices.template.strokeOpacity = 1;
-    // change the cursor on hover to make it apparent the object can be interacted with
-    pieSeries.slices.template.cursorOverStyle = [
-      {
-        property: 'cursor',
-        value: 'pointer'
-      }
-    ];
+          <Link>Clique aqui</Link>
 
-    pieSeries.alignLabels = false;
-    pieSeries.labels.template.bent = true;
-    pieSeries.labels.template.radius = 3;
-    pieSeries.labels.template.padding(0, 0, 0, 0);
+        </Box2>
+        <Box />
+        <Box />
+        <Box2><Button>Tornar Principal</Button></Box2>
+      </DivRow2>
 
-    pieSeries.ticks.template.disabled = true;
+    </DivRow>
 
-    // Create a base filter effect (as if it's not there) for the hover to return to
-    let shadow = pieSeries.slices.template.filters.push(
-      new am4core.DropShadowFilter()
-    );
-    shadow.opacity = 0;
-
-    // Create hover state
-    let hoverState = pieSeries.slices.template.states.getKey('hover'); // normally we have to create the hover state, in this case it already exists
-
-    // Slightly shift the shadow and make it more prominent on hover
-    let hoverShadow = hoverState.filters.push(new am4core.DropShadowFilter());
-    hoverShadow.opacity = 0.7;
-    hoverShadow.blur = 5;
-
-    // Add a legend
-    chart.legend = new am4charts.Legend();
-  }, []);
-
-  return <div
-    id="chartdiv"
-    style={{ width: '100%', height: '500px' }}
-  />;
-};
+  </Container>
+);
 
 export default Typography;
