@@ -24,16 +24,15 @@ const Footer = props => {
         &copy;{' '}
         <Link
           component="a"
-          href="https://devias.io/"
+          href="https://www.linkedin.com/in/jose-nucci-netto-082b68185/"
           target="_blank"
         >
-          Devias IO
+          Netto Nucci
         </Link>
-        . 2019
+        . 2021
       </Typography>
       <Typography variant="caption">
-        Created with love for the environment. By designers and developers who
-        love to work together in offices!
+      Formando em ciência da computação, atuo na área desde 2020, utilizo tecnologia JavaScript para meus desenvolvimentos ...
       </Typography>
     </div>
   );

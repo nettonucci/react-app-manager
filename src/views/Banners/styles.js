@@ -36,17 +36,40 @@ export const Box2 = styled.div`
   height: 40px;
 `;
 
-export const IsPrincial = styled.div`
+export const IsPrincialAtivo = styled.div`
 display: flex;
 align-items: center;
 justify-content: center;
-width: 150px;
-height: 40px;
-border-radius: 3px;
-background-color: #32cd32;
+width: 100px;
+height: 30px;
+border-radius: 20px;
+background-color: #C8FFA5;
 align-items: center;
-color: #fff
+
 `;
+
+export const Ativo = styled.a`
+    color: #307436;
+    font-weight: bold;
+`;
+
+export const IsPrincialPausado = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100px;
+height: 30px;
+border-radius: 20px;
+background-color: #FFD2A5;
+align-items: center;
+
+`;
+
+export const Pausado = styled.a`
+    color: #744D30
+    font-weight: bold;
+`;
+
 export const Link = styled.a`
     color: #4287f5;
     font-weight: bold;

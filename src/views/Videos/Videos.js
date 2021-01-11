@@ -10,8 +10,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import ReactPlayer from 'react-player';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -19,7 +17,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import { VideosToolbar } from './components';
 import api from '../../server/api';
 import {
-  Container, DivRow, DivRow2, Box, IsPrincial, Box2, Button, Link, URL, Title,
+  Container, DivRow, DivRow2, Box, IsPrincial, Box2, Button, Link, URL, Title, Header, TitleHeader
 } from "./styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -115,6 +113,10 @@ const Videos = () => {
     <div className={classes.root}>
       <VideosToolbar />
       <br />
+      <Header>
+        <TitleHeader>Videos</TitleHeader>
+      </Header>
+      <br />
       {videos.map((video) => (
         <>
           <Container>
@@ -137,7 +139,7 @@ const Videos = () => {
                   >
                     <CreateIcon
                       fontSize="small"
-                      style={{ color: 'green' }}
+                      style={{ color: '#4287f5' }}
                     />
                   </IconButton>
                   {video.isPrincipal !== true
@@ -155,8 +157,12 @@ const Videos = () => {
                 <Box2>
                   <URL>URL:&nbsp;</URL>
 
-                  <Link href={`https://www.youtube.com/watch?v=${video.url_video}`}
-                    target="_blank">Clique aqui</Link>
+                  <Link
+                    href={`https://www.youtube.com/watch?v=${video.url_video}`}
+                    target="_blank"
+                  >
+                    Clique aqui
+                  </Link>
 
                 </Box2>
                 <Box />
