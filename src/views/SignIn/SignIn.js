@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -286,7 +287,7 @@ const SignIn = props => {
                   helperText={
                     hasError('email') ? formState.errors.email[0] : null
                   }
-                  label="Email address"
+                  label="Email"
                   name="email"
                   onChange={handleChange}
                   type="text"
@@ -300,7 +301,7 @@ const SignIn = props => {
                   helperText={
                     hasError('password') ? formState.errors.password[0] : null
                   }
-                  label="Password"
+                  label="Senha"
                   name="password"
                   onChange={handleChange}
                   type="password"
@@ -316,7 +317,7 @@ const SignIn = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Sign in nnnow
+                  Entrar
                 </Button>
                 <Typography
                   color="textSecondary"
