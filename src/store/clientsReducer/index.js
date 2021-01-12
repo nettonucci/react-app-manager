@@ -5,13 +5,13 @@
 const INITIAL_STATE = [];
 
 export default function reducer(state = INITIAL_STATE, action) {
-  if (action.type === 'GET_VIDEOS') {
-    return [...state, action.list];
+  if (action.type === 'GET_CLIENTS') {
+    return action.list;
   }
   return state;
 }
 
-export const getVideos = (list) => ({
-  type: 'GET_VIDEOS',
+export const getClients = (list) => ({
+  type: 'GET_CLIENTS',
   list,
 });

@@ -23,7 +23,7 @@ import {
   Typography
 } from '@material-ui/core';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
+import AppleIcon from '@material-ui/icons/Apple';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import AndroidIcon from '@material-ui/icons/Android';
 
@@ -132,7 +132,7 @@ const UsersByDevice = props => {
     {
       title: 'IOS',
       value: ios,
-      icon: <PhoneIphoneIcon />,
+      icon: <AppleIcon />,
       color: theme.palette.warning.main
     }
   ];

@@ -1,8 +1,14 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import AndroidIcon from '@material-ui/icons/Android';
+import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
+import AppleIcon from '@material-ui/icons/Apple';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -16,32 +22,35 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TablePagination
+  TablePagination,
 } from '@material-ui/core';
 
 import { getInitials } from 'helpers';
+import {
+  IsAtivo, Ativo, IsPausado, Pausado,
+} from './styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
-    padding: 0
+    padding: 0,
   },
   inner: {
-    minWidth: 1050
+    minWidth: 1050,
   },
   nameContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   actions: {
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 }));
 
-const UsersTable = props => {
+const UsersTable = (props) => {
   const { className, users, ...rest } = props;
 
   const classes = useStyles();
@@ -50,13 +59,13 @@ const UsersTable = props => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
-  const handleSelectAll = event => {
+  const handleSelectAll = (event) => {
     const { users } = props;
 
     let selectedUsers;
 
     if (event.target.checked) {
-      selectedUsers = users.map(user => user.id);
+      selectedUsers = users.map((user) => user.id);
     } else {
       selectedUsers = [];
     }
@@ -77,7 +86,7 @@ const UsersTable = props => {
     } else if (selectedIndex > 0) {
       newSelectedUsers = newSelectedUsers.concat(
         selectedUsers.slice(0, selectedIndex),
-        selectedUsers.slice(selectedIndex + 1)
+        selectedUsers.slice(selectedIndex + 1),
       );
     }
 
@@ -88,7 +97,7 @@ const UsersTable = props => {
     setPage(page);
   };
 
-  const handleRowsPerPageChange = event => {
+  const handleRowsPerPageChange = (event) => {
     setRowsPerPage(event.target.value);
   };
 
@@ -103,59 +112,43 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
+
+                  <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Phone</TableCell>
-                  <TableCell>Registration date</TableCell>
+                  <TableCell>CPF/CNPJ</TableCell>
+                  <TableCell>Autenticado</TableCell>
+                  <TableCell>Base</TableCell>
+                  <TableCell>Plataforma</TableCell>
+                  <TableCell>Avaliou App</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.slice(0, rowsPerPage).map(user => (
+                {users.map((user) => (
                   <TableRow
                     className={classes.tableRow}
                     hover
                     key={user.id}
-                    selected={selectedUsers.indexOf(user.id) !== -1}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
-                        color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
-                        value="true"
-                      />
-                    </TableCell>
+                    <TableCell>{user.id}</TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
-                        <Avatar
-                          className={classes.avatar}
-                          src={user.avatarUrl}
-                        >
-                          {getInitials(user.name)}
-                        </Avatar>
-                        <Typography variant="body1">{user.name}</Typography>
+                        <Typography variant="body1">{user.nomeassinante}</Typography>
                       </div>
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
+                      {user.cpfcnpj}
                     </TableCell>
-                    <TableCell>{user.phone}</TableCell>
+                    <TableCell>{user.status_fator === 'true' ? <IsAtivo><Ativo>Sim</Ativo></IsAtivo> : <IsPausado><Pausado>Não</Pausado></IsPausado>}</TableCell>
                     <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
+                      {user.base === null ? '-' : user.base}
+                    </TableCell>
+                    <TableCell>
+                      {user.plataforma === 'android' ? <AndroidIcon /> : user.plataforma === 'ios' ? <AppleIcon /> : '-'}
+                    </TableCell>
+                    <TableCell>
+                      {user.avaliou_app === true ? <IsAtivo><Ativo>Sim</Ativo></IsAtivo> : <IsPausado><Pausado>Não</Pausado></IsPausado>}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -164,24 +157,14 @@ const UsersTable = props => {
           </div>
         </PerfectScrollbar>
       </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={users.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
+
     </Card>
   );
 };
 
 UsersTable.propTypes = {
   className: PropTypes.string,
-  users: PropTypes.array.isRequired
+  users: PropTypes.array.isRequired,
 };
 
 export default UsersTable;

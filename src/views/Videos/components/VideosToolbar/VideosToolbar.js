@@ -12,35 +12,35 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import ReactPlayer from 'react-player';
-import api from '../../../../server/api';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
-import { getVideos } from '../../../../store/videoReducer';
 import CardMedia from '@material-ui/core/CardMedia';
+import { getVideos } from '../../../../store/videoReducer';
+import api from '../../../../server/api';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   row: {
     height: '42px',
     display: 'flex',
     alignItems: 'center',
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   spacer: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   importButton: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   exportButton: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   searchInput: {
-    marginRight: theme.spacing(1)
-  }
+    marginRight: theme.spacing(1),
+  },
 }));
 
-const VideosToolbar = props => {
+const VideosToolbar = (props) => {
   const { className, ...rest } = props;
   const [open, setOpen] = React.useState(false);
   const [alert, setalert] = React.useState(false);
@@ -66,9 +66,9 @@ const VideosToolbar = props => {
       api
         .post('videos', {
           URL,
-          title
+          title,
         })
-        .then(response => {
+        .then((response) => {
           handleClose();
           setvideo_url('');
           setvideo_title('');
@@ -137,7 +137,7 @@ const VideosToolbar = props => {
                 id="URL"
                 label="URL do Video"
                 margin="dense"
-                onChange={event => setvideo_url(event.target.value)}
+                onChange={(event) => setvideo_url(event.target.value)}
                 type="text"
                 value={video_url}
               />
@@ -146,7 +146,7 @@ const VideosToolbar = props => {
                 id="Title"
                 label="Titulo"
                 margin="dense"
-                onChange={event => setvideo_title(event.target.value)}
+                onChange={(event) => setvideo_title(event.target.value)}
                 type="text"
                 value={video_title}
               />
@@ -195,7 +195,7 @@ const VideosToolbar = props => {
 };
 
 VideosToolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default VideosToolbar;
