@@ -9,52 +9,51 @@ import api from '../../server/api';
 
 import { UsersToolbar, UsersTable } from './components';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(3),
-  },
-  content: {
-    marginTop: theme.spacing(2),
-  },
+const useStyles = makeStyles(theme => ({
+	root: {
+		padding: theme.spacing(3),
+	},
+	content: {
+		marginTop: theme.spacing(2),
+	},
 }));
 
 const UserList = () => {
-  const classes = useStyles();
+	const classes = useStyles();
 
-  const [users, setUsers] = useState([]);
+	const [users, setUsers] = useState([]);
 
-  let clients = useSelector((state) => state.clients);
-  let clients2 = useSelector((state) => state.clientsSearch);
+	let clients = useSelector(state => state.clients);
+	let clients2 = useSelector(state => state.clientsSearch);
 
-  useEffect(() => {
-    // console.log(clients);
-    setUsers(clients);
-  }, [clients]);
+	useEffect(() => {
+		// console.log(clients);
+		setUsers(clients);
+	}, [clients]);
 
-  useEffect(() => {
-    // console.log(clients);
-    setUsers(clients2);
-  }, [clients2]);
-  
+	useEffect(() => {
+		// console.log(clients);
+		setUsers(clients2);
+	}, [clients2]);
 
-  useEffect(() => {
-    // GetUsers();
-  }, []);
+	useEffect(() => {
+		// GetUsers();
+	}, []);
 
-  const GetUsers = () => {
-    api.get('clientsweb').then((response) => {
-      setUsers(response.data);
-    });
-  };
+	const GetUsers = () => {
+		api.get('clientsweb').then(response => {
+			setUsers(response.data);
+		});
+	};
 
-  return (
-    <div className={classes.root}>
-      <UsersToolbar />
-      <div className={classes.content}>
-        <UsersTable users={users} />
-      </div>
-    </div>
-  );
+	return (
+		<div className={classes.root}>
+			<UsersToolbar />
+			<div className={classes.content}>
+				<UsersTable users={users} />
+			</div>
+		</div>
+	);
 };
 
 export default UserList;
