@@ -23,16 +23,22 @@ const UserList = () => {
 
   const [users, setUsers] = useState([]);
 
-  const clients = useSelector((state) => state.clients);
+  let clients = useSelector((state) => state.clients);
+  let clients2 = useSelector((state) => state.clientsSearch);
 
   useEffect(() => {
-    console.log(clients);
+    // console.log(clients);
     setUsers(clients);
   }, [clients]);
+
+  useEffect(() => {
+    // console.log(clients);
+    setUsers(clients2);
+  }, [clients2]);
   
 
   useEffect(() => {
-    GetUsers();
+    // GetUsers();
   }, []);
 
   const GetUsers = () => {

@@ -22,7 +22,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { SearchInput } from 'components';
 import { useDispatch } from 'react-redux';
 import api from '../../../../server/api';
-import { getClients } from '../../../../store/clientsReducer';
+import { getSearchClients } from '../../../../store/clientsSearchReducer';
+import { eraseSearchClients } from '../../../../store/clientsEraseFilterReducer';
 import { ButtonEraseFlter } from './styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -92,7 +93,7 @@ const UsersToolbar = (props) => {
             setPesquisa('');
             return;
           }
-          dispatch(getClients(list));
+          dispatch(getSearchClients(list));
           setVisible(true);
         });
         setPor('');
@@ -109,7 +110,7 @@ const UsersToolbar = (props) => {
           setPesquisa('');
           return;
         }
-        dispatch(getClients(list));
+        dispatch(getSearchClients(list));
         setVisible(true);
       });
       setPor('');
@@ -124,11 +125,11 @@ const UsersToolbar = (props) => {
   };
 
   const handleClickEraseFilter = () => {
-    api.get('clientsweb').then((response) => {
-      const list = response.data;
-      dispatch(getClients(list));
+    
+      const list = "ok";
+      dispatch(eraseSearchClients(list));
       setVisible(false);
-    });
+    
   }
 
   const classes = useStyles();
