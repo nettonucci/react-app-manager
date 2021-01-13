@@ -237,7 +237,7 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Entrar
                 </Typography>
                 <Typography
                   color="textSecondary"
