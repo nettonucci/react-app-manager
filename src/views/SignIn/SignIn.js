@@ -4,6 +4,10 @@ import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
+import Spinner from 'react-activity/lib/Spinner';
+import 'react-activity/lib/Spinner/Spinner.css';
+import palette from 'theme/palette';
+import { DivLoad } from './styles';
 import api from '../../server/api';
 import {
 	Grid,
@@ -135,6 +139,26 @@ const SignIn = props => {
 		touched: {},
 		errors: {},
 	});
+	const [isLoad, setIsLoad] = useState(true);
+
+	useEffect(() => {
+		const token = localStorage.getItem('token_usuario_logado');
+		if (token) {
+			api.defaults.headers.Authorization = `Bearer ${token}`;
+			api.get('/token').then(response => {
+				const resposta = response.data;
+				if (resposta === 'Token valid') {
+					history.push('/dashboard');
+				} else {
+					setIsLoad(false);
+					return;
+				}
+			});
+		} else {
+			setIsLoad(false);
+			return;
+		}
+	}, []);
 
 	useEffect(() => {
 		const errors = validate(formState.values, schema);
@@ -148,13 +172,18 @@ const SignIn = props => {
 
 	const handleSubmit = event => {
 		event.preventDefault();
+		setIsLoad(true);
 		const email = formState.values.email;
 		const password = formState.values.password;
 		api.post('sessionweb', { email, password }).then(response => {
 			const { token } = response.data;
 			if (token) {
+				localStorage.setItem('email_usuario_logado', email);
+				localStorage.setItem('token_usuario_logado', token);
 				history.push('/dashboard');
+				setIsLoad(false);
 			} else {
+				setIsLoad(false);
 				window.alert('Usuario e/ou senha incorreto(s)');
 			}
 		});
@@ -210,57 +239,80 @@ const SignIn = props => {
 					<div className={classes.content}>
 						<div className={classes.contentBody}>
 							<form className={classes.form} onSubmit={handleSubmit}>
-								<Typography className={classes.title} variant="h2">
-									Entrar
-								</Typography>
+								{isLoad ? (
+									<div
+										style={{
+											alignItems: 'center',
+											justifyContent: 'center',
+											// backgroundColor: '#f1f',
+											width: 70,
+											marginLeft: '50%',
+										}}
+									>
+										<Spinner
+											animating
+											color={palette.secondary.main}
+											size={40}
+											speed={1}
+										/>
+									</div>
+								) : (
+									<>
+										<Typography className={classes.title} variant="h2">
+											Entrar
+										</Typography>
 
-								<Typography
-									align="center"
-									className={classes.sugestion}
-									color="textSecondary"
-									variant="body1"
-								>
-									Insira seu Email e senha
-								</Typography>
-								<TextField
-									className={classes.textField}
-									error={hasError('email')}
-									fullWidth
-									helperText={
-										hasError('email') ? formState.errors.email[0] : null
-									}
-									label="Email"
-									name="email"
-									onChange={handleChange}
-									type="text"
-									value={formState.values.email || ''}
-									variant="outlined"
-								/>
-								<TextField
-									className={classes.textField}
-									error={hasError('password')}
-									fullWidth
-									helperText={
-										hasError('password') ? formState.errors.password[0] : null
-									}
-									label="Senha"
-									name="password"
-									onChange={handleChange}
-									type="password"
-									value={formState.values.password || ''}
-									variant="outlined"
-								/>
-								<Button
-									className={classes.signInButton}
-									color="primary"
-									disabled={!formState.isValid}
-									fullWidth
-									size="large"
-									type="submit"
-									variant="contained"
-								>
-									Entrar
-								</Button>
+										<Typography
+											align="center"
+											className={classes.sugestion}
+											color="textSecondary"
+											variant="body1"
+										>
+											Insira seu Email e Senha
+										</Typography>
+										<TextField
+											className={classes.textField}
+											error={hasError('email')}
+											fullWidth
+											helperText={
+												hasError('email') ? formState.errors.email[0] : null
+											}
+											label="Email"
+											name="email"
+											onChange={handleChange}
+											type="text"
+											value={formState.values.email || ''}
+											variant="outlined"
+										/>
+										<TextField
+											className={classes.textField}
+											error={hasError('password')}
+											fullWidth
+											helperText={
+												hasError('password')
+													? formState.errors.password[0]
+													: null
+											}
+											label="Senha"
+											name="password"
+											onChange={handleChange}
+											type="password"
+											value={formState.values.password || ''}
+											variant="outlined"
+										/>
+										<Button
+											className={classes.signInButton}
+											color="primary"
+											disabled={!formState.isValid}
+											fullWidth
+											size="large"
+											type="submit"
+											variant="contained"
+										>
+											Entrar
+										</Button>
+									</>
+								)}
 							</form>
 						</div>
 					</div>
