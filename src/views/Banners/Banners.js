@@ -99,12 +99,14 @@ const Banners = () => {
 	const classes = useStyles();
 	const [banners, setBanners] = useState([]);
 	const [open, setOpen] = React.useState(false);
+	const [open2, setOpen2] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
 	const [title, settitle] = React.useState('');
 	const [subtitle, setsubtitle] = React.useState('');
 	const [desc, setdesc] = React.useState('');
 	const [link, setlink] = React.useState('');
 	const [files, setFiles] = useState([]);
+	const [id, setID] = useState([]);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -114,11 +116,26 @@ const Banners = () => {
 		setOpen(false);
 	};
 
+	const handleClickOpen2 = () => {
+		setOpen2(true);
+	};
+
+	const handleClose2 = () => {
+		setOpen2(false);
+	};
+
+	const handleDeleteBanner = banner => {
+		setFiles(banner.uri_img);
+		setID(banner.id);
+		handleClickOpen2();
+	};
+
 	const handleEditBanner = banner => {
 		settitle(banner.nome_promocao);
 		setsubtitle(banner.subtitle);
 		setlink(banner.link);
 		setFiles(banner.uri_img);
+		setID(banner.id);
 		handleClickOpen();
 	};
 
@@ -131,6 +148,16 @@ const Banners = () => {
 	const getBanners = () => {
 		api.get('banners').then(response => {
 			setBanners(response.data);
+		});
+	};
+
+	const handleDelBanners = () => {
+		api.delete(`banners/${id}`).then(response => {
+			const resp = response.data;
+			if (resp === 'Successes') {
+				handleClose2();
+				getBanners();
+			}
 		});
 	};
 
@@ -177,7 +204,10 @@ const Banners = () => {
 									>
 										<CreateIcon fontSize="small" style={{ color: '#4287f5' }} />
 									</IconButton>
-									<IconButton aria-label="delete">
+									<IconButton
+										onClick={() => handleDeleteBanner(banner)}
+										aria-label="delete"
+									>
 										<DeleteIcon fontSize="small" style={{ color: 'red' }} />
 									</IconButton>
 								</Box>
@@ -275,6 +305,33 @@ const Banners = () => {
 						// onClick={handleAddBanner}
 					>
 						Salvar
+					</Button>
+				</DialogActions>
+			</Dialog>
+
+			<Dialog
+				aria-labelledby="form-dialog-title"
+				fullWidth
+				maxWidth="md"
+				onClose={handleClose2}
+				open={open2}
+			>
+				<DialogTitle id="form-dialog-title">Deletar Banner</DialogTitle>
+				<DialogContent>
+					<Paper className={classes.paper}>
+						<img
+							heigth="100%"
+							src={`http://app1.cabonnet.com.br:3333/promos/${files}`}
+							width="100%"
+						/>
+					</Paper>
+				</DialogContent>
+				<DialogActions>
+					<Button color="primary" onClick={handleClose2}>
+						Cancelar
+					</Button>
+					<Button color="primary" onClick={handleDelBanners}>
+						Deletar
 					</Button>
 				</DialogActions>
 			</Dialog>
