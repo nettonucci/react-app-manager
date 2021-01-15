@@ -31,16 +31,22 @@ import {
 	DivRow2,
 	Box,
 	IsPrincialAtivo,
-	Ativo,
+	AtivoOn,
+	AtivoOff,
 	IsPrincialPausado,
-	Pausado,
+	PausadoOn,
+	PausadoOff,
 	Box2,
-	Button,
+	ButtonAct,
 	Link,
 	URL,
 	Title,
 	Header,
 	TitleHeader,
+	IsAtivoOn,
+	IsAtivoOff,
+	IsPausadoOn,
+	IsPausadoOff,
 } from './styles';
 
 const useStyles = makeStyles(theme => ({
@@ -101,6 +107,7 @@ const Banners = () => {
 	const [open, setOpen] = React.useState(false);
 	const [open2, setOpen2] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
+	const [isAtivo, setIsAtivo] = React.useState('false');
 	const [title, settitle] = React.useState('');
 	const [subtitle, setsubtitle] = React.useState('');
 	const [desc, setdesc] = React.useState('');
@@ -135,7 +142,9 @@ const Banners = () => {
 		setsubtitle(banner.subtitle);
 		setlink(banner.link);
 		setFiles(banner.uri_img);
+		setdesc(banner.description);
 		setID(banner.id);
+		setIsAtivo(banner.ativo);
 		handleClickOpen();
 	};
 
@@ -159,6 +168,35 @@ const Banners = () => {
 				getBanners();
 			}
 		});
+	};
+
+	const handleChangeToPause = () => {
+		setIsAtivo('false');
+	};
+
+	const handleChangeToActive = () => {
+		setIsAtivo('true');
+	};
+
+	const handleSaveChanges = () => {
+		const nome_promocao = title;
+		const description = desc;
+		const ativo = isAtivo;
+		api
+			.put(`banners/${id}`, {
+				nome_promocao,
+				subtitle,
+				description,
+				link,
+				ativo,
+			})
+			.then(response => {
+				const resp = response.data;
+				if (resp === 'Successes') {
+					handleClose();
+					getBanners();
+				}
+			});
 	};
 
 	return (
@@ -186,13 +224,13 @@ const Banners = () => {
 								{banner.ativo === 'true' ? (
 									<Box>
 										<IsPrincialAtivo>
-											<Ativo>Ativo</Ativo>
+											<AtivoOn>Ativo</AtivoOn>
 										</IsPrincialAtivo>
 									</Box>
 								) : (
 									<Box>
 										<IsPrincialPausado>
-											<Pausado>Pausado</Pausado>
+											<PausadoOn>Pausado</PausadoOn>
 										</IsPrincialPausado>
 									</Box>
 								)}
@@ -246,6 +284,28 @@ const Banners = () => {
 						spacing={4}
 					>
 						<Grid item lg={12} md={6} xl={6} xs={6}>
+							{isAtivo === 'true' ? (
+								<Box>
+									<IsAtivoOn disabled={true}>
+										<AtivoOn>Ativo</AtivoOn>
+									</IsAtivoOn>
+									&nbsp;&nbsp;&nbsp;
+									<IsPausadoOff onClick={handleChangeToPause}>
+										<PausadoOff>Pausar</PausadoOff>
+									</IsPausadoOff>
+								</Box>
+							) : (
+								<Box>
+									<IsAtivoOff onClick={handleChangeToActive}>
+										<AtivoOff>Ativar</AtivoOff>
+									</IsAtivoOff>
+									&nbsp;&nbsp;&nbsp;
+									<IsPausadoOn disabled={true}>
+										<PausadoOn>Pausado</PausadoOn>
+									</IsPausadoOn>
+								</Box>
+							)}
+
 							<TextField
 								autoFocus
 								fullWidth
@@ -297,15 +357,12 @@ const Banners = () => {
 					</Grid>
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary" onClick={handleClose}>
+					<ButtonAct color="primary" onClick={handleClose}>
 						Cancelar
-					</Button>
-					<Button
-						color="primary"
-						// onClick={handleAddBanner}
-					>
+					</ButtonAct>
+					<ButtonAct color="primary" onClick={handleSaveChanges}>
 						Salvar
-					</Button>
+					</ButtonAct>
 				</DialogActions>
 			</Dialog>
 
@@ -327,12 +384,12 @@ const Banners = () => {
 					</Paper>
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary" onClick={handleClose2}>
+					<ButtonAct color="primary" onClick={handleClose2}>
 						Cancelar
-					</Button>
-					<Button color="primary" onClick={handleDelBanners}>
+					</ButtonAct>
+					<ButtonAct color="primary" onClick={handleDelBanners}>
 						Deletar
-					</Button>
+					</ButtonAct>
 				</DialogActions>
 			</Dialog>
 		</div>
