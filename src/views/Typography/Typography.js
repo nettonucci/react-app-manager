@@ -342,7 +342,10 @@ const Typography = props => {
 								</div>
 								<label
 									id="thumbnail"
-									style={{ backgroundImage: `url(${preview})` }}
+									style={{
+										backgroundImage: `url(${preview})`,
+									}}
+									resizeMode="contain"
 									className={thumbnail ? 'has-thumbnail' : ''}
 								>
 									<input

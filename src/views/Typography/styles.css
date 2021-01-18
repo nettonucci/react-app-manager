@@ -1,11 +1,12 @@
 label#thumbnail {
 	margin-bottom: 20px;
 	border: 1px dashed #ddd;
-	background-size: cover;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 	cursor: pointer;
 	height: 180px;
 	margin-top: 5px;
-	object-fit: contain;
 	display: flex;
 	justify-content: center;
 	align-items: center;
