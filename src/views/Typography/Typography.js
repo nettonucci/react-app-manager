@@ -345,7 +345,6 @@ const Typography = props => {
 									style={{
 										backgroundImage: `url(${preview})`,
 									}}
-									resizeMode="contain"
 									className={thumbnail ? 'has-thumbnail' : ''}
 								>
 									<input
