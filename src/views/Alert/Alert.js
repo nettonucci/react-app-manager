@@ -189,11 +189,11 @@ const Banners = () => {
 	};
 
 	const handleChangeToPause = () => {
-		setAtivo('false');
+		setAtivo(false);
 	};
 
 	const handleChangeToActive = () => {
-		setAtivo('true');
+		setAtivo(true);
 	};
 
 	const handleSaveChanges = () => {};
