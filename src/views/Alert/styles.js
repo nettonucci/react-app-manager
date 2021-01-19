@@ -23,7 +23,7 @@ export const DivRow2 = styled.div`
 	padding: 10px;
 `;
 
-export const Box = styled.div`
+export const BoxStyled = styled.div`
 	/* background-color: #00f; */
 	display: flex;
 	justify-content: center;

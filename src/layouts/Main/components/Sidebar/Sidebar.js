@@ -66,12 +66,12 @@ const Sidebar = props => {
 			href: '/alerts',
 			icon: <NotificationImportantIcon />,
 		},
-		{
-			title: 'Authentication',
-			href: '/sign-in',
-			icon: <LockOpenIcon />,
-		},
-
+		// {
+		// 	title: 'Authentication',
+		// 	href: '/sign-in',
+		// 	icon: <LockOpenIcon />,
+		// },
+		//
 		// {
 		//   title: 'Account',
 		//   href: '/account',

@@ -8,11 +8,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable quotes */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CreateIcon from '@material-ui/icons/Create';
+import { Button } from '@material-ui/core';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -23,13 +24,14 @@ import Grid from '@material-ui/core/Grid';
 import { useSelector } from 'react-redux';
 import { Alert } from '@material-ui/lab';
 import Paper from '@material-ui/core/Paper';
+import GridList from '@material-ui/core/GridList';
 import { AlertToolbar } from './components';
 import api from '../../server/api';
+import './styles.css';
 import {
 	Container,
 	DivRow,
 	DivRow2,
-	Box,
 	IsPrincialAtivo,
 	AtivoOn,
 	AtivoOff,
@@ -37,6 +39,7 @@ import {
 	PausadoOn,
 	PausadoOff,
 	Box2,
+	BoxStyled,
 	ButtonAct,
 	Link,
 	URL,
@@ -99,21 +102,51 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'row',
 		backgroundColor: '#000',
 	},
+	gridList: {
+		flexWrap: 'nowrap',
+		// Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+		transform: 'translateZ(0)',
+	},
 }));
 
 const Banners = () => {
 	const classes = useStyles();
-	const [banners, setBanners] = useState([]);
+	const [alerts, setAlerts] = useState([]);
 	const [open, setOpen] = React.useState(false);
 	const [open2, setOpen2] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
-	const [isAtivo, setIsAtivo] = React.useState('false');
-	const [title, settitle] = React.useState('');
-	const [subtitle, setsubtitle] = React.useState('');
+	const [ativo, setAtivo] = React.useState('false');
 	const [desc, setdesc] = React.useState('');
 	const [link, setlink] = React.useState('');
-	const [files, setFiles] = useState([]);
+	const [files, setFiles] = useState({});
 	const [id, setID] = useState([]);
+	const [title, setTitle] = useState('Titulo');
+	const [title_color, setTitle_color] = useState('#000');
+	const [subtitle, setSubtitle] = useState('Subtitulo');
+	const [subtitle_color, setSubtitle_color] = useState('#000');
+	const [description, setDescription] = useState('Descrição');
+	const [description_color, setDescription_color] = useState('#000');
+	const [thumbnail, setThumbnail] = useState(null);
+	const [text_button, setText_button] = useState('OK');
+	const [button_color, setButton_color] = useState('#fff');
+	const [id_base, setId_base] = useState(3);
+	const [bkg_color, setBkg_color] = useState('#fff');
+
+	const handleEditAlert = alert => {
+		console.log(alert);
+		setFiles(alert);
+		setTitle(alert.title);
+		setTitle_color(alert.title_color);
+		setSubtitle(alert.subtitle);
+		setSubtitle_color(alert.subtitle_color);
+		setDescription(alert.description);
+		setDescription_color(alert.description_color);
+		setThumbnail(alert.uri_img);
+		setText_button(alert.text_button);
+		setButton_color(alert.button_color);
+		setAtivo(alert.ativo);
+		handleClickOpen();
+	};
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -131,32 +164,17 @@ const Banners = () => {
 		setOpen2(false);
 	};
 
-	const handleDeleteBanner = banner => {
-		setFiles(banner.uri_img);
-		setID(banner.id);
-		handleClickOpen2();
-	};
-
-	const handleEditBanner = banner => {
-		settitle(banner.nome_promocao);
-		setsubtitle(banner.subtitle);
-		setlink(banner.link);
-		setFiles(banner.uri_img);
-		setdesc(banner.description);
-		setID(banner.id);
-		setIsAtivo(banner.ativo);
-		handleClickOpen();
-	};
-
 	const banner = useSelector(state => state.banners);
 
 	useEffect(() => {
-		getBanners();
+		getAlert();
 	}, [banner]);
 
-	const getBanners = () => {
-		api.get('banners').then(response => {
-			setBanners(response.data);
+	const getAlert = () => {
+		const web = true;
+		api.get('modalalert?web=true').then(response => {
+			console.log(response.data);
+			setAlerts(response.data);
 		});
 	};
 
@@ -165,39 +183,20 @@ const Banners = () => {
 			const resp = response.data;
 			if (resp === 'Successes') {
 				handleClose2();
-				getBanners();
+				getAlert();
 			}
 		});
 	};
 
 	const handleChangeToPause = () => {
-		setIsAtivo('false');
+		setAtivo('false');
 	};
 
 	const handleChangeToActive = () => {
-		setIsAtivo('true');
+		setAtivo('true');
 	};
 
-	const handleSaveChanges = () => {
-		const nome_promocao = title;
-		const description = desc;
-		const ativo = isAtivo;
-		api
-			.put(`banners/${id}`, {
-				nome_promocao,
-				subtitle,
-				description,
-				link,
-				ativo,
-			})
-			.then(response => {
-				const resp = response.data;
-				if (resp === 'Successes') {
-					handleClose();
-					getBanners();
-				}
-			});
-	};
+	const handleSaveChanges = () => {};
 
 	return (
 		<div className={classes.root}>
@@ -207,61 +206,117 @@ const Banners = () => {
 				<TitleHeader>Alertas</TitleHeader>
 			</Header>
 			<br />
-			{banners.map(banner => (
-				<>
-					<Container>
-						<DivRow>
-							<img
-								heigth="100%"
-								src={`http://app1.cabonnet.com.br:3333/promos/${banner.uri_img}`}
-								width="100%"
-							/>
+			<GridList className={classes.gridList} cols={2.5}>
+				{alerts.map(alert => (
+					<Box
+						boxShadow={3}
+						m={1}
+						p={1}
+						style={{
+							width: '300px',
+							height: 'auto',
+							backgroundColor: bkg_color,
+							borderRadius: 5,
+							cursor: 'pointer',
+						}}
+						onClick={() => handleEditAlert(alert)}
+					>
+						{alert.ativo ? (
+							<Alert
+								icon={<PlayArrowIcon fontSize="inherit" />}
+								severity="success"
+							>
+								Alerta ativado!
+							</Alert>
+						) : (
+							<Alert icon={<PauseIcon fontSize="inherit" />} severity="error">
+								Alerta desativado!
+							</Alert>
+						)}
 
-							<DivRow2>
-								<Box2>
-									<Title>{banner.nome_promocao}</Title>
-								</Box2>
-								{banner.ativo === 'true' ? (
-									<Box>
-										<IsPrincialAtivo>
-											<AtivoOn>Ativo</AtivoOn>
-										</IsPrincialAtivo>
-									</Box>
-								) : (
-									<Box>
-										<IsPrincialPausado>
-											<PausadoOn>Pausado</PausadoOn>
-										</IsPrincialPausado>
-									</Box>
-								)}
-								<Box>
-									{' '}
-									<IconButton
-										onClick={() => handleEditBanner(banner)}
-										aria-label="edit"
-									>
-										<CreateIcon fontSize="small" style={{ color: '#4287f5' }} />
-									</IconButton>
-									<IconButton
-										onClick={() => handleDeleteBanner(banner)}
-										aria-label="delete"
-									>
-										<DeleteIcon fontSize="small" style={{ color: 'red' }} />
-									</IconButton>
-								</Box>
-								<Box2>
-									<URL>Link do banner:&nbsp;</URL>
-
-									<Link>Clique aqui</Link>
-								</Box2>
-								<Box />
-								<Box />
-							</DivRow2>
-						</DivRow>
-					</Container>
-					<br />
-				</>
-			))}
+						<br />
+						<p
+							style={{
+								color: alert.title_color,
+								fontWeight: 'bold',
+								fontSize: 20,
+								textAlign: 'center',
+							}}
+						>
+							{alert.title}
+						</p>
+						<br />
+						<div
+							style={{
+								width: '250px',
+								height: 'auto',
+								// backgroundColor: '#f1f',
+								borderRadius: 5,
+								wordWrap: 'break-word',
+								marginBottom: 5,
+							}}
+						>
+							<p
+								style={{
+									color: alert.subtitle_color,
+									fontWeight: 'bold',
+									fontSize: 16,
+									marginLeft: 10,
+								}}
+							>
+								{alert.subtitle}
+							</p>
+						</div>
+						<div
+							style={{
+								width: '250px',
+								height: 'auto',
+								// backgroundColor: '#f1f',
+								borderRadius: 5,
+								wordWrap: 'break-word',
+							}}
+						>
+							<p
+								style={{
+									color: alert.description_color,
+									fontWeight: 'bold',
+									fontSize: 13,
+									marginLeft: 10,
+								}}
+							>
+								{alert.description}
+							</p>
+						</div>
+						<img
+							src={`http://app1.cabonnet.com.br:3333/promos/${alert.uri_img}`}
+							style={{ height: 180 }}
+						/>
+						<Box
+							boxShadow={3}
+							bgcolor="background.paper"
+							m={1}
+							p={1}
+							style={{
+								width: '95%',
+								height: '30px',
+								backgroundColor: alert.button_color,
+								borderRadius: 5,
+							}}
+						>
+							<p
+								style={{
+									color: '#fff',
+									fontWeight: 'bold',
+									fontSize: 16,
+									textAlign: 'center',
+								}}
+							>
+								{alert.text_button}
+							</p>
+						</Box>
+					</Box>
+				))}
+			</GridList>
 
 			<Dialog
 				aria-labelledby="form-dialog-title"
@@ -271,125 +326,210 @@ const Banners = () => {
 				open={open}
 			>
 				{alert && (
-					<Alert severity="error">
-						Todos os campos precisam estar preenchidos!
-					</Alert>
+					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
 				)}
-
-				<DialogTitle id="form-dialog-title">Editar Banner</DialogTitle>
+				<DialogTitle id="form-dialog-title">Editar Alerta</DialogTitle>
 				<DialogContent>
 					<Grid
 						container
 						// m={3}
 						spacing={4}
 					>
-						<Grid item lg={12} md={6} xl={6} xs={6}>
-							{isAtivo === 'true' ? (
-								<Box>
+						<Grid item xs={7}>
+							{ativo === true ? (
+								<BoxStyled>
 									<IsAtivoOn disabled={true}>
 										<AtivoOn>Ativo</AtivoOn>
 									</IsAtivoOn>
 									&nbsp;&nbsp;&nbsp;
 									<IsPausadoOff onClick={handleChangeToPause}>
-										<PausadoOff>Pausar</PausadoOff>
+										<PausadoOff>Desativar</PausadoOff>
 									</IsPausadoOff>
-								</Box>
+								</BoxStyled>
 							) : (
-								<Box>
+								<BoxStyled>
 									<IsAtivoOff onClick={handleChangeToActive}>
 										<AtivoOff>Ativar</AtivoOff>
 									</IsAtivoOff>
 									&nbsp;&nbsp;&nbsp;
 									<IsPausadoOn disabled={true}>
-										<PausadoOn>Pausado</PausadoOn>
+										<PausadoOn>Desativado</PausadoOn>
 									</IsPausadoOn>
-								</Box>
+								</BoxStyled>
 							)}
-
-							<TextField
-								autoFocus
-								fullWidth
-								id="Title"
-								label="Titulo*"
-								margin="dense"
-								onChange={event => settitle(event.target.value)}
-								type="text"
-								value={title}
-							/>
-							<TextField
-								fullWidth
-								id="SubTitle"
-								label="Sub Titulo"
-								margin="dense"
-								onChange={event => setsubtitle(event.target.value)}
-								type="text"
-								value={subtitle}
-							/>
-							<TextField
-								fullWidth
-								id="Desc"
-								label="Descrição"
-								margin="dense"
-								onChange={event => setdesc(event.target.value)}
-								type="text"
-								value={desc}
-							/>
-							<TextField
-								fullWidth
-								id="link"
-								label="Link da promo"
-								margin="dense"
-								onChange={event => setlink(event.target.value)}
-								type="text"
-								value={link}
-							/>
+							<Grid
+								container
+								// m={3}
+								spacing={4}
+							>
+								<Grid item xs={10}>
+									<TextField
+										autoFocus
+										fullWidth
+										id="title"
+										label="Titulo*"
+										margin="dense"
+										onChange={event => setTitle(event.target.value)}
+										type="text"
+										value={title}
+									/>
+								</Grid>
+							</Grid>
+							<Grid
+								container
+								// m={3}
+								spacing={4}
+							>
+								<Grid item xs={10}>
+									<TextField
+										fullWidth
+										id="subtitle"
+										label="Subtitulo*"
+										margin="dense"
+										onChange={event => setSubtitle(event.target.value)}
+										type="text"
+										value={subtitle}
+									/>
+								</Grid>
+							</Grid>
+							<Grid
+								container
+								// m={3}
+								spacing={4}
+							>
+								<Grid item xs={10}>
+									<TextField
+										fullWidth
+										id="description"
+										label="Descrição*"
+										margin="dense"
+										onChange={event => setDescription(event.target.value)}
+										type="text"
+										value={description}
+									/>
+								</Grid>
+							</Grid>
+							<Grid
+								container
+								// m={3}
+								spacing={4}
+							>
+								<Grid item xs={10}>
+									<TextField
+										fullWidth
+										id="text_button"
+										label="Texto do botão*"
+										margin="dense"
+										onChange={event => setText_button(event.target.value)}
+										type="text"
+										value={text_button}
+									/>
+								</Grid>
+							</Grid>
 						</Grid>
-						<Grid item lg={12} md={6} xl={6} xs={6}>
-							<DialogContentText>Prévia</DialogContentText>
-							<Paper className={classes.paper}>
+						<Grid item xs={5}>
+							<DialogContentText>Prévia:</DialogContentText>
+
+							<Box
+								boxShadow={3}
+								m={1}
+								p={1}
+								style={{
+									width: '300px',
+									height: 'auto',
+									backgroundColor: bkg_color,
+									borderRadius: 5,
+								}}
+							>
+								<br />
+								<p
+									style={{
+										color: title_color,
+										fontWeight: 'bold',
+										fontSize: 20,
+										textAlign: 'center',
+									}}
+								>
+									{title}
+								</p>
+								<br />
+								<div
+									style={{
+										width: '250px',
+										height: 'auto',
+										// backgroundColor: '#f1f',
+										borderRadius: 5,
+										wordWrap: 'break-word',
+										marginBottom: 5,
+									}}
+								>
+									<p
+										style={{
+											color: subtitle_color,
+											fontWeight: 'bold',
+											fontSize: 16,
+											marginLeft: 10,
+										}}
+									>
+										{subtitle}
+									</p>
+								</div>
+								<div
+									style={{
+										width: '250px',
+										height: 'auto',
+										// backgroundColor: '#f1f',
+										borderRadius: 5,
+										wordWrap: 'break-word',
+									}}
+								>
+									<p
+										style={{
+											color: description_color,
+											fontWeight: 'bold',
+											fontSize: 13,
+											marginLeft: 10,
+										}}
+									>
+										{description}
+									</p>
+								</div>
 								<img
-									heigth="100%"
-									src={`http://app1.cabonnet.com.br:3333/promos/${files}`}
-									width="100%"
+									src={`http://app1.cabonnet.com.br:3333/promos/${thumbnail}`}
+									style={{ height: 180 }}
 								/>
-							</Paper>
+								<Box
+									boxShadow={3}
+									bgcolor="background.paper"
+									m={1}
+									p={1}
+									style={{
+										width: '95%',
+										height: '30px',
+										backgroundColor: button_color,
+										borderRadius: 5,
+									}}
+								>
+									<p
+										style={{
+											color: '#fff',
+											fontWeight: 'bold',
+											fontSize: 16,
+											textAlign: 'center',
+										}}
+									>
+										{text_button}
+									</p>
+								</Box>
+							</Box>
 						</Grid>
 					</Grid>
 				</DialogContent>
 				<DialogActions>
-					<ButtonAct color="primary" onClick={handleClose}>
+					<Button color="primary" onClick={handleClose}>
 						Cancelar
-					</ButtonAct>
-					<ButtonAct color="primary" onClick={handleSaveChanges}>
-						Salvar
-					</ButtonAct>
-				</DialogActions>
-			</Dialog>
-
-			<Dialog
-				aria-labelledby="form-dialog-title"
-				fullWidth
-				maxWidth="md"
-				onClose={handleClose2}
-				open={open2}
-			>
-				<DialogTitle id="form-dialog-title">Deletar Banner</DialogTitle>
-				<DialogContent>
-					<Paper className={classes.paper}>
-						<img
-							heigth="100%"
-							src={`http://app1.cabonnet.com.br:3333/promos/${files}`}
-							width="100%"
-						/>
-					</Paper>
-				</DialogContent>
-				<DialogActions>
-					<ButtonAct color="primary" onClick={handleClose2}>
-						Cancelar
-					</ButtonAct>
-					<ButtonAct color="primary" onClick={handleDelBanners}>
-						Deletar
-					</ButtonAct>
+					</Button>
+					<Button color="primary">Salvar</Button>
 				</DialogActions>
 			</Dialog>
 		</div>

@@ -224,13 +224,13 @@ const Typography = props => {
 						// m={3}
 						spacing={4}
 					>
-						<Grid item lg={12} md={6} xl={6} xs={6}>
+						<Grid item xs={7}>
 							<Grid
 								container
 								// m={3}
 								spacing={4}
 							>
-								<Grid item lg={12} md={10} xl={10} xs={10}>
+								<Grid item xs={10}>
 									<TextField
 										autoFocus
 										fullWidth
@@ -242,7 +242,7 @@ const Typography = props => {
 										value={title}
 									/>
 								</Grid>
-								<Grid item lg={12} md={2} xl={2} xs={2}>
+								<Grid item xs={2}>
 									<ButtonColor onClick={handleClickChangeTitleColor}>
 										Cor
 									</ButtonColor>
@@ -253,7 +253,7 @@ const Typography = props => {
 								// m={3}
 								spacing={4}
 							>
-								<Grid item lg={12} md={10} xl={10} xs={10}>
+								<Grid item xs={10}>
 									<TextField
 										fullWidth
 										id="subtitle"
@@ -264,7 +264,7 @@ const Typography = props => {
 										value={subtitle}
 									/>
 								</Grid>
-								<Grid item lg={12} md={2} xl={2} xs={2}>
+								<Grid item xs={2}>
 									<ButtonColor onClick={handleClickChangeSubtitleColor}>
 										Cor
 									</ButtonColor>
@@ -275,7 +275,7 @@ const Typography = props => {
 								// m={3}
 								spacing={4}
 							>
-								<Grid item lg={12} md={10} xl={10} xs={10}>
+								<Grid item xs={10}>
 									<TextField
 										fullWidth
 										id="description"
@@ -286,7 +286,7 @@ const Typography = props => {
 										value={description}
 									/>
 								</Grid>
-								<Grid item lg={12} md={2} xl={2} xs={2}>
+								<Grid item xs={2}>
 									<ButtonColor onClick={handleClickChangeDescriptionColor}>
 										Cor
 									</ButtonColor>
@@ -297,7 +297,7 @@ const Typography = props => {
 								// m={3}
 								spacing={4}
 							>
-								<Grid item lg={12} md={10} xl={10} xs={10}>
+								<Grid item xs={10}>
 									<TextField
 										fullWidth
 										id="text_button"
@@ -308,14 +308,14 @@ const Typography = props => {
 										value={text_button}
 									/>
 								</Grid>
-								<Grid item lg={12} md={2} xl={2} xs={2}>
+								<Grid item xs={2}>
 									<ButtonColor onClick={handleClickChangeButtonColor}>
 										Cor
 									</ButtonColor>
 								</Grid>
 							</Grid>
 						</Grid>
-						<Grid item lg={12} md={6} xl={6} xs={6}>
+						<Grid item xs={5}>
 							<DialogContentText>Prévia:</DialogContentText>
 
 							<Box
