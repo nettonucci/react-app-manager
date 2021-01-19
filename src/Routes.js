@@ -68,7 +68,7 @@ const Routes = () => (
 			component={TypographyView}
 			exact
 			layout={MainLayout}
-			path="/typography"
+			path="/alerts"
 		/>
 		<PrivateRoute
 			component={VideosView}

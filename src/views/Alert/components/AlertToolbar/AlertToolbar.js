@@ -16,6 +16,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { Alert } from '@material-ui/lab';
 import './styles.css';
+import api from '../../../../server/api';
 import Paper from '@material-ui/core/Paper';
 import { ButtonColor } from './styles';
 
@@ -84,20 +85,21 @@ const Typography = props => {
 	const [title, setTitle] = useState('Titulo');
 	const [title_color, setTitle_color] = useState('#000');
 	const [subtitle, setSubtitle] = useState('Subtitulo');
-	const [subtitle_color, setSubtitle_color] = useState('000');
+	const [subtitle_color, setSubtitle_color] = useState('#000');
 	const [description, setDescription] = useState('Descrição');
-	const [description_color, setDescription_color] = useState('000');
-	const [bkg_color, setBkg_color] = useState('#fff');
+	const [description_color, setDescription_color] = useState('#000');
 	const [thumbnail, setThumbnail] = useState(null);
 	const [text_button, setText_button] = useState('OK');
-	const [button_color, setButton_color] = useState('000');
-	const [id_base, setId_base] = useState(0);
+	const [button_color, setButton_color] = useState('#fff');
+	const [id_base, setId_base] = useState(3);
+	const [bkg_color, setBkg_color] = useState('#fff');
 	const [open, setOpen] = React.useState(false);
 	const [open2, setOpen2] = React.useState(false);
 	const [open3, setOpen3] = React.useState(false);
 	const [open4, setOpen4] = React.useState(false);
 	const [open5, setOpen5] = React.useState(false);
 	const [open6, setOpen6] = React.useState(false);
+	const [alert, setalert] = React.useState(false);
 
 	const preview = useMemo(() => {
 		return thumbnail ? URL.createObjectURL(thumbnail) : null;
@@ -151,7 +153,48 @@ const Typography = props => {
 		setOpen6(false);
 	};
 
-	const handleAddBanner = () => {};
+	const handleAddAlert = () => {
+		if (
+			title !== '' &&
+			title_color !== '' &&
+			subtitle !== '' &&
+			subtitle_color !== '' &&
+			description !== '' &&
+			description_color !== '' &&
+			thumbnail !== null &&
+			text_button !== '' &&
+			button_color !== '' &&
+			id_base !== ''
+		) {
+			const data = new FormData();
+			data.append('thumbnail', thumbnail);
+			data.append('title', title);
+			data.append('title_color', title_color);
+			data.append('subtitle', subtitle);
+			data.append('subtitle_color', subtitle_color);
+			data.append('description', description);
+			data.append('description_color', description_color);
+			data.append('text_button', text_button);
+			data.append('button_color', button_color);
+			data.append('id_base', id_base);
+			api.post('/modalalert', data).then(response => {
+				setOpen(false);
+				setTitle('Titulo');
+				setTitle_color('#000');
+				setSubtitle('Subtitulo');
+				setSubtitle_color('#000');
+				setDescription('Descrição');
+				setDescription_color('#000');
+				setThumbnail(null);
+				setText_button('OK');
+				setButton_color('#fff');
+				setalert(false);
+			});
+		} else {
+			setalert(true);
+			return;
+		}
+	};
 
 	const classes = useStyles();
 
@@ -171,6 +214,9 @@ const Typography = props => {
 				onClose={handleClose}
 				open={open}
 			>
+				{alert && (
+					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
+				)}
 				<DialogTitle id="form-dialog-title">Adicionar Alerta</DialogTitle>
 				<DialogContent>
 					<Grid
@@ -268,10 +314,6 @@ const Typography = props => {
 									</ButtonColor>
 								</Grid>
 							</Grid>
-
-							<ButtonColor onClick={handleClickChangeBgColor}>
-								Cor de fundo
-							</ButtonColor>
 						</Grid>
 						<Grid item lg={12} md={6} xl={6} xs={6}>
 							<DialogContentText>Prévia:</DialogContentText>
@@ -384,10 +426,7 @@ const Typography = props => {
 					<Button color="primary" onClick={handleClose}>
 						Cancelar
 					</Button>
-					<Button
-						color="primary"
-						// onClick={(handleAddVideo)}
-					>
+					<Button color="primary" onClick={handleAddAlert}>
 						Adicionar
 					</Button>
 				</DialogActions>
