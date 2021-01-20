@@ -188,11 +188,11 @@ const Banners = () => {
 								icon={<PlayArrowIcon fontSize="inherit" />}
 								severity="success"
 							>
-								Alerta ativado!
+								Alerta ativado! Base: {alert.base}
 							</Alert>
 						) : (
 							<Alert icon={<PauseIcon fontSize="inherit" />} severity="error">
-								Alerta desativado!
+								Alerta desativado! Base: {alert.base}
 							</Alert>
 						)}
 
@@ -249,10 +249,12 @@ const Banners = () => {
 								{alert.description}
 							</p>
 						</div>
-						<img
-							src={`http://app1.cabonnet.com.br:3333/promos/${alert.uri_img}`}
-							style={{ height: 180 }}
-						/>
+						<div style={{ textAlign: 'center' }}>
+							<img
+								src={`http://app1.cabonnet.com.br:3333/promos/${alert.uri_img}`}
+								style={{ height: 180 }}
+							/>
+						</div>
 						<Box
 							boxShadow={3}
 							bgcolor="background.paper"

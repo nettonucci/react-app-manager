@@ -23,3 +23,7 @@ label#thumbnail.has-thumbnail {
 label#thumbnail.has-thumbnail img {
 	display: none;
 }
+
+label#thumbnail.has-thumbnail p {
+	display: none;
+}

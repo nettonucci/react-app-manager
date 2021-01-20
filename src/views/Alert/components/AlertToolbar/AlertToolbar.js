@@ -97,7 +97,7 @@ const Typography = props => {
 	const [description_color, setDescription_color] = useState('#000');
 	const [thumbnail, setThumbnail] = useState(null);
 	const [text_button, setText_button] = useState('OK');
-	const [button_color, setButton_color] = useState('#fff');
+	const [button_color, setButton_color] = useState('#000');
 	const [id_base, setId_base] = useState(6);
 	const [bkg_color, setBkg_color] = useState('#fff');
 	const [open, setOpen] = React.useState(false);
@@ -440,6 +440,7 @@ const Typography = props => {
 										onChange={event => setThumbnail(event.target.files[0])}
 									/>
 									<img src="/images/camera.svg" alt="Select img" />
+									<p>*</p>
 								</label>
 								<Box
 									boxShadow={3}
