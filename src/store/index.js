@@ -6,6 +6,7 @@ import clientsReducer from './clientsReducer';
 import clientsSearchReducer from './clientsSearchReducer';
 import clientsEraseFilterReducer from './clientsEraseFilterReducer';
 import BannersReducer from './BannersReducer';
+import alertReducer from './alertReducer';
 
 const rootReducer = combineReducers({
 	plataform: plataformReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
 	clientsSearch: clientsSearchReducer,
 	eraseFilter: clientsEraseFilterReducer,
 	banners: BannersReducer,
+	alert: alertReducer,
 });
 
 export default createStore(rootReducer);

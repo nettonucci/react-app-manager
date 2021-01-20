@@ -1,11 +1,17 @@
 /* eslint-disable quotes */
 import React, { useEffect, useState, useMemo } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { ChromePicker } from 'react-color';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,9 +21,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { Alert } from '@material-ui/lab';
+import { useDispatch } from 'react-redux';
+import { getAlerts } from '../../../../store/alertReducer';
 import './styles.css';
 import api from '../../../../server/api';
-import Paper from '@material-ui/core/Paper';
 import { ButtonColor } from './styles';
 
 const thumbsContainer = {
@@ -91,7 +98,7 @@ const Typography = props => {
 	const [thumbnail, setThumbnail] = useState(null);
 	const [text_button, setText_button] = useState('OK');
 	const [button_color, setButton_color] = useState('#fff');
-	const [id_base, setId_base] = useState(3);
+	const [id_base, setId_base] = useState(6);
 	const [bkg_color, setBkg_color] = useState('#fff');
 	const [open, setOpen] = React.useState(false);
 	const [open2, setOpen2] = React.useState(false);
@@ -100,6 +107,7 @@ const Typography = props => {
 	const [open5, setOpen5] = React.useState(false);
 	const [open6, setOpen6] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
+	const dispatch = useDispatch();
 
 	const preview = useMemo(() => {
 		return thumbnail ? URL.createObjectURL(thumbnail) : null;
@@ -107,6 +115,8 @@ const Typography = props => {
 
 	const handleClickOpen = () => {
 		setOpen(true);
+		setId_base(6);
+		setThumbnail(null);
 	};
 
 	const handleClose = () => {
@@ -154,6 +164,7 @@ const Typography = props => {
 	};
 
 	const handleAddAlert = () => {
+		console.log(typeof id_base);
 		if (
 			title !== '' &&
 			title_color !== '' &&
@@ -188,12 +199,18 @@ const Typography = props => {
 				setThumbnail(null);
 				setText_button('OK');
 				setButton_color('#fff');
+				const list = 'new';
+				dispatch(getAlerts(list));
 				setalert(false);
 			});
 		} else {
 			setalert(true);
 			return;
 		}
+	};
+
+	const handleChange = event => {
+		setId_base(event.target.value);
 	};
 
 	const classes = useStyles();
@@ -312,6 +329,35 @@ const Typography = props => {
 									<ButtonColor onClick={handleClickChangeButtonColor}>
 										Cor
 									</ButtonColor>
+								</Grid>
+							</Grid>
+							<Grid
+								container
+								// m={3}
+								spacing={4}
+							>
+								<Grid item xs={10}>
+									<FormControl
+										variant="outlined"
+										className={classes.formControl}
+									>
+										<InputLabel id="demo-simple-select-outlined-label">
+											Base*
+										</InputLabel>
+										<Select
+											labelId="demo-simple-select-outlined-label"
+											id="demo-simple-select-outlined"
+											value={id_base}
+											onChange={handleChange}
+											label="Base"
+										>
+											<MenuItem value={6}>Todas</MenuItem>
+											<MenuItem value={1}>TVC Assis</MenuItem>
+											<MenuItem value={2}>R&R</MenuItem>
+											<MenuItem value={4}>TVC Tupã</MenuItem>
+											<MenuItem value={5}>Giga TV</MenuItem>
+										</Select>
+									</FormControl>
 								</Grid>
 							</Grid>
 						</Grid>

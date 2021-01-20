@@ -113,37 +113,12 @@ const Banners = () => {
 	const classes = useStyles();
 	const [alerts, setAlerts] = useState([]);
 	const [open, setOpen] = React.useState(false);
-	const [open2, setOpen2] = React.useState(false);
-	const [alert, setalert] = React.useState(false);
-	const [ativo, setAtivo] = React.useState('false');
-	const [desc, setdesc] = React.useState('');
-	const [link, setlink] = React.useState('');
+	const [ativo, setAtivo] = React.useState(false);
 	const [files, setFiles] = useState({});
 	const [id, setID] = useState([]);
-	const [title, setTitle] = useState('Titulo');
-	const [title_color, setTitle_color] = useState('#000');
-	const [subtitle, setSubtitle] = useState('Subtitulo');
-	const [subtitle_color, setSubtitle_color] = useState('#000');
-	const [description, setDescription] = useState('Descrição');
-	const [description_color, setDescription_color] = useState('#000');
-	const [thumbnail, setThumbnail] = useState(null);
-	const [text_button, setText_button] = useState('OK');
-	const [button_color, setButton_color] = useState('#fff');
-	const [id_base, setId_base] = useState(3);
-	const [bkg_color, setBkg_color] = useState('#fff');
 
 	const handleEditAlert = alert => {
-		console.log(alert);
 		setFiles(alert);
-		setTitle(alert.title);
-		setTitle_color(alert.title_color);
-		setSubtitle(alert.subtitle);
-		setSubtitle_color(alert.subtitle_color);
-		setDescription(alert.description);
-		setDescription_color(alert.description_color);
-		setThumbnail(alert.uri_img);
-		setText_button(alert.text_button);
-		setButton_color(alert.button_color);
 		setAtivo(alert.ativo);
 		handleClickOpen();
 	};
@@ -154,37 +129,19 @@ const Banners = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		setFiles({});
 	};
 
-	const handleClickOpen2 = () => {
-		setOpen2(true);
-	};
-
-	const handleClose2 = () => {
-		setOpen2(false);
-	};
-
-	const banner = useSelector(state => state.banners);
+	const alert = useSelector(state => state.alert);
 
 	useEffect(() => {
 		getAlert();
-	}, [banner]);
+	}, [alert]);
 
 	const getAlert = () => {
-		const web = true;
 		api.get('modalalert?web=true').then(response => {
 			console.log(response.data);
 			setAlerts(response.data);
-		});
-	};
-
-	const handleDelBanners = () => {
-		api.delete(`banners/${id}`).then(response => {
-			const resp = response.data;
-			if (resp === 'Successes') {
-				handleClose2();
-				getAlert();
-			}
 		});
 	};
 
@@ -196,7 +153,12 @@ const Banners = () => {
 		setAtivo(true);
 	};
 
-	const handleSaveChanges = () => {};
+	const handleSaveChanges = () => {
+		api.put(`modalalert/${files.id}`, { ativo }).then(response => {
+			handleClose();
+			getAlert();
+		});
+	};
 
 	return (
 		<div className={classes.root}>
@@ -215,7 +177,7 @@ const Banners = () => {
 						style={{
 							width: '300px',
 							height: 'auto',
-							backgroundColor: bkg_color,
+							backgroundColor: '#fff',
 							borderRadius: 5,
 							cursor: 'pointer',
 						}}
@@ -319,217 +281,136 @@ const Banners = () => {
 			</GridList>
 
 			<Dialog
-				aria-labelledby="form-dialog-title"
-				fullWidth
-				maxWidth="md"
-				onClose={handleClose}
 				open={open}
+				onClose={handleClose}
+				aria-labelledby="customized-dialog-title"
 			>
-				{alert && (
-					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
-				)}
 				<DialogTitle id="form-dialog-title">Editar Alerta</DialogTitle>
 				<DialogContent>
-					<Grid
-						container
-						// m={3}
-						spacing={4}
-					>
-						<Grid item xs={7}>
-							{ativo === true ? (
-								<BoxStyled>
-									<IsAtivoOn disabled={true}>
-										<AtivoOn>Ativo</AtivoOn>
-									</IsAtivoOn>
-									&nbsp;&nbsp;&nbsp;
-									<IsPausadoOff onClick={handleChangeToPause}>
-										<PausadoOff>Desativar</PausadoOff>
-									</IsPausadoOff>
-								</BoxStyled>
-							) : (
-								<BoxStyled>
-									<IsAtivoOff onClick={handleChangeToActive}>
-										<AtivoOff>Ativar</AtivoOff>
-									</IsAtivoOff>
-									&nbsp;&nbsp;&nbsp;
-									<IsPausadoOn disabled={true}>
-										<PausadoOn>Desativado</PausadoOn>
-									</IsPausadoOn>
-								</BoxStyled>
-							)}
-							<Grid
-								container
-								// m={3}
-								spacing={4}
-							>
-								<Grid item xs={10}>
-									<TextField
-										autoFocus
-										fullWidth
-										id="title"
-										label="Titulo*"
-										margin="dense"
-										onChange={event => setTitle(event.target.value)}
-										type="text"
-										value={title}
-									/>
-								</Grid>
-							</Grid>
-							<Grid
-								container
-								// m={3}
-								spacing={4}
-							>
-								<Grid item xs={10}>
-									<TextField
-										fullWidth
-										id="subtitle"
-										label="Subtitulo*"
-										margin="dense"
-										onChange={event => setSubtitle(event.target.value)}
-										type="text"
-										value={subtitle}
-									/>
-								</Grid>
-							</Grid>
-							<Grid
-								container
-								// m={3}
-								spacing={4}
-							>
-								<Grid item xs={10}>
-									<TextField
-										fullWidth
-										id="description"
-										label="Descrição*"
-										margin="dense"
-										onChange={event => setDescription(event.target.value)}
-										type="text"
-										value={description}
-									/>
-								</Grid>
-							</Grid>
-							<Grid
-								container
-								// m={3}
-								spacing={4}
-							>
-								<Grid item xs={10}>
-									<TextField
-										fullWidth
-										id="text_button"
-										label="Texto do botão*"
-										margin="dense"
-										onChange={event => setText_button(event.target.value)}
-										type="text"
-										value={text_button}
-									/>
-								</Grid>
-							</Grid>
-						</Grid>
-						<Grid item xs={5}>
-							<DialogContentText>Prévia:</DialogContentText>
+					{ativo === true ? (
+						<BoxStyled>
+							<IsAtivoOn disabled={true}>
+								<AtivoOn>Ativo</AtivoOn>
+							</IsAtivoOn>
+							&nbsp;&nbsp;&nbsp;
+							<IsPausadoOff onClick={handleChangeToPause}>
+								<PausadoOff>Desativar</PausadoOff>
+							</IsPausadoOff>
+						</BoxStyled>
+					) : (
+						<BoxStyled>
+							<IsAtivoOff onClick={handleChangeToActive}>
+								<AtivoOff>Ativar</AtivoOff>
+							</IsAtivoOff>
+							&nbsp;&nbsp;&nbsp;
+							<IsPausadoOn disabled={true}>
+								<PausadoOn>Desativado</PausadoOn>
+							</IsPausadoOn>
+						</BoxStyled>
+					)}
 
-							<Box
-								boxShadow={3}
-								m={1}
-								p={1}
+					<DialogContentText>Prévia:</DialogContentText>
+
+					<Box
+						boxShadow={3}
+						m={1}
+						p={1}
+						style={{
+							width: '300px',
+							height: 'auto',
+							backgroundColor: '#fff',
+							borderRadius: 5,
+						}}
+					>
+						<br />
+						<p
+							style={{
+								color: files.title_color,
+								fontWeight: 'bold',
+								fontSize: 20,
+								textAlign: 'center',
+							}}
+						>
+							{files.title}
+						</p>
+						<br />
+						<div
+							style={{
+								width: '250px',
+								height: 'auto',
+								// backgroundColor: '#f1f',
+								borderRadius: 5,
+								wordWrap: 'break-word',
+								marginBottom: 5,
+							}}
+						>
+							<p
 								style={{
-									width: '300px',
-									height: 'auto',
-									backgroundColor: bkg_color,
-									borderRadius: 5,
+									color: files.subtitle_color,
+									fontWeight: 'bold',
+									fontSize: 16,
+									marginLeft: 10,
 								}}
 							>
-								<br />
-								<p
-									style={{
-										color: title_color,
-										fontWeight: 'bold',
-										fontSize: 20,
-										textAlign: 'center',
-									}}
-								>
-									{title}
-								</p>
-								<br />
-								<div
-									style={{
-										width: '250px',
-										height: 'auto',
-										// backgroundColor: '#f1f',
-										borderRadius: 5,
-										wordWrap: 'break-word',
-										marginBottom: 5,
-									}}
-								>
-									<p
-										style={{
-											color: subtitle_color,
-											fontWeight: 'bold',
-											fontSize: 16,
-											marginLeft: 10,
-										}}
-									>
-										{subtitle}
-									</p>
-								</div>
-								<div
-									style={{
-										width: '250px',
-										height: 'auto',
-										// backgroundColor: '#f1f',
-										borderRadius: 5,
-										wordWrap: 'break-word',
-									}}
-								>
-									<p
-										style={{
-											color: description_color,
-											fontWeight: 'bold',
-											fontSize: 13,
-											marginLeft: 10,
-										}}
-									>
-										{description}
-									</p>
-								</div>
-								<img
-									src={`http://app1.cabonnet.com.br:3333/promos/${thumbnail}`}
-									style={{ height: 180 }}
-								/>
-								<Box
-									boxShadow={3}
-									bgcolor="background.paper"
-									m={1}
-									p={1}
-									style={{
-										width: '95%',
-										height: '30px',
-										backgroundColor: button_color,
-										borderRadius: 5,
-									}}
-								>
-									<p
-										style={{
-											color: '#fff',
-											fontWeight: 'bold',
-											fontSize: 16,
-											textAlign: 'center',
-										}}
-									>
-										{text_button}
-									</p>
-								</Box>
-							</Box>
-						</Grid>
-					</Grid>
+								{files.subtitle}
+							</p>
+						</div>
+						<div
+							style={{
+								width: '250px',
+								height: 'auto',
+								// backgroundColor: '#f1f',
+								borderRadius: 5,
+								wordWrap: 'break-word',
+							}}
+						>
+							<p
+								style={{
+									color: files.description_color,
+									fontWeight: 'bold',
+									fontSize: 13,
+									marginLeft: 10,
+								}}
+							>
+								{files.description}
+							</p>
+						</div>
+						<img
+							src={`http://app1.cabonnet.com.br:3333/promos/${files.uri_img}`}
+							style={{ height: 180 }}
+						/>
+						<Box
+							boxShadow={3}
+							bgcolor="background.paper"
+							m={1}
+							p={1}
+							style={{
+								width: '95%',
+								height: '30px',
+								backgroundColor: files.button_color,
+								borderRadius: 5,
+							}}
+						>
+							<p
+								style={{
+									color: '#fff',
+									fontWeight: 'bold',
+									fontSize: 16,
+									textAlign: 'center',
+								}}
+							>
+								{files.text_button}
+							</p>
+						</Box>
+					</Box>
 				</DialogContent>
 				<DialogActions>
 					<Button color="primary" onClick={handleClose}>
 						Cancelar
 					</Button>
-					<Button color="primary">Salvar</Button>
+					<Button color="primary" onClick={handleSaveChanges}>
+						Salvar
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</div>
