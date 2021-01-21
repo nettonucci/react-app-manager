@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable quotes */
 import React, { useEffect, useState, useMemo } from 'react';
 import { ChromePicker } from 'react-color';
