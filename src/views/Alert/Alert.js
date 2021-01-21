@@ -14,18 +14,17 @@ import { Button } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Grid from '@material-ui/core/Grid';
-import { useSelector } from 'react-redux';
 import { Alert } from '@material-ui/lab';
-import Paper from '@material-ui/core/Paper';
 import GridList from '@material-ui/core/GridList';
 import { AlertToolbar } from './components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as AlertAction from '../../store/actions/alert';
 import api from '../../server/api';
 import './styles.css';
 import {
@@ -109,9 +108,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Banners = () => {
+const Banners = ({ alerts, getAlerts }) => {
 	const classes = useStyles();
-	const [alerts, setAlerts] = useState([]);
 	const [open, setOpen] = React.useState(false);
 	const [ativo, setAtivo] = React.useState(false);
 	const [files, setFiles] = useState({});
@@ -132,18 +130,11 @@ const Banners = () => {
 		setFiles({});
 	};
 
-	const alert = useSelector(state => state.alert);
-
 	useEffect(() => {
-		getAlert();
-	}, [alert]);
+		getAlerts();
+	}, []);
 
-	const getAlert = () => {
-		api.get('modalalert?web=true').then(response => {
-			console.log(response.data);
-			setAlerts(response.data);
-		});
-	};
+	console.log(alerts);
 
 	const handleChangeToPause = () => {
 		setAtivo(false);
@@ -156,7 +147,7 @@ const Banners = () => {
 	const handleSaveChanges = () => {
 		api.put(`modalalert/${files.id}`, { ativo }).then(response => {
 			handleClose();
-			getAlert();
+			getAlerts();
 		});
 	};
 
@@ -419,4 +410,11 @@ const Banners = () => {
 	);
 };
 
-export default Banners;
+const mapStateToProps = state => ({
+	alerts: state.alerts,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(AlertAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banners);

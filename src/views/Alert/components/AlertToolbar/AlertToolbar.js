@@ -2,16 +2,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { ChromePicker } from 'react-color';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,9 +18,11 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { Alert } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
-import { getAlerts } from '../../../../store/alertReducer';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as AlertAction from '../../../../store/actions/alert';
 import './styles.css';
-import api from '../../../../server/api';
+
 import { ButtonColor } from './styles';
 
 const thumbsContainer = {
@@ -87,8 +85,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Typography = props => {
-	const { className, ...rest } = props;
+const Typography = ({ createAlerts }) => {
 	const [title, setTitle] = useState('Titulo');
 	const [title_color, setTitle_color] = useState('#000');
 	const [subtitle, setSubtitle] = useState('Subtitulo');
@@ -188,21 +185,19 @@ const Typography = props => {
 			data.append('text_button', text_button);
 			data.append('button_color', button_color);
 			data.append('id_base', id_base);
-			api.post('/modalalert', data).then(response => {
-				setOpen(false);
-				setTitle('Titulo');
-				setTitle_color('#000');
-				setSubtitle('Subtitulo');
-				setSubtitle_color('#000');
-				setDescription('Descrição');
-				setDescription_color('#000');
-				setThumbnail(null);
-				setText_button('OK');
-				setButton_color('#fff');
-				const list = 'new';
-				dispatch(getAlerts(list));
-				setalert(false);
-			});
+			createAlerts(data);
+
+			setOpen(false);
+			setTitle('Titulo');
+			setTitle_color('#000');
+			setSubtitle('Subtitulo');
+			setSubtitle_color('#000');
+			setDescription('Descrição');
+			setDescription_color('#000');
+			setThumbnail(null);
+			setText_button('OK');
+			setButton_color('#fff');
+			setalert(false);
 		} else {
 			setalert(true);
 			return;
@@ -216,7 +211,7 @@ const Typography = props => {
 	const classes = useStyles();
 
 	return (
-		<div {...rest} className={clsx(classes.root, className)}>
+		<div className={classes.root}>
 			<div className={classes.row}>
 				<span className={classes.spacer} />
 
@@ -581,4 +576,7 @@ Typography.propTypes = {
 	className: PropTypes.string,
 };
 
-export default Typography;
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(AlertAction, dispatch);
+
+export default connect(null, mapDispatchToProps)(Typography);
