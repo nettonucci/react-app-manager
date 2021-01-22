@@ -8,6 +8,8 @@ import clientsEraseFilterReducer from './clientsEraseFilterReducer';
 import alerts from './reducers/alert';
 import banners from './reducers/banner';
 import videos from './reducers/videos';
+import users from './reducers/user';
+import pages from './reducers/page';
 
 import rootSaga from './sagas/root';
 
@@ -22,6 +24,8 @@ const store = createStore(
 		videos,
 		banners,
 		alerts,
+		users,
+		pages,
 	}),
 	applyMiddleware(sagaMiddleware)
 );

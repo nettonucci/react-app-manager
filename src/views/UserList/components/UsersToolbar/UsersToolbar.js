@@ -19,6 +19,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SearchIcon from '@material-ui/icons/Search';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as SearchAction from '../../../../store/actions/searchUser';
+import * as UserAction from '../../../../store/actions/users';
 import { SearchInput } from 'components';
 import { useDispatch } from 'react-redux';
 import api from '../../../../server/api';
@@ -65,11 +69,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-	const { className, ...rest } = props;
+	const { className, getSearchUsers, getUsers, users, ...rest } = props;
 	const [por, setPor] = React.useState('');
 	const [visible, setVisible] = React.useState(false);
 	const [pesquisa, setPesquisa] = React.useState('');
 	const dispatch = useDispatch();
+
+	console.log(users);
 
 	const handleChange = event => {
 		setPor(event.target.value);
@@ -84,35 +90,18 @@ const UsersToolbar = props => {
 		if (por !== '' && pesquisa !== '') {
 			if (por === 'nomeassinante') {
 				valor = pesquisa.toUpperCase();
-				api.post('clientsweb', { por, valor }).then(response => {
-					// console.log(response.data);
-					const list = response.data;
-					if (list.length === 0) {
-						window.alert('Nenhum dado encontrato!');
-						setPor('');
-						setPesquisa('');
-						return;
-					}
-					dispatch(getSearchClients(list));
-					setVisible(true);
-				});
+				const data = { por: por, valor: valor };
+				getSearchUsers(data);
+				setVisible(true);
 				setPor('');
 				setPesquisa('');
 				return;
 			}
 			valor = pesquisa;
-			api.post('clientsweb', { por, valor }).then(response => {
-				// console.log(response.data);
-				const list = response.data;
-				if (list.length === 0) {
-					window.alert('Nenhum dado encontrato!');
-					setPor('');
-					setPesquisa('');
-					return;
-				}
-				dispatch(getSearchClients(list));
-				setVisible(true);
-			});
+			const data = { por: por, valor: valor };
+			getSearchUsers(data);
+			setVisible(true);
+
 			setPor('');
 			setPesquisa('');
 		} else if (por === '' && pesquisa === '') {
@@ -125,8 +114,7 @@ const UsersToolbar = props => {
 	};
 
 	const handleClickEraseFilter = () => {
-		const list = 'ok';
-		dispatch(eraseSearchClients(list));
+		getUsers();
 		setVisible(false);
 	};
 
@@ -178,7 +166,7 @@ const UsersToolbar = props => {
 						labelWidth={70}
 					/>
 				</FormControl>
-				{visible && (
+				{users.filtro && (
 					<ButtonEraseFlter onClick={handleClickEraseFilter}>
 						Limpar filtro
 					</ButtonEraseFlter>
@@ -192,4 +180,11 @@ UsersToolbar.propTypes = {
 	className: PropTypes.string,
 };
 
-export default UsersToolbar;
+const mapStateToProps = state => ({
+	users: state.users,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators({ ...SearchAction, ...UserAction }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersToolbar);

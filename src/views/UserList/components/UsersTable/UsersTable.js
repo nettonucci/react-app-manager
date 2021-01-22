@@ -10,29 +10,21 @@ import AppleIcon from '@material-ui/icons/Apple';
 import { makeStyles } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { useSelector } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-
-import { useDispatch } from 'react-redux';
-import { getClients } from '../../../../store/clientsReducer';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as UserAction from '../../../../store/actions/users';
 import {
 	Card,
 	CardActions,
 	CardContent,
-	Avatar,
-	Checkbox,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableRow,
 	Typography,
-	TablePagination,
 } from '@material-ui/core';
-import api from '../../../../server/api';
-
-import { getInitials } from 'helpers';
 import { IsAtivo, Ativo, IsPausado, Pausado, InputPage } from './styles';
 
 const useStyles = makeStyles(theme => ({
@@ -62,75 +54,33 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersTable = props => {
-	const { className, users, ...rest } = props;
-
+	const { className, users, getUsers, totalPage, ...rest } = props;
 	const classes = useStyles();
 	const [page, setPage] = useState(1);
-	const [totalPage, setTotalPage] = useState(0);
-	const [por, setPor] = React.useState('');
-	const [visible, setVisible] = React.useState(false);
-	const [pesquisa, setPesquisa] = React.useState('');
-	const dispatch = useDispatch();
-
-	const clients = useSelector(state => state.clientsSearch);
-	const clients2 = useSelector(state => state.eraseFilter);
 
 	useEffect(() => {
-		// console.log('Aqui',clients);
-		setTotalPage(1);
-		setPage(1);
-	}, [clients]);
-
-	useEffect(() => {
-		GetUsers();
-	}, [clients2]);
-
-	useEffect(() => {
-		GetUsers();
+		getUsers(page);
 	}, []);
 
-	const GetUsers = () => {
-		api.get(`clientsweb?page=${page}`).then(response => {
-			const { count } = response.data[1][0];
-			const totalPages = Math.ceil(count / 20);
-			setTotalPage(totalPages);
-			const list = response.data[0];
-			dispatch(getClients(list));
-		});
-	};
-
 	const handlePageChangeToNext = () => {
-		api.get(`clientsweb?page=${page + 1}`).then(response => {
-			const list = response.data[0];
-			dispatch(getClients(list));
-		});
+		getUsers(page + 1);
 		setPage(page + 1);
 	};
 
 	const handlePageChangeToBack = () => {
-		api.get(`clientsweb?page=${page - 1}`).then(response => {
-			const list = response.data[0];
-			dispatch(getClients(list));
-		});
+		getUsers(page - 1);
 		setPage(page - 1);
 	};
 
 	const handleChange = event => {
 		const pageInsert = parseInt(event.target.value);
-		console.log(pageInsert);
 		if (pageInsert < 1 || pageInsert > totalPage) {
 			window.alert(
 				`A pagina não pode ser menor que 1 e maior que ${totalPage}`
 			);
 			return;
 		}
-		api.get(`clientsweb?page=${pageInsert}`).then(response => {
-			const { count } = response.data[1][0];
-			const totalPages = Math.ceil(count / 20);
-			setTotalPage(totalPages);
-			const list = response.data[0];
-			dispatch(getClients(list));
-		});
+		getUsers(pageInsert);
 		setPage(pageInsert);
 	};
 
@@ -178,7 +128,7 @@ const UsersTable = props => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{users.map(user => (
+								{users.data.map(user => (
 									<TableRow className={classes.tableRow} hover key={user.id}>
 										<TableCell>{user.id}</TableCell>
 										<TableCell>
@@ -265,4 +215,10 @@ UsersTable.propTypes = {
 	users: PropTypes.array.isRequired,
 };
 
-export default UsersTable;
+const mapStateToProps = state => ({
+	totalPage: state.pages,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(UserAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);

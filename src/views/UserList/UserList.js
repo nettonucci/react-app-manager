@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
-import api from '../../server/api';
+import { connect } from 'react-redux';
 
 import { UsersToolbar, UsersTable } from './components';
 
@@ -18,33 +18,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const UserList = () => {
+const UserList = ({ users }) => {
 	const classes = useStyles();
-
-	const [users, setUsers] = useState([]);
-
-	let clients = useSelector(state => state.clients);
-	let clients2 = useSelector(state => state.clientsSearch);
-
-	useEffect(() => {
-		// console.log(clients);
-		setUsers(clients);
-	}, [clients]);
-
-	useEffect(() => {
-		// console.log(clients);
-		setUsers(clients2);
-	}, [clients2]);
-
-	useEffect(() => {
-		// GetUsers();
-	}, []);
-
-	const GetUsers = () => {
-		api.get('clientsweb').then(response => {
-			setUsers(response.data);
-		});
-	};
 
 	return (
 		<div className={classes.root}>
@@ -56,4 +31,8 @@ const UserList = () => {
 	);
 };
 
-export default UserList;
+const mapStateToProps = state => ({
+	users: state.users,
+});
+
+export default connect(mapStateToProps)(UserList);

@@ -55,6 +55,40 @@ function* createVideo(action) {
 	yield getVideos();
 }
 
+function* getUsers(action) {
+	const response = yield call(api.get, `/clientsweb?page=${action.page}`);
+
+	yield put({
+		type: 'GET_USERS',
+		users: response.data[0],
+		filtro: false,
+	});
+	const { count } = response.data[1][0];
+	const totalPages = Math.ceil(count / 20);
+	yield put({
+		type: 'GET_USERS_PAGES',
+		pages: totalPages,
+	});
+}
+
+function* searchUsers(action) {
+	const response = yield call(api.post, '/clientsweb', action.data);
+	if (response.data.length === 0) {
+		window.alert('Nenhum resultado encontrato para este filtro!');
+		getUsers();
+		return;
+	}
+	yield put({
+		type: 'GET_USERS',
+		users: response.data,
+		filtro: true,
+	});
+	yield put({
+		type: 'GET_USERS_PAGES',
+		pages: 1,
+	});
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -67,4 +101,7 @@ export default function* root() {
 	yield takeLatest('REQUEST_GET_VIDEOS', getVideos);
 	yield takeLatest('REQUEST_ISPRINCIPAL_VIDEOS', isPrincipalVideo);
 	yield takeLatest('REQUEST_CREATE_VIDEOS', createVideo);
+
+	yield takeLatest('REQUEST_GET_USERS', getUsers);
+	yield takeLatest('REQUEST_SEARCH_USERS', searchUsers);
 }
