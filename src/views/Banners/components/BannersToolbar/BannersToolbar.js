@@ -12,6 +12,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as BannerAction from '../../../../store/actions/banner';
 import { useDispatch } from 'react-redux';
 import api from '../../../../server/api';
 import { Alert } from '@material-ui/lab';
@@ -79,8 +82,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const BannersToolbar = props => {
-	const { className, ...rest } = props;
+const BannersToolbar = ({ createBanners }) => {
 	const [open, setOpen] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
 	const [nome_promocao, setnome_promocao] = React.useState('');
@@ -121,22 +123,15 @@ const BannersToolbar = props => {
 			data.append('subtitle', subtitle);
 			data.append('description', description);
 			data.append('link', link);
+			createBanners(data);
 
-			api.post('/banners', data).then(response => {
-				console.log(response.data);
-				const resp = response.data;
-				if (resp === 'Successes') {
-					setOpen(false);
-					setThumbnail(null);
-					setalert(false);
-					setnome_promocao('');
-					setsubtitle('');
-					setdescription('');
-					setlink('');
-					const list = 'new';
-					dispatch(getBanners(list));
-				}
-			});
+			setOpen(false);
+			setThumbnail(null);
+			setalert(false);
+			setnome_promocao('');
+			setsubtitle('');
+			setdescription('');
+			setlink('');
 		} else {
 			setalert(true);
 		}
@@ -145,7 +140,7 @@ const BannersToolbar = props => {
 	const classes = useStyles();
 
 	return (
-		<div {...rest} className={clsx(classes.root, className)}>
+		<div className={classes.root}>
 			<div className={classes.row}>
 				<span className={classes.spacer} />
 
@@ -250,4 +245,7 @@ BannersToolbar.propTypes = {
 	className: PropTypes.string,
 };
 
-export default BannersToolbar;
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(BannerAction, dispatch);
+
+export default connect(null, mapDispatchToProps)(BannersToolbar);

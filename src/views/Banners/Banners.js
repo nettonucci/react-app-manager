@@ -20,11 +20,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
-import { useSelector } from 'react-redux';
 import { Alert } from '@material-ui/lab';
 import Paper from '@material-ui/core/Paper';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as BannerAction from '../../store/actions/banner';
 import { BannersToolbar } from './components';
-import api from '../../server/api';
+
 import {
 	Container,
 	DivRow,
@@ -101,9 +103,8 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Banners = () => {
+const Banners = ({ deleteBanners, updateBanners, getBanners, banners }) => {
 	const classes = useStyles();
-	const [banners, setBanners] = useState([]);
 	const [open, setOpen] = React.useState(false);
 	const [open2, setOpen2] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
@@ -148,26 +149,13 @@ const Banners = () => {
 		handleClickOpen();
 	};
 
-	const banner = useSelector(state => state.banners);
-
 	useEffect(() => {
 		getBanners();
-	}, [banner]);
-
-	const getBanners = () => {
-		api.get('banners').then(response => {
-			setBanners(response.data);
-		});
-	};
+	}, []);
 
 	const handleDelBanners = () => {
-		api.delete(`banners/${id}`).then(response => {
-			const resp = response.data;
-			if (resp === 'Successes') {
-				handleClose2();
-				getBanners();
-			}
-		});
+		deleteBanners(id);
+		handleClose2();
 	};
 
 	const handleChangeToPause = () => {
@@ -179,24 +167,16 @@ const Banners = () => {
 	};
 
 	const handleSaveChanges = () => {
-		const nome_promocao = title;
-		const description = desc;
-		const ativo = isAtivo;
-		api
-			.put(`banners/${id}`, {
-				nome_promocao,
-				subtitle,
-				description,
-				link,
-				ativo,
-			})
-			.then(response => {
-				const resp = response.data;
-				if (resp === 'Successes') {
-					handleClose();
-					getBanners();
-				}
-			});
+		const data = {
+			id: id,
+			nome_promocao: title,
+			subtitle: subtitle,
+			description: desc,
+			link: link,
+			ativo: isAtivo,
+		};
+		updateBanners(data);
+		handleClose();
 	};
 
 	return (
@@ -396,4 +376,11 @@ const Banners = () => {
 	);
 };
 
-export default Banners;
+const mapStateToProps = state => ({
+	banners: state.banners,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(BannerAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banners);

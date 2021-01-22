@@ -6,8 +6,8 @@ import videoReducer from './videoReducer';
 import clientsReducer from './clientsReducer';
 import clientsSearchReducer from './clientsSearchReducer';
 import clientsEraseFilterReducer from './clientsEraseFilterReducer';
-import BannersReducer from './BannersReducer';
 import alerts from './reducers/alert';
+import banners from './reducers/banner';
 
 import rootSaga from './sagas/root';
 
@@ -20,7 +20,7 @@ const store = createStore(
 		clients: clientsReducer,
 		clientsSearch: clientsSearchReducer,
 		eraseFilter: clientsEraseFilterReducer,
-		banners: BannersReducer,
+		banners,
 		alerts,
 	}),
 	applyMiddleware(sagaMiddleware)
