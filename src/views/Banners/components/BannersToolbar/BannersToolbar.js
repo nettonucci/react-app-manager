@@ -18,7 +18,6 @@ import * as BannerAction from '../../../../store/actions/banner';
 import { useDispatch } from 'react-redux';
 import api from '../../../../server/api';
 import { Alert } from '@material-ui/lab';
-import { getBanners } from '../../../../store/BannersReducer';
 import './styles.css';
 import Paper from '@material-ui/core/Paper';
 

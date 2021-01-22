@@ -134,8 +134,6 @@ const Banners = ({ alerts, getAlerts }) => {
 		getAlerts();
 	}, []);
 
-	console.log(alerts);
-
 	const handleChangeToPause = () => {
 		setAtivo(false);
 	};

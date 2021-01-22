@@ -11,11 +11,7 @@ function* getAlerts() {
 
 function* createAlerts(action) {
 	yield call(api.post, '/modalalert', action.data);
-	const response = yield call(api.get, '/modalalert?web=true');
-	yield put({
-		type: 'GET_ALERTS',
-		alerts: response.data,
-	});
+	yield getAlerts();
 }
 
 function* getBanners() {
@@ -41,6 +37,24 @@ function* deleteBanners(action) {
 	yield getBanners();
 }
 
+function* getVideos() {
+	const response = yield call(api.get, '/videos');
+	yield put({
+		type: 'GET_VIDEOS',
+		videos: response.data,
+	});
+}
+
+function* isPrincipalVideo(action) {
+	yield call(api.patch, `/videos/${action.id}`);
+	yield getVideos();
+}
+
+function* createVideo(action) {
+	yield call(api.post, '/videos', action.data);
+	yield getVideos();
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -49,4 +63,8 @@ export default function* root() {
 	yield takeLatest('REQUEST_CREATE_BANNERS', createBanners);
 	yield takeLatest('REQUEST_UPDATE_BANNERS', updateBanners);
 	yield takeLatest('REQUEST_DELETE_BANNERS', deleteBanners);
+
+	yield takeLatest('REQUEST_GET_VIDEOS', getVideos);
+	yield takeLatest('REQUEST_ISPRINCIPAL_VIDEOS', isPrincipalVideo);
+	yield takeLatest('REQUEST_CREATE_VIDEOS', createVideo);
 }
