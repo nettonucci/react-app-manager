@@ -17,9 +17,6 @@ import { bindActionCreators } from 'redux';
 import * as VideoAction from '../../../../store/actions/videos';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
-import CardMedia from '@material-ui/core/CardMedia';
-import { getVideos } from '../../../../store/videoReducer';
-import api from '../../../../server/api';
 
 const useStyles = makeStyles(theme => ({
 	root: {},
