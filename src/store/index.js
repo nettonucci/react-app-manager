@@ -8,7 +8,7 @@ import clientsEraseFilterReducer from './clientsEraseFilterReducer';
 import alerts from './reducers/alert';
 import banners from './reducers/banner';
 import videos from './reducers/videos';
-import users from './reducers/user';
+import clients from './reducers/clients';
 import pages from './reducers/page';
 import login from './reducers/login';
 import perfil from './reducers/perfil';
@@ -26,7 +26,7 @@ const store = createStore(
 		videos,
 		banners,
 		alerts,
-		users,
+		clients,
 		pages,
 		login,
 		perfil,

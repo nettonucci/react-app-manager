@@ -65,12 +65,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-	const { className, getSearchClients, getClients, users, ...rest } = props;
+	const { className, getSearchClients, getClients, clients, ...rest } = props;
 	const [por, setPor] = React.useState('');
 	const [visible, setVisible] = React.useState(false);
 	const [pesquisa, setPesquisa] = React.useState('');
 
-	console.log(users);
+	console.log(clients);
 
 	const handleChange = event => {
 		setPor(event.target.value);
@@ -161,7 +161,7 @@ const UsersToolbar = props => {
 						labelWidth={70}
 					/>
 				</FormControl>
-				{users.filtro && (
+				{clients.filtro && (
 					<ButtonEraseFlter onClick={handleClickEraseFilter}>
 						Limpar filtro
 					</ButtonEraseFlter>
@@ -176,7 +176,7 @@ UsersToolbar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	users: state.users,
+	clients: state.clients,
 });
 
 const mapDispatchToProps = dispatch =>

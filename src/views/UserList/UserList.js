@@ -18,21 +18,21 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const UserList = ({ users }) => {
+const UserList = ({ clients }) => {
 	const classes = useStyles();
 
 	return (
 		<div className={classes.root}>
 			<UsersToolbar />
 			<div className={classes.content}>
-				<UsersTable users={users} />
+				<UsersTable clients={clients} />
 			</div>
 		</div>
 	);
 };
 
 const mapStateToProps = state => ({
-	users: state.users,
+	clients: state.clients,
 });
 
 export default connect(mapStateToProps)(UserList);

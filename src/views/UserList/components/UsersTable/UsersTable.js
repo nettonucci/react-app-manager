@@ -13,7 +13,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as UserAction from '../../../../store/actions/clients';
+import * as ClientsAction from '../../../../store/actions/clients';
 import {
 	Card,
 	CardActions,
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersTable = props => {
-	const { className, users, getClients, totalPage, ...rest } = props;
+	const { className, clients, getClients, totalPage, ...rest } = props;
 	const classes = useStyles();
 	const [page, setPage] = useState(1);
 
@@ -128,7 +128,7 @@ const UsersTable = props => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{users.data.map(user => (
+								{clients.data.map(user => (
 									<TableRow className={classes.tableRow} hover key={user.id}>
 										<TableCell>{user.id}</TableCell>
 										<TableCell>
@@ -219,6 +219,7 @@ const mapStateToProps = state => ({
 	totalPage: state.pages,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(UserAction, dispatch);
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(ClientsAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);

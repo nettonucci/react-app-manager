@@ -59,14 +59,14 @@ function* getClients(action) {
 	const response = yield call(api.get, `/clientsweb?page=${action.page}`);
 
 	yield put({
-		type: 'GET_USERS',
+		type: 'GET_CLIENTS',
 		users: response.data[0],
 		filtro: false,
 	});
 	const { count } = response.data[1][0];
 	const totalPages = Math.ceil(count / 20);
 	yield put({
-		type: 'GET_USERS_PAGES',
+		type: 'GET_CLIENTS_PAGES',
 		pages: totalPages,
 	});
 }
@@ -79,12 +79,12 @@ function* searchClients(action) {
 		return;
 	}
 	yield put({
-		type: 'GET_USERS',
+		type: 'GET_CLIENTS',
 		users: response.data,
 		filtro: true,
 	});
 	yield put({
-		type: 'GET_USERS_PAGES',
+		type: 'GET_CLIENTS_PAGES',
 		pages: 1,
 	});
 }
