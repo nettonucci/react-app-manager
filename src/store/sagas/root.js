@@ -89,6 +89,46 @@ function* searchUsers(action) {
 	});
 }
 
+function* loginRequest(action) {
+	yield put({
+		type: 'LOAD_LOGIN',
+		load: true,
+	});
+	const { history } = action.cred;
+	const response = yield call(api.post, '/sessionweb', action.cred);
+	const { token, email } = response.data[0];
+	if (token) {
+		yield put({
+			type: 'GET_USER_PROFILE',
+			profile: response.data,
+		});
+		localStorage.setItem('email_usuario_logado', email);
+		localStorage.setItem('token_usuario_logado', token);
+		history.push('/dashboard');
+		yield put({
+			type: 'LOAD_LOGIN',
+			load: false,
+		});
+	} else {
+		window.alert('Usuario e/ou senha incorreto(s)');
+		yield put({
+			type: 'LOAD_LOGIN',
+			load: false,
+		});
+	}
+	return;
+}
+
+function* perfilRequest(action) {
+	const response = yield call(api.get, `/profile?email=${action.email}`);
+	yield put({
+		type: 'GET_USER_PROFILE',
+		profile: response.data,
+	});
+
+	return;
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -104,4 +144,8 @@ export default function* root() {
 
 	yield takeLatest('REQUEST_GET_USERS', getUsers);
 	yield takeLatest('REQUEST_SEARCH_USERS', searchUsers);
+
+	yield takeLatest('REQUEST_LOGIN', loginRequest);
+
+	yield takeLatest('REQUEST_PERFIL', perfilRequest);
 }

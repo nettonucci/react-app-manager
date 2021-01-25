@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/styles';
 import Spinner from 'react-activity/lib/Spinner';
 import 'react-activity/lib/Spinner/Spinner.css';
 import palette from 'theme/palette';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as LoginAction from '../../store/actions/login';
 import { DivLoad } from './styles';
 import api from '../../server/api';
 import {
@@ -129,7 +132,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-	const { history } = props;
+	const { history, loginRequest, load } = props;
 
 	const classes = useStyles();
 
@@ -139,7 +142,6 @@ const SignIn = props => {
 		touched: {},
 		errors: {},
 	});
-	const [isLoad, setIsLoad] = useState(true);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token_usuario_logado');
@@ -150,12 +152,10 @@ const SignIn = props => {
 				if (resposta === 'Token valid') {
 					history.push('/dashboard');
 				} else {
-					setIsLoad(false);
 					return;
 				}
 			});
 		} else {
-			setIsLoad(false);
 			return;
 		}
 	}, []);
@@ -170,23 +170,12 @@ const SignIn = props => {
 		}));
 	}, [formState.values]);
 
-	const handleSubmit = event => {
+	const handleSubmitRedux = event => {
 		event.preventDefault();
-		setIsLoad(true);
 		const email = formState.values.email;
 		const password = formState.values.password;
-		api.post('sessionweb', { email, password }).then(response => {
-			const { token } = response.data;
-			if (token) {
-				localStorage.setItem('email_usuario_logado', email);
-				localStorage.setItem('token_usuario_logado', token);
-				history.push('/dashboard');
-				setIsLoad(false);
-			} else {
-				setIsLoad(false);
-				window.alert('Usuario e/ou senha incorreto(s)');
-			}
-		});
+		const cred = { email, password, history };
+		loginRequest(cred);
 	};
 
 	const handleChange = event => {
@@ -238,8 +227,8 @@ const SignIn = props => {
 				<Grid className={classes.content} item lg={7} xs={12}>
 					<div className={classes.content}>
 						<div className={classes.contentBody}>
-							<form className={classes.form} onSubmit={handleSubmit}>
-								{isLoad ? (
+							<form className={classes.form} onSubmit={handleSubmitRedux}>
+								{load.loading ? (
 									<div
 										style={{
 											alignItems: 'center',
@@ -326,4 +315,11 @@ SignIn.propTypes = {
 	history: PropTypes.object,
 };
 
-export default withRouter(SignIn);
+const mapStateToProps = state => ({
+	load: state.login,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(LoginAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignIn));

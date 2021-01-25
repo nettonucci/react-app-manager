@@ -10,6 +10,8 @@ import banners from './reducers/banner';
 import videos from './reducers/videos';
 import users from './reducers/user';
 import pages from './reducers/page';
+import login from './reducers/login';
+import perfil from './reducers/perfil';
 
 import rootSaga from './sagas/root';
 
@@ -26,6 +28,8 @@ const store = createStore(
 		alerts,
 		users,
 		pages,
+		login,
+		perfil,
 	}),
 	applyMiddleware(sagaMiddleware)
 );
