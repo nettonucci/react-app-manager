@@ -130,6 +130,16 @@ function* perfilRequest(action) {
 	return;
 }
 
+function* getUsers() {
+	const response = yield call(api.get, '/users');
+	yield put({
+		type: 'GET_USER',
+		users: response.data,
+	});
+
+	return;
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -149,4 +159,6 @@ export default function* root() {
 	yield takeLatest('REQUEST_LOGIN', loginRequest);
 
 	yield takeLatest('REQUEST_PERFIL', perfilRequest);
+
+	yield takeLatest('REQUEST_GET_USERS', getUsers);
 }

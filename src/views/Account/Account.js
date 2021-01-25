@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as UsersAction from '../../store/actions/users';
 import {
 	Card,
 	CardActions,
@@ -31,19 +34,12 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Account = () => {
+const Account = ({ getClients, users }) => {
 	const classes = useStyles();
 
-	const users = [
-		{
-			id: 1,
-			name: 'Netto Nucci',
-			email: 'nettonucci@gmail.com',
-			title: 'Desenvolvedor',
-			base: 'Ifast',
-			photo: null,
-		},
-	];
+	useEffect(() => {
+		getClients();
+	}, []);
 
 	return (
 		<div className={classes.root}>
@@ -104,4 +100,11 @@ const Account = () => {
 	);
 };
 
-export default Account;
+const mapStateToProps = state => ({
+	users: state.users,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(UsersAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

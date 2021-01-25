@@ -21,8 +21,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as SearchAction from '../../../../store/actions/searchUser';
-import * as UserAction from '../../../../store/actions/clients';
+import * as SearchAction from '../../../../store/actions/searchClients';
+import * as ClientsAction from '../../../../store/actions/clients';
 
 import { ButtonEraseFlter } from './styles';
 
@@ -180,6 +180,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ ...SearchAction, ...UserAction }, dispatch);
+	bindActionCreators({ ...SearchAction, ...ClientsAction }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersToolbar);
