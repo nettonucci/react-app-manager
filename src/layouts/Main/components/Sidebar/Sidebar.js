@@ -9,6 +9,9 @@ import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
+import { connect } from 'react-redux';
 
 import { Profile, SidebarNav } from './components';
 
@@ -36,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
-	const { open, variant, onClose, className, ...rest } = props;
+	const { open, variant, onClose, className, perfil, ...rest } = props;
 
 	const classes = useStyles();
 
@@ -47,7 +50,7 @@ const Sidebar = props => {
 			icon: <DashboardIcon />,
 		},
 		{
-			title: 'Usuários',
+			title: 'Clientes',
 			href: '/users',
 			icon: <PeopleIcon />,
 		},
@@ -84,6 +87,24 @@ const Sidebar = props => {
 		// }
 	];
 
+	const pagesDev = [
+		{
+			title: 'Usuários',
+			href: '/account',
+			icon: <AccountCircleIcon />,
+		},
+		{
+			title: 'Busca de clientes',
+			href: '/sign-in',
+			icon: <SearchIcon />,
+		},
+		{
+			title: 'Settings',
+			href: '/settings',
+			icon: <LockOpenIcon />,
+		},
+	];
+
 	return (
 		<Drawer
 			anchor="left"
@@ -96,6 +117,12 @@ const Sidebar = props => {
 				<Profile />
 				<Divider className={classes.divider} />
 				<SidebarNav className={classes.nav} pages={pages} />
+				{perfil[0].title === 'Desenvolvedor' && (
+					<>
+						<Divider className={classes.divider} />
+						<SidebarNav className={classes.nav} pages={pagesDev} />
+					</>
+				)}
 			</div>
 		</Drawer>
 	);
@@ -108,4 +135,8 @@ Sidebar.propTypes = {
 	variant: PropTypes.string.isRequired,
 };
 
-export default Sidebar;
+const mapStateToProps = state => ({
+	perfil: state.perfil,
+});
+
+export default connect(mapStateToProps)(Sidebar);

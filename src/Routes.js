@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
-import { isAuthenticated } from './auth';
+import { isAuthenticated, isAuthenticatedDev } from './auth';
 import PropTypes from 'prop-types';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import { RouteWithLayout } from './components';
@@ -31,6 +31,26 @@ const PrivateRoute = props => {
 					</Layout>
 				) : (
 					<Redirect to={{ pathname: '/', state: { from: props.location } }} />
+				)
+			}
+		/>
+	);
+};
+
+const PrivateRouteDev = props => {
+	const { layout: Layout, component: Component, ...rest } = props;
+	return (
+		<Route
+			{...rest}
+			render={matchProps =>
+				isAuthenticatedDev() ? (
+					<Layout>
+						<Component {...matchProps} />
+					</Layout>
+				) : (
+					<Redirect
+						to={{ pathname: '/dashboard', state: { from: props.location } }}
+					/>
 				)
 			}
 		/>
@@ -76,13 +96,13 @@ const Routes = () => (
 			layout={MainLayout}
 			path="/videos"
 		/>
-		<PrivateRoute
+		<PrivateRouteDev
 			component={AccountView}
 			exact
 			layout={MainLayout}
 			path="/account"
 		/>
-		<PrivateRoute
+		<PrivateRouteDev
 			component={SettingsView}
 			exact
 			layout={MainLayout}

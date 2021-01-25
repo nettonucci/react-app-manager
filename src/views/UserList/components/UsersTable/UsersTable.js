@@ -13,7 +13,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as UserAction from '../../../../store/actions/users';
+import * as UserAction from '../../../../store/actions/clients';
 import {
 	Card,
 	CardActions,
@@ -54,21 +54,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersTable = props => {
-	const { className, users, getUsers, totalPage, ...rest } = props;
+	const { className, users, getClients, totalPage, ...rest } = props;
 	const classes = useStyles();
 	const [page, setPage] = useState(1);
 
 	useEffect(() => {
-		getUsers(page);
+		getClients(page);
 	}, []);
 
 	const handlePageChangeToNext = () => {
-		getUsers(page + 1);
+		getClients(page + 1);
 		setPage(page + 1);
 	};
 
 	const handlePageChangeToBack = () => {
-		getUsers(page - 1);
+		getClients(page - 1);
 		setPage(page - 1);
 	};
 
@@ -80,7 +80,7 @@ const UsersTable = props => {
 			);
 			return;
 		}
-		getUsers(pageInsert);
+		getClients(pageInsert);
 		setPage(pageInsert);
 	};
 

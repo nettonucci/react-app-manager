@@ -55,7 +55,7 @@ function* createVideo(action) {
 	yield getVideos();
 }
 
-function* getUsers(action) {
+function* getClients(action) {
 	const response = yield call(api.get, `/clientsweb?page=${action.page}`);
 
 	yield put({
@@ -71,11 +71,11 @@ function* getUsers(action) {
 	});
 }
 
-function* searchUsers(action) {
+function* searchClients(action) {
 	const response = yield call(api.post, '/clientsweb', action.data);
 	if (response.data.length === 0) {
 		window.alert('Nenhum resultado encontrato para este filtro!');
-		getUsers();
+		getClients();
 		return;
 	}
 	yield put({
@@ -96,13 +96,14 @@ function* loginRequest(action) {
 	});
 	const { history } = action.cred;
 	const response = yield call(api.post, '/sessionweb', action.cred);
-	const { token, email } = response.data[0];
+	const { token, email, title } = response.data[0];
 	if (token) {
 		yield put({
 			type: 'GET_USER_PROFILE',
 			profile: response.data,
 		});
 		localStorage.setItem('email_usuario_logado', email);
+		localStorage.setItem('permissao_usuario_logado', title);
 		localStorage.setItem('token_usuario_logado', token);
 		history.push('/dashboard');
 		yield put({
@@ -142,8 +143,8 @@ export default function* root() {
 	yield takeLatest('REQUEST_ISPRINCIPAL_VIDEOS', isPrincipalVideo);
 	yield takeLatest('REQUEST_CREATE_VIDEOS', createVideo);
 
-	yield takeLatest('REQUEST_GET_USERS', getUsers);
-	yield takeLatest('REQUEST_SEARCH_USERS', searchUsers);
+	yield takeLatest('REQUEST_GET_CLIENTS', getClients);
+	yield takeLatest('REQUEST_SEARCH_CLIENTS', searchClients);
 
 	yield takeLatest('REQUEST_LOGIN', loginRequest);
 

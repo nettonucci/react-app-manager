@@ -22,12 +22,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as SearchAction from '../../../../store/actions/searchUser';
-import * as UserAction from '../../../../store/actions/users';
-import { SearchInput } from 'components';
-import { useDispatch } from 'react-redux';
-import api from '../../../../server/api';
-import { getSearchClients } from '../../../../store/clientsSearchReducer';
-import { eraseSearchClients } from '../../../../store/clientsEraseFilterReducer';
+import * as UserAction from '../../../../store/actions/clients';
+
 import { ButtonEraseFlter } from './styles';
 
 const useStyles = makeStyles(theme => ({
@@ -69,11 +65,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-	const { className, getSearchUsers, getUsers, users, ...rest } = props;
+	const { className, getSearchClients, getClients, users, ...rest } = props;
 	const [por, setPor] = React.useState('');
 	const [visible, setVisible] = React.useState(false);
 	const [pesquisa, setPesquisa] = React.useState('');
-	const dispatch = useDispatch();
 
 	console.log(users);
 
@@ -91,7 +86,7 @@ const UsersToolbar = props => {
 			if (por === 'nomeassinante') {
 				valor = pesquisa.toUpperCase();
 				const data = { por: por, valor: valor };
-				getSearchUsers(data);
+				getSearchClients(data);
 				setVisible(true);
 				setPor('');
 				setPesquisa('');
@@ -99,7 +94,7 @@ const UsersToolbar = props => {
 			}
 			valor = pesquisa;
 			const data = { por: por, valor: valor };
-			getSearchUsers(data);
+			getSearchClients(data);
 			setVisible(true);
 
 			setPor('');
@@ -114,7 +109,7 @@ const UsersToolbar = props => {
 	};
 
 	const handleClickEraseFilter = () => {
-		getUsers();
+		getClients();
 		setVisible(false);
 	};
 

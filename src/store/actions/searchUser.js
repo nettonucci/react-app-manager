@@ -1,4 +1,4 @@
-export const getSearchUsers = data => ({
-	type: 'REQUEST_SEARCH_USERS',
+export const getSearchClients = data => ({
+	type: 'REQUEST_SEARCH_CLIENTS',
 	data,
 });
