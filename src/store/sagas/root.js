@@ -90,12 +90,17 @@ function* searchClients(action) {
 }
 
 function* loginRequest(action) {
+	const agent = new https.Agent({
+		rejectUnauthorized: false,
+	});
 	yield put({
 		type: 'LOAD_LOGIN',
 		load: true,
 	});
 	const { history } = action.cred;
-	const response = yield call(api.post, '/sessionweb', action.cred);
+	const response = yield call(api.post, '/sessionweb', action.cred, {
+		httpsAgent: agent,
+	});
 	const { token, email, title } = response.data[0];
 	if (token) {
 		yield put({
