@@ -1,6 +1,5 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import api from '../../server/api';
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 function* getAlerts() {
 	const response = yield call(api.get, '/modalalert?web=true');
@@ -96,6 +95,7 @@ function* loginRequest(action) {
 		load: true,
 	});
 	const { history } = action.cred;
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 	const response = yield call(api.post, '/sessionweb', action.cred);
 	const { token, email, title } = response.data[0];
 	if (token) {
