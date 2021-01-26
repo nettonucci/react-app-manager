@@ -1,5 +1,6 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 import api from '../../server/api';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 function* getAlerts() {
 	const response = yield call(api.get, '/modalalert?web=true');
@@ -90,17 +91,12 @@ function* searchClients(action) {
 }
 
 function* loginRequest(action) {
-	const agent = new https.Agent({
-		rejectUnauthorized: false,
-	});
 	yield put({
 		type: 'LOAD_LOGIN',
 		load: true,
 	});
 	const { history } = action.cred;
-	const response = yield call(api.post, '/sessionweb', action.cred, {
-		httpsAgent: agent,
-	});
+	const response = yield call(api.post, '/sessionweb', action.cred);
 	const { token, email, title } = response.data[0];
 	if (token) {
 		yield put({
