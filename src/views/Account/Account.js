@@ -19,7 +19,7 @@ import {
 	Typography,
 } from '@material-ui/core';
 
-import { AccountProfile, AccountDetails } from './components';
+import { UserToolbar } from './components';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -43,6 +43,7 @@ const Account = ({ getClients, users }) => {
 
 	return (
 		<div className={classes.root}>
+			<UserToolbar />
 			<CardContent className={classes.content}>
 				<PerfectScrollbar>
 					<div className={classes.inner}>
