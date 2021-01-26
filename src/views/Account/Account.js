@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UsersAction from '../../store/actions/users';
 import {
-	Card,
-	CardActions,
 	Avatar,
 	CardContent,
 	Table,
@@ -19,7 +17,7 @@ import {
 	Typography,
 } from '@material-ui/core';
 
-import { UserToolbar } from './components';
+import { UserToolbar, ModalToolbar } from './components';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -34,16 +32,22 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const Account = ({ getClients, users }) => {
+const Account = ({ getClients, editUser, users }) => {
 	const classes = useStyles();
 
 	useEffect(() => {
 		getClients();
 	}, []);
 
+	const handleOpenEditModal = user => {
+		const data = user;
+		editUser(data);
+	};
+
 	return (
 		<div className={classes.root}>
 			<UserToolbar />
+			<ModalToolbar />
 			<CardContent className={classes.content}>
 				<PerfectScrollbar>
 					<div className={classes.inner}>
@@ -81,7 +85,7 @@ const Account = ({ getClients, users }) => {
 										</TableCell>
 										<TableCell>
 											<IconButton
-												// onClick={() => handleEditBanner(banner)}
+												onClick={() => handleOpenEditModal(user)}
 												aria-label="edit"
 											>
 												<CreateIcon

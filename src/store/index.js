@@ -10,6 +10,7 @@ import pages from './reducers/page';
 import login from './reducers/login';
 import perfil from './reducers/perfil';
 import users from './reducers/user';
+import editUser from './reducers/editUser';
 
 import rootSaga from './sagas/root';
 
@@ -26,6 +27,7 @@ const store = createStore(
 		pages,
 		login,
 		perfil,
+		editUser,
 	}),
 	applyMiddleware(sagaMiddleware)
 );

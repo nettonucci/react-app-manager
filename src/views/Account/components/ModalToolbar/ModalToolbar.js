@@ -18,8 +18,9 @@ import { Alert } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as UsersAction from '../../../../store/actions/users';
 import {
-	Card,
+	Avatar,
 	CardHeader,
 	CardContent,
 	CardActions,
@@ -28,7 +29,7 @@ import {
 	Button,
 	TextField,
 } from '@material-ui/core';
-import * as AlertAction from '../../../../store/actions/alert';
+
 import './styles.css';
 
 import { ButtonColor } from './styles';
@@ -91,10 +92,15 @@ const useStyles = makeStyles(theme => ({
 		width: '100',
 		backgroundColor: '#f1f',
 	},
+	avatar: {
+		width: 100,
+		height: 100,
+		margin: 10,
+		alignSelf: 'center',
+	},
 }));
 
-const UserToolbar = ({ createAlerts }) => {
-	const [open, setOpen] = React.useState(false);
+const ModalToolbar = ({ modal, closeEditUser }) => {
 	const [alert, setalert] = React.useState(false);
 	const [values, setValues] = useState({
 		nome: '',
@@ -103,6 +109,8 @@ const UserToolbar = ({ createAlerts }) => {
 		funcao: '',
 		base: '',
 	});
+
+	// console.log('Open Modal:', modal.data.name);
 
 	const states = [
 		{
@@ -138,14 +146,6 @@ const UserToolbar = ({ createAlerts }) => {
 		},
 	];
 
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-
 	const handleChange = event => {
 		setValues({
 			...values,
@@ -161,114 +161,103 @@ const UserToolbar = ({ createAlerts }) => {
 
 	return (
 		<div className={classes.root}>
-			<div className={classes.row}>
-				<span className={classes.spacer} />
-
-				<Button color="secondary" onClick={handleClickOpen} variant="contained">
-					ADD USER
-				</Button>
-			</div>
 			<Dialog
 				aria-labelledby="form-dialog-title"
-				fullWidth
-				maxWidth="md"
-				onClose={handleClose}
-				open={open}
+				onClose={closeEditUser}
+				open={modal.open}
 			>
 				{alert && (
 					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
 				)}
-				<DialogTitle id="form-dialog-title">Adicionar Usuário</DialogTitle>
+				<DialogTitle id="form-dialog-title">Editar Usuário</DialogTitle>
 				<DialogContent>
 					<form autoComplete="off" noValidate>
 						<Divider />
 						<CardContent>
-							<Grid container spacing={3}>
-								<Grid item md={12} xs={12}>
-									<TextField
-										fullWidth
-										label="Nome"
-										margin="dense"
-										name="nome"
-										onChange={handleChange}
-										required
-										value={values.firstName}
-										variant="outlined"
-									/>
-								</Grid>
-								<Grid item md={6} xs={12}>
-									<TextField
-										fullWidth
-										label="Email"
-										margin="dense"
-										name="email"
-										onChange={handleChange}
-										required
-										value={values.email}
-										variant="outlined"
-									/>
-								</Grid>
-								<Grid item md={6} xs={12}>
-									<TextField
-										fullWidth
-										label="Senha"
-										margin="dense"
-										name="senha"
-										onChange={handleChange}
-										type="password"
-										value={values.phone}
-										variant="outlined"
-									/>
-								</Grid>
-								<Grid item md={6} xs={12}>
-									<TextField
-										fullWidth
-										label="Função"
-										margin="dense"
-										name="funcao"
-										onChange={handleChange}
-										required
-										select
-										// eslint-disable-next-line react/jsx-sort-props
-										SelectProps={{ native: true }}
-										value={values.state}
-										variant="outlined"
-									>
-										{states.map(option => (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										))}
-									</TextField>
-								</Grid>
-								<Grid item md={6} xs={12}>
-									<TextField
-										fullWidth
-										label="Base"
-										margin="dense"
-										name="base"
-										onChange={handleChange}
-										required
-										select
-										// eslint-disable-next-line react/jsx-sort-props
-										SelectProps={{ native: true }}
-										value={values.state}
-										variant="outlined"
-									>
-										{bases.map(option => (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										))}
-									</TextField>
-								</Grid>
-							</Grid>
+							<div style={{ display: 'flex', justifyContent: 'center' }}>
+								<Avatar
+									alt="Person"
+									className={classes.avatar}
+									src={`http://app1.cabonnet.com.br:3333/promos/${modal.data.photo}`}
+								/>
+							</div>
+							<div style={{ marginBottom: 10 }}>
+								<TextField
+									fullWidth
+									label="Nome"
+									margin="dense"
+									name="nome"
+									onChange={handleChange}
+									required
+									value={modal.data.name}
+									variant="outlined"
+								/>
+							</div>
+							{/* <div style={{ marginBottom: 10 }}> */}
+							<TextField
+								fullWidth
+								label="Email"
+								margin="dense"
+								name="email"
+								onChange={handleChange}
+								required
+								value={modal.data.email}
+								variant="outlined"
+								style={{ marginBottom: 10 }}
+							/>
+							{/* </div> */}
+							{/* <div style={{ marginBottom: 10 }}> */}
+							<TextField
+								fullWidth
+								label="Função"
+								margin="dense"
+								name="funcao"
+								onChange={handleChange}
+								required
+								select
+								// eslint-disable-next-line react/jsx-sort-props
+								SelectProps={{ native: true }}
+								value={modal.data.title}
+								variant="outlined"
+								style={{ marginBottom: 10 }}
+							>
+								{states.map(option => (
+									<option key={option.value} value={option.value}>
+										{option.label}
+									</option>
+								))}
+							</TextField>
+							{/* </div> */}
+							{/* <div style={{ marginBottom: 10 }}> */}
+							<TextField
+								fullWidth
+								label="Base"
+								margin="dense"
+								name="base"
+								onChange={handleChange}
+								required
+								select
+								// eslint-disable-next-line react/jsx-sort-props
+								SelectProps={{ native: true }}
+								value={values.state}
+								variant="outlined"
+								style={{ marginBottom: 10 }}
+							>
+								{bases.map(option => (
+									<option key={option.value} value={option.value}>
+										{option.label}
+									</option>
+								))}
+							</TextField>
+							{/* </div> */}
 						</CardContent>
 						<Divider />
 					</form>
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary">Cancelar</Button>
+					<Button color="primary" onClick={closeEditUser}>
+						Cancelar
+					</Button>
 					<Button color="primary">Adicionar</Button>
 				</DialogActions>
 			</Dialog>
@@ -276,11 +265,15 @@ const UserToolbar = ({ createAlerts }) => {
 	);
 };
 
-UserToolbar.propTypes = {
+ModalToolbar.propTypes = {
 	className: PropTypes.string,
 };
 
-const mapDispatchToProps = dispatch =>
-	bindActionCreators(AlertAction, dispatch);
+const mapStateToProps = state => ({
+	modal: state.editUser,
+});
 
-export default connect(null, mapDispatchToProps)(UserToolbar);
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(UsersAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalToolbar);
