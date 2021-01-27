@@ -141,6 +141,12 @@ function* getUsers() {
 	return;
 }
 
+function* createUsers(action) {
+	yield call(api.post, '/users', action.data);
+	yield getUsers();
+	return;
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -162,4 +168,5 @@ export default function* root() {
 	yield takeLatest('REQUEST_PERFIL', perfilRequest);
 
 	yield takeLatest('REQUEST_GET_USERS', getUsers);
+	yield takeLatest('REQUEST_CREATE_USER', createUsers);
 }

@@ -103,14 +103,14 @@ const useStyles = makeStyles(theme => ({
 const ModalToolbar = ({ modal, closeEditUser }) => {
 	const [alert, setalert] = React.useState(false);
 	const [values, setValues] = useState({
-		nome: '',
-		senha: '',
+		name: '',
+		pass: '',
 		email: '',
-		funcao: '',
-		base: '',
+		title: '',
+		id_base: '',
 	});
 
-	// console.log('Open Modal:', modal.data.name);
+	console.log('Open Modal:', modal.data);
 
 	const states = [
 		{
@@ -122,8 +122,8 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 			label: 'Moderador',
 		},
 		{
-			value: 'Desnvolvedor',
-			label: 'Desnvolvedor',
+			value: 'Desenvolvedor',
+			label: 'Desenvolvedor',
 		},
 	];
 
@@ -186,14 +186,14 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 									fullWidth
 									label="Nome"
 									margin="dense"
-									name="nome"
+									name="name"
 									onChange={handleChange}
 									required
 									value={modal.data.name}
 									variant="outlined"
 								/>
 							</div>
-							{/* <div style={{ marginBottom: 10 }}> */}
+
 							<TextField
 								fullWidth
 								label="Email"
@@ -205,13 +205,12 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 								variant="outlined"
 								style={{ marginBottom: 10 }}
 							/>
-							{/* </div> */}
-							{/* <div style={{ marginBottom: 10 }}> */}
+
 							<TextField
 								fullWidth
 								label="Função"
 								margin="dense"
-								name="funcao"
+								name="title"
 								onChange={handleChange}
 								required
 								select
@@ -227,19 +226,18 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 									</option>
 								))}
 							</TextField>
-							{/* </div> */}
-							{/* <div style={{ marginBottom: 10 }}> */}
+
 							<TextField
 								fullWidth
 								label="Base"
 								margin="dense"
-								name="base"
+								name="id_base"
 								onChange={handleChange}
 								required
 								select
 								// eslint-disable-next-line react/jsx-sort-props
 								SelectProps={{ native: true }}
-								value={values.state}
+								value={modal.data.base}
 								variant="outlined"
 								style={{ marginBottom: 10 }}
 							>
@@ -249,7 +247,6 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 									</option>
 								))}
 							</TextField>
-							{/* </div> */}
 						</CardContent>
 						<Divider />
 					</form>

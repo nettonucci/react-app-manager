@@ -11,3 +11,8 @@ export const closeEditUser = data => ({
 	type: 'CLOSE_EDIT_USER',
 	data,
 });
+
+export const createUser = data => ({
+	type: 'REQUEST_CREATE_USER',
+	data,
+});

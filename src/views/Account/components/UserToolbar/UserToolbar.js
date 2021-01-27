@@ -28,7 +28,7 @@ import {
 	Button,
 	TextField,
 } from '@material-ui/core';
-import * as AlertAction from '../../../../store/actions/alert';
+import * as UsersAction from '../../../../store/actions/users';
 import './styles.css';
 
 import { ButtonColor } from './styles';
@@ -93,18 +93,22 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const UserToolbar = ({ createAlerts }) => {
+const UserToolbar = ({ createUser }) => {
 	const [open, setOpen] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
 	const [values, setValues] = useState({
-		nome: '',
-		senha: '',
+		name: '',
+		pass: '',
 		email: '',
-		funcao: '',
-		base: '',
+		title: '',
+		id_base: '',
 	});
 
 	const states = [
+		{
+			value: 0,
+			label: 'Selecione',
+		},
 		{
 			value: 'Administrador',
 			label: 'Administrador',
@@ -120,6 +124,10 @@ const UserToolbar = ({ createAlerts }) => {
 	];
 
 	const bases = [
+		{
+			value: 0,
+			label: 'Selecione',
+		},
 		{
 			value: 1,
 			label: 'TVC Assis',
@@ -144,6 +152,14 @@ const UserToolbar = ({ createAlerts }) => {
 
 	const handleClose = () => {
 		setOpen(false);
+		setalert(false);
+		setValues({
+			name: '',
+			pass: '',
+			email: '',
+			title: '',
+			id_base: '',
+		});
 	};
 
 	const handleChange = event => {
@@ -153,8 +169,16 @@ const UserToolbar = ({ createAlerts }) => {
 		});
 	};
 
-	const handleAddUser = () => {
-		console.log(values);
+	const handleAddUser = event => {
+		event.preventDefault();
+		if (values.title === '' && values.id_base === '') {
+			setalert(true);
+			return;
+		}
+		const data = values;
+		createUser(data);
+		handleClose();
+		setValues({ ...values, name: '', pass: '', email: '' });
 	};
 
 	const classes = useStyles();
@@ -178,9 +202,9 @@ const UserToolbar = ({ createAlerts }) => {
 				{alert && (
 					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
 				)}
-				<DialogTitle id="form-dialog-title">Adicionar Usuário</DialogTitle>
-				<DialogContent>
-					<form autoComplete="off" noValidate>
+				<form onSubmit={handleAddUser}>
+					<DialogTitle id="form-dialog-title">Adicionar Usuário</DialogTitle>
+					<DialogContent>
 						<Divider />
 						<CardContent>
 							<Grid container spacing={3}>
@@ -189,10 +213,10 @@ const UserToolbar = ({ createAlerts }) => {
 										fullWidth
 										label="Nome"
 										margin="dense"
-										name="nome"
+										name="name"
 										onChange={handleChange}
 										required
-										value={values.firstName}
+										value={values.name}
 										variant="outlined"
 									/>
 								</Grid>
@@ -213,10 +237,11 @@ const UserToolbar = ({ createAlerts }) => {
 										fullWidth
 										label="Senha"
 										margin="dense"
-										name="senha"
+										name="pass"
 										onChange={handleChange}
 										type="password"
-										value={values.phone}
+										required
+										value={values.pass}
 										variant="outlined"
 									/>
 								</Grid>
@@ -225,13 +250,13 @@ const UserToolbar = ({ createAlerts }) => {
 										fullWidth
 										label="Função"
 										margin="dense"
-										name="funcao"
+										name="title"
 										onChange={handleChange}
 										required
 										select
 										// eslint-disable-next-line react/jsx-sort-props
 										SelectProps={{ native: true }}
-										value={values.state}
+										value={values.title}
 										variant="outlined"
 									>
 										{states.map(option => (
@@ -246,13 +271,13 @@ const UserToolbar = ({ createAlerts }) => {
 										fullWidth
 										label="Base"
 										margin="dense"
-										name="base"
+										name="id_base"
 										onChange={handleChange}
 										required
 										select
 										// eslint-disable-next-line react/jsx-sort-props
 										SelectProps={{ native: true }}
-										value={values.state}
+										value={values.id_base}
 										variant="outlined"
 									>
 										{bases.map(option => (
@@ -265,12 +290,16 @@ const UserToolbar = ({ createAlerts }) => {
 							</Grid>
 						</CardContent>
 						<Divider />
-					</form>
-				</DialogContent>
-				<DialogActions>
-					<Button color="primary">Cancelar</Button>
-					<Button color="primary">Adicionar</Button>
-				</DialogActions>
+					</DialogContent>
+					<DialogActions>
+						<Button color="primary" onClick={handleClose}>
+							Cancelar
+						</Button>
+						<Button color="primary" type="submit">
+							Adicionar
+						</Button>
+					</DialogActions>
+				</form>
 			</Dialog>
 		</div>
 	);
@@ -281,6 +310,6 @@ UserToolbar.propTypes = {
 };
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators(AlertAction, dispatch);
+	bindActionCreators(UsersAction, dispatch);
 
 export default connect(null, mapDispatchToProps)(UserToolbar);
