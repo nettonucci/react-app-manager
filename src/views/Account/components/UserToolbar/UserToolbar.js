@@ -96,6 +96,8 @@ const useStyles = makeStyles(theme => ({
 const UserToolbar = ({ createUser }) => {
 	const [open, setOpen] = React.useState(false);
 	const [alert, setalert] = React.useState(false);
+	const [alert2, setalert2] = React.useState(false);
+	const [repass, setRepass] = useState('');
 	const [values, setValues] = useState({
 		name: '',
 		pass: '',
@@ -157,6 +159,7 @@ const UserToolbar = ({ createUser }) => {
 	const handleClose = () => {
 		setOpen(false);
 		setalert(false);
+		setalert2(false);
 		setValues({
 			name: '',
 			pass: '',
@@ -182,6 +185,10 @@ const UserToolbar = ({ createUser }) => {
 		}
 		if (values.id_base === 'Selecione' || values.id_base === '') {
 			setalert(true);
+			return;
+		}
+		if (values.pass !== repass) {
+			setalert2(true);
 			return;
 		}
 
@@ -212,6 +219,7 @@ const UserToolbar = ({ createUser }) => {
 				{alert && (
 					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
 				)}
+				{alert2 && <Alert severity="error">As senhas não batem!!</Alert>}
 				<form onSubmit={handleAddUser}>
 					<DialogTitle id="form-dialog-title">Adicionar Usuário</DialogTitle>
 					<DialogContent>
@@ -230,7 +238,7 @@ const UserToolbar = ({ createUser }) => {
 										variant="outlined"
 									/>
 								</Grid>
-								<Grid item md={6} xs={12}>
+								<Grid item md={12} xs={12}>
 									<TextField
 										fullWidth
 										label="Email"
@@ -252,6 +260,19 @@ const UserToolbar = ({ createUser }) => {
 										type="password"
 										required
 										value={values.pass}
+										variant="outlined"
+									/>
+								</Grid>
+								<Grid item md={6} xs={12}>
+									<TextField
+										fullWidth
+										label="Confirmar senha"
+										margin="dense"
+										name="pass"
+										onChange={event => setRepass(event.target.value)}
+										type="password"
+										required
+										value={repass}
 										variant="outlined"
 									/>
 								</Grid>
