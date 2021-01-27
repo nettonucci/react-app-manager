@@ -16,6 +16,7 @@ import {
 	TableRow,
 	Typography,
 } from '@material-ui/core';
+import { IsAtivo, Ativo, IsPausado, Pausado } from './styles';
 
 import { UserToolbar, ModalToolbar } from './components';
 
@@ -59,6 +60,7 @@ const Account = ({ getClients, editUser, users }) => {
 									<TableCell>Email</TableCell>
 									<TableCell>Função</TableCell>
 									<TableCell>Base</TableCell>
+									<TableCell>Ativo</TableCell>
 									<TableCell>Editar</TableCell>
 								</TableRow>
 							</TableHead>
@@ -68,12 +70,16 @@ const Account = ({ getClients, editUser, users }) => {
 										<TableCell>{user.id}</TableCell>
 										<TableCell>
 											<div className={classes.nameContainer}>
-												<Avatar
-													alt={user.name}
-													className={classes.avatar}
-													src={`http://app1.cabonnet.com.br:3333/promos/${user.photo}`}
-													to="/settings"
-												/>
+												{user.photo !== null ? (
+													<Avatar
+														alt={user.name}
+														className={classes.avatar}
+														src={`http://app1.cabonnet.com.br:3333/web/${user.photo}`}
+													/>
+												) : (
+													<Avatar alt={user.name} className={classes.avatar} />
+												)}
+
 												<Typography variant="body1">{user.name}</Typography>
 											</div>
 										</TableCell>
@@ -82,6 +88,17 @@ const Account = ({ getClients, editUser, users }) => {
 										<TableCell>{user.title}</TableCell>
 										<TableCell>
 											{user.base === null ? '-' : user.base}
+										</TableCell>
+										<TableCell>
+											{user.ativo === true ? (
+												<IsAtivo>
+													<Ativo>Sim</Ativo>
+												</IsAtivo>
+											) : (
+												<IsPausado>
+													<Pausado>Não</Pausado>
+												</IsPausado>
+											)}
 										</TableCell>
 										<TableCell>
 											<IconButton

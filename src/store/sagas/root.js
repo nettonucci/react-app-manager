@@ -135,7 +135,9 @@ function* perfilRequest(action) {
 }
 
 function* getUsers() {
+	const token = localStorage.getItem('token_usuario_logado');
 	const response = yield call(api.get, '/users');
+	yield (api.defaults.headers.Authorization = `Bearer ${token}`);
 	yield put({
 		type: 'GET_USER',
 		users: response.data,

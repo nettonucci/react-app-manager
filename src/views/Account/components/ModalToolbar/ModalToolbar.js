@@ -119,6 +119,7 @@ const ModalToolbar = ({ modal, closeEditUser, saveEditUser }) => {
 			title: modal.data.title,
 			id_base: modal.data.id_base,
 			photo: modal.data.photo,
+			ativo: modal.data.ativo,
 		});
 	}, [modal]);
 
@@ -172,14 +173,15 @@ const ModalToolbar = ({ modal, closeEditUser, saveEditUser }) => {
 		const data = values;
 		saveEditUser(data);
 		closeEditUser();
-		setValues({
-			id: '',
-			name: '',
-			email: '',
-			title: '',
-			id_base: '',
-			photo: '',
-		});
+		// setValues({
+		// 	id: '',
+		// 	name: '',
+		// 	email: '',
+		// 	title: '',
+		// 	id_base: '',
+		// 	photo: '',
+		// 	ativo: '',
+		// });
 	};
 
 	const classes = useStyles();
@@ -201,11 +203,15 @@ const ModalToolbar = ({ modal, closeEditUser, saveEditUser }) => {
 							<Divider />
 							<CardContent>
 								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									<Avatar
-										alt={modal.data.name}
-										className={classes.avatar}
-										src={`http://app1.cabonnet.com.br:3333/promos/${modal.data.photo}`}
-									/>
+									{modal.data.photo !== null ? (
+										<Avatar
+											alt={modal.data.name}
+											className={classes.avatar}
+											src={`http://app1.cabonnet.com.br:3333/web/${modal.data.photo}`}
+										/>
+									) : (
+										<Avatar alt={modal.data.name} className={classes.avatar} />
+									)}
 								</div>
 								<div style={{ marginBottom: 10 }}>
 									<TextField
