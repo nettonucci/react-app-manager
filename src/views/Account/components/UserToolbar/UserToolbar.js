@@ -129,6 +129,10 @@ const UserToolbar = ({ createUser }) => {
 			label: 'Selecione',
 		},
 		{
+			value: 3,
+			label: 'IFASTNET',
+		},
+		{
 			value: 1,
 			label: 'TVC Assis',
 		},

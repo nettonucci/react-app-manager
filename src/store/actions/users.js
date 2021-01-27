@@ -7,12 +7,16 @@ export const editUser = data => ({
 	data,
 });
 
-export const closeEditUser = data => ({
+export const closeEditUser = () => ({
 	type: 'CLOSE_EDIT_USER',
-	data,
 });
 
 export const createUser = data => ({
 	type: 'REQUEST_CREATE_USER',
+	data,
+});
+
+export const saveEditUser = data => ({
+	type: 'REQUEST_EDIT_USER',
 	data,
 });

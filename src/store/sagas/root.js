@@ -97,21 +97,24 @@ function* loginRequest(action) {
 	const { history } = action.cred;
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 	const response = yield call(api.post, '/sessionweb', action.cred);
-	const { token, email, title } = response.data[0];
-	if (token) {
-		yield put({
-			type: 'GET_USER_PROFILE',
-			profile: response.data,
-		});
-		localStorage.setItem('email_usuario_logado', email);
-		localStorage.setItem('permissao_usuario_logado', title);
-		localStorage.setItem('token_usuario_logado', token);
-		history.push('/dashboard');
-		yield put({
-			type: 'LOAD_LOGIN',
-			load: false,
-		});
+	if (response.data !== false) {
+		const { token, email, title } = response.data[0];
+		if (token) {
+			yield put({
+				type: 'GET_USER_PROFILE',
+				profile: response.data,
+			});
+			localStorage.setItem('email_usuario_logado', email);
+			localStorage.setItem('permissao_usuario_logado', title);
+			localStorage.setItem('token_usuario_logado', token);
+			history.push('/dashboard');
+			yield put({
+				type: 'LOAD_LOGIN',
+				load: false,
+			});
+		}
 	} else {
+		console.log('entrou');
 		window.alert('Usuario e/ou senha incorreto(s)');
 		yield put({
 			type: 'LOAD_LOGIN',
@@ -147,6 +150,12 @@ function* createUsers(action) {
 	return;
 }
 
+function* editUsers(action) {
+	yield call(api.put, '/users', action.data);
+	yield getUsers();
+	return;
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -169,4 +178,5 @@ export default function* root() {
 
 	yield takeLatest('REQUEST_GET_USERS', getUsers);
 	yield takeLatest('REQUEST_CREATE_USER', createUsers);
+	yield takeLatest('REQUEST_EDIT_USER', editUsers);
 }

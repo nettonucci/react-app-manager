@@ -100,17 +100,27 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ModalToolbar = ({ modal, closeEditUser }) => {
+const ModalToolbar = ({ modal, closeEditUser, saveEditUser }) => {
 	const [alert, setalert] = React.useState(false);
 	const [values, setValues] = useState({
+		id: '',
 		name: '',
-		pass: '',
 		email: '',
 		title: '',
 		id_base: '',
+		photo: '',
 	});
 
-	console.log('Open Modal:', modal.data);
+	useEffect(() => {
+		setValues({
+			id: modal.data.id,
+			name: modal.data.name,
+			email: modal.data.email,
+			title: modal.data.title,
+			id_base: modal.data.id_base,
+			photo: modal.data.photo,
+		});
+	}, [modal]);
 
 	const states = [
 		{
@@ -133,6 +143,10 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 			label: 'TVC Assis',
 		},
 		{
+			value: 3,
+			label: 'IFASTNET',
+		},
+		{
 			value: 2,
 			label: 'R&R',
 		},
@@ -153,8 +167,19 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 		});
 	};
 
-	const handleAddUser = () => {
-		console.log(values);
+	const handleEditUser = event => {
+		event.preventDefault();
+		const data = values;
+		saveEditUser(data);
+		closeEditUser();
+		setValues({
+			id: '',
+			name: '',
+			email: '',
+			title: '',
+			id_base: '',
+			photo: '',
+		});
 	};
 
 	const classes = useStyles();
@@ -169,94 +194,98 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 				{alert && (
 					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
 				)}
-				<DialogTitle id="form-dialog-title">Editar Usuário</DialogTitle>
-				<DialogContent>
-					<form autoComplete="off" noValidate>
-						<Divider />
-						<CardContent>
-							<div style={{ display: 'flex', justifyContent: 'center' }}>
-								<Avatar
-									alt={modal.data.name}
-									className={classes.avatar}
-									src={`http://app1.cabonnet.com.br:3333/promos/${modal.data.photo}`}
-								/>
-							</div>
-							<div style={{ marginBottom: 10 }}>
+				<form onSubmit={handleEditUser}>
+					<DialogTitle id="form-dialog-title">Editar Usuário</DialogTitle>
+					<DialogContent>
+						<form autoComplete="off" noValidate>
+							<Divider />
+							<CardContent>
+								<div style={{ display: 'flex', justifyContent: 'center' }}>
+									<Avatar
+										alt={modal.data.name}
+										className={classes.avatar}
+										src={`http://app1.cabonnet.com.br:3333/promos/${modal.data.photo}`}
+									/>
+								</div>
+								<div style={{ marginBottom: 10 }}>
+									<TextField
+										fullWidth
+										label="Nome"
+										margin="dense"
+										name="name"
+										onChange={handleChange}
+										required
+										value={values.name}
+										variant="outlined"
+									/>
+								</div>
+
 								<TextField
 									fullWidth
-									label="Nome"
+									label="Email"
 									margin="dense"
-									name="name"
+									name="email"
 									onChange={handleChange}
 									required
-									value={modal.data.name}
+									value={values.email}
 									variant="outlined"
+									style={{ marginBottom: 10 }}
 								/>
-							</div>
 
-							<TextField
-								fullWidth
-								label="Email"
-								margin="dense"
-								name="email"
-								onChange={handleChange}
-								required
-								value={modal.data.email}
-								variant="outlined"
-								style={{ marginBottom: 10 }}
-							/>
+								<TextField
+									fullWidth
+									label="Função"
+									margin="dense"
+									name="title"
+									onChange={handleChange}
+									required
+									select
+									// eslint-disable-next-line react/jsx-sort-props
+									SelectProps={{ native: true }}
+									value={values.title}
+									variant="outlined"
+									style={{ marginBottom: 10 }}
+								>
+									{states.map(option => (
+										<option key={option.value} value={option.value}>
+											{option.label}
+										</option>
+									))}
+								</TextField>
 
-							<TextField
-								fullWidth
-								label="Função"
-								margin="dense"
-								name="title"
-								onChange={handleChange}
-								required
-								select
-								// eslint-disable-next-line react/jsx-sort-props
-								SelectProps={{ native: true }}
-								value={modal.data.title}
-								variant="outlined"
-								style={{ marginBottom: 10 }}
-							>
-								{states.map(option => (
-									<option key={option.value} value={option.value}>
-										{option.label}
-									</option>
-								))}
-							</TextField>
-
-							<TextField
-								fullWidth
-								label="Base"
-								margin="dense"
-								name="id_base"
-								onChange={handleChange}
-								required
-								select
-								// eslint-disable-next-line react/jsx-sort-props
-								SelectProps={{ native: true }}
-								value={modal.data.base}
-								variant="outlined"
-								style={{ marginBottom: 10 }}
-							>
-								{bases.map(option => (
-									<option key={option.value} value={option.value}>
-										{option.label}
-									</option>
-								))}
-							</TextField>
-						</CardContent>
-						<Divider />
-					</form>
-				</DialogContent>
-				<DialogActions>
-					<Button color="primary" onClick={closeEditUser}>
-						Cancelar
-					</Button>
-					<Button color="primary">Salvar</Button>
-				</DialogActions>
+								<TextField
+									fullWidth
+									label="Base"
+									margin="dense"
+									name="id_base"
+									onChange={handleChange}
+									required
+									select
+									// eslint-disable-next-line react/jsx-sort-props
+									SelectProps={{ native: true }}
+									value={values.id_base}
+									variant="outlined"
+									style={{ marginBottom: 10 }}
+								>
+									{bases.map(option => (
+										<option key={option.value} value={option.value}>
+											{option.label}
+										</option>
+									))}
+								</TextField>
+							</CardContent>
+							<Divider />
+						</form>
+					</DialogContent>
+					<DialogActions>
+						<Button color="primary" onClick={closeEditUser}>
+							Cancelar
+						</Button>
+						<Button color="primary" type="submit">
+							Salvar
+						</Button>
+					</DialogActions>
+				</form>
 			</Dialog>
 		</div>
 	);
