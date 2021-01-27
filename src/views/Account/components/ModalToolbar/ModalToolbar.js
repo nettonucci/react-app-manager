@@ -176,7 +176,7 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 						<CardContent>
 							<div style={{ display: 'flex', justifyContent: 'center' }}>
 								<Avatar
-									alt="Person"
+									alt={modal.data.name}
 									className={classes.avatar}
 									src={`http://app1.cabonnet.com.br:3333/promos/${modal.data.photo}`}
 								/>

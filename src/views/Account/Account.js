@@ -69,7 +69,7 @@ const Account = ({ getClients, editUser, users }) => {
 										<TableCell>
 											<div className={classes.nameContainer}>
 												<Avatar
-													alt="Person"
+													alt={user.name}
 													className={classes.avatar}
 													src={`http://app1.cabonnet.com.br:3333/promos/${user.photo}`}
 													to="/settings"
