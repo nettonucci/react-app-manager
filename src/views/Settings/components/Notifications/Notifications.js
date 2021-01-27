@@ -2,6 +2,9 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ProfileAction from '../../../../store/actions/perfil';
 import {
 	Card,
 	CardHeader,
@@ -12,6 +15,7 @@ import {
 	FormControlLabel,
 	Checkbox,
 	Typography,
+	TextField,
 	Button,
 } from '@material-ui/core';
 import './styles.css';
@@ -25,12 +29,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Notifications = props => {
-	const { className, ...rest } = props;
+	const { className, perfil, ...rest } = props;
 	const [thumbnail, setThumbnail] = useState(null);
 
 	const preview = useMemo(() => {
 		return thumbnail ? URL.createObjectURL(thumbnail) : null;
 	}, [thumbnail]);
+
+	console.log('Edit Perfil', perfil[0].name);
 
 	const classes = useStyles();
 
@@ -41,40 +47,53 @@ const Notifications = props => {
 				<Divider />
 				<CardContent>
 					<Grid container spacing={6} wrap="wrap">
-						<Grid className={classes.item} item md={6} sm={6} xs={12}>
+						<Grid className={classes.item} item md={8} sm={6} xs={12}>
 							<Typography gutterBottom variant="h6">
 								Informações
 							</Typography>
-							<FormControlLabel
-								control={
-									<Checkbox
-										color="primary"
-										defaultChecked //
-									/>
-								}
+							<TextField
+								fullWidth
+								disabled
+								label="Nome"
+								margin="dense"
+								name="name"
+								type="text"
+								variant="outlined"
+								value={perfil[0].name}
+							/>
+
+							<TextField
+								fullWidth
+								disabled
 								label="Email"
+								margin="dense"
+								name="email"
+								type="email"
+								variant="outlined"
+								style={{ marginTop: '1rem' }}
+								value={perfil[0].email}
 							/>
-							<FormControlLabel
-								control={
-									<Checkbox
-										color="primary"
-										defaultChecked //
-									/>
-								}
-								label="Push Notifications"
+							<TextField
+								fullWidth
+								disabled
+								label="Função"
+								margin="dense"
+								name="title"
+								type="text"
+								variant="outlined"
+								style={{ marginTop: '1rem' }}
+								value={perfil[0].title}
 							/>
-							<FormControlLabel
-								control={<Checkbox color="primary" />}
-								label="Text Messages"
-							/>
-							<FormControlLabel
-								control={
-									<Checkbox
-										color="primary"
-										defaultChecked //
-									/>
-								}
-								label="Phone calls"
+							<TextField
+								fullWidth
+								disabled
+								label="Base"
+								margin="dense"
+								name="id_base"
+								type="texte"
+								variant="outlined"
+								style={{ marginTop: '1rem' }}
+								value={perfil[0].base}
 							/>
 						</Grid>
 						<Grid className={classes.item} item md={4} sm={6} xs={12}>
@@ -83,8 +102,14 @@ const Notifications = props => {
 							</Typography>
 							<label
 								id="thumbnail"
-								style={{ backgroundImage: `url(${preview})` }}
-								className={thumbnail ? 'has-thumbnail' : ''}
+								style={
+									!thumbnail
+										? {
+												backgroundImage: `url(http://app1.cabonnet.com.br:3333/web/${perfil[0].photo})`,
+										  }
+										: { backgroundImage: `url(${preview})` }
+								}
+								className={'has-thumbnail'}
 							>
 								<input
 									type="file"
@@ -110,4 +135,11 @@ Notifications.propTypes = {
 	className: PropTypes.string,
 };
 
-export default Notifications;
+const mapStateToProps = state => ({
+	perfil: state.perfil,
+});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(ProfileAction, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
