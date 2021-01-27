@@ -98,11 +98,11 @@ const Sidebar = props => {
 			href: '/sign-in',
 			icon: <SearchIcon />,
 		},
-		{
-			title: 'Settings',
-			href: '/settings',
-			icon: <LockOpenIcon />,
-		},
+		// {
+		// 	title: 'Settings',
+		// 	href: '/settings',
+		// 	icon: <LockOpenIcon />,
+		// },
 	];
 
 	return (

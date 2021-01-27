@@ -102,7 +102,7 @@ const Routes = () => (
 			layout={MainLayout}
 			path="/account"
 		/>
-		<PrivateRouteDev
+		<PrivateRoute
 			component={SettingsView}
 			exact
 			layout={MainLayout}

@@ -109,7 +109,7 @@ const Notifications = props => {
 										  }
 										: { backgroundImage: `url(${preview})` }
 								}
-								className={'has-thumbnail'}
+								className={perfil[0].photo || thumbnail ? 'has-thumbnail' : ''}
 							>
 								<input
 									type="file"
