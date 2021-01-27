@@ -106,7 +106,7 @@ const UserToolbar = ({ createUser }) => {
 
 	const states = [
 		{
-			value: 0,
+			value: 'Selecione',
 			label: 'Selecione',
 		},
 		{
@@ -118,14 +118,14 @@ const UserToolbar = ({ createUser }) => {
 			label: 'Moderador',
 		},
 		{
-			value: 'Desnvolvedor',
-			label: 'Desnvolvedor',
+			value: 'Desenvolvedor',
+			label: 'Desenvolvedor',
 		},
 	];
 
 	const bases = [
 		{
-			value: 0,
+			value: 'Selecione',
 			label: 'Selecione',
 		},
 		{
@@ -171,10 +171,16 @@ const UserToolbar = ({ createUser }) => {
 
 	const handleAddUser = event => {
 		event.preventDefault();
-		if (values.title === '' && values.id_base === '') {
+
+		if (values.title === 'Selecione' || values.title === '') {
 			setalert(true);
 			return;
 		}
+		if (values.id_base === 'Selecione' || values.id_base === '') {
+			setalert(true);
+			return;
+		}
+
 		const data = values;
 		createUser(data);
 		handleClose();

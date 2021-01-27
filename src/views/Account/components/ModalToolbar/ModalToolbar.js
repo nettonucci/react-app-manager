@@ -255,7 +255,7 @@ const ModalToolbar = ({ modal, closeEditUser }) => {
 					<Button color="primary" onClick={closeEditUser}>
 						Cancelar
 					</Button>
-					<Button color="primary">Adicionar</Button>
+					<Button color="primary">Salvar</Button>
 				</DialogActions>
 			</Dialog>
 		</div>
