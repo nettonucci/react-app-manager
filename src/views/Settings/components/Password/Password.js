@@ -36,6 +36,12 @@ const Password = props => {
 
 	const handleSave = event => {
 		event.preventDefault();
+
+		if (values.newpassword !== values.confirm) {
+			console.log('entrou');
+			window.alert('Suas senhas novas não batem');
+			return;
+		}
 		console.log(values);
 	};
 
