@@ -22,7 +22,8 @@ const Password = props => {
 	const classes = useStyles();
 
 	const [values, setValues] = useState({
-		password: '',
+		oldpassword: '',
+		newpassword: '',
 		confirm: '',
 	});
 
@@ -33,16 +34,21 @@ const Password = props => {
 		});
 	};
 
+	const handleSave = event => {
+		event.preventDefault();
+		console.log(values);
+	};
+
 	return (
 		<Card {...rest} className={clsx(classes.root, className)}>
-			<form>
+			<form onSubmit={handleSave}>
 				<CardHeader subheader="Alterar senha" title="Senha" />
 				<Divider />
 				<CardContent>
 					<TextField
 						fullWidth
 						label="Senha atual"
-						name="password"
+						name="oldpassword"
 						onChange={handleChange}
 						type="password"
 						value={values.password}
@@ -51,7 +57,7 @@ const Password = props => {
 					<TextField
 						fullWidth
 						label="Senha nova"
-						name="password"
+						name="newpassword"
 						onChange={handleChange}
 						style={{ marginTop: '1rem' }}
 						type="password"
@@ -71,7 +77,7 @@ const Password = props => {
 				</CardContent>
 				<Divider />
 				<CardActions>
-					<Button color="primary" variant="outlined">
+					<Button color="primary" variant="outlined" type="submit">
 						Alterar
 					</Button>
 				</CardActions>
