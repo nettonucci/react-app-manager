@@ -36,13 +36,23 @@ const Notifications = props => {
 		return thumbnail ? URL.createObjectURL(thumbnail) : null;
 	}, [thumbnail]);
 
-	console.log('Edit Perfil', perfil[0].name);
+	const handleSave = event => {
+		event.preventDefault();
+		if (thumbnail === null) {
+			console.log(
+				'Thumbnail vazia, foto atual continua a mesma',
+				perfil[0].photo
+			);
+		} else if (thumbnail !== null) {
+			console.log('Thumbnail contem uma foto nova: ', thumbnail);
+		}
+	};
 
 	const classes = useStyles();
 
 	return (
 		<Card {...rest} className={clsx(classes.root, className)}>
-			<form>
+			<form onSubmit={handleSave}>
 				<CardHeader subheader="Edite seu perfil" title="Perfil" />
 				<Divider />
 				<CardContent>
@@ -122,7 +132,7 @@ const Notifications = props => {
 				</CardContent>
 				<Divider />
 				<CardActions>
-					<Button color="primary" variant="outlined">
+					<Button color="primary" variant="outlined" type="submit">
 						Salvar
 					</Button>
 				</CardActions>
