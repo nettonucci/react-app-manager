@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const UsersToolbar = props => {
+const ClientsToolbar = props => {
 	const { className, getSearchClients, getClients, clients, ...rest } = props;
 	const [por, setPor] = React.useState('');
 	const [visible, setVisible] = React.useState(false);
@@ -171,7 +171,7 @@ const UsersToolbar = props => {
 	);
 };
 
-UsersToolbar.propTypes = {
+ClientsToolbar.propTypes = {
 	className: PropTypes.string,
 };
 
@@ -182,4 +182,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
 	bindActionCreators({ ...SearchAction, ...ClientsAction }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersToolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(ClientsToolbar);

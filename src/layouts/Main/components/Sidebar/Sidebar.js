@@ -51,7 +51,7 @@ const Sidebar = props => {
 		},
 		{
 			title: 'Clientes',
-			href: '/users',
+			href: '/clients',
 			icon: <PeopleIcon />,
 		},
 		{
@@ -90,7 +90,7 @@ const Sidebar = props => {
 	const pagesDev = [
 		{
 			title: 'Usuários',
-			href: '/account',
+			href: '/users',
 			icon: <AccountCircleIcon />,
 		},
 		{

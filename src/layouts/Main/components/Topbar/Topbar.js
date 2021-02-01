@@ -63,9 +63,8 @@ const Topbar = props => {
 			color="secondary"
 		>
 			<Toolbar>
-				<RouterLink to="/">
-					<img alt="Logo" src="/images/logos/logoSmall.png" />
-				</RouterLink>
+				<img alt="Logo" src="/images/logos/logoSmall.png" />
+
 				<div className={classes.flexGrow} />
 				<Hidden mdDown>
 					<IconButton color="inherit">

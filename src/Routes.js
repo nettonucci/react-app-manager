@@ -9,10 +9,10 @@ import { RouteWithLayout } from './components';
 import {
 	Dashboard as DashboardView,
 	Banners as BannersView,
-	UserList as UserListView,
+	ClientList as ClientListView,
 	Typography as TypographyView,
 	Videos as VideosView,
-	Account as AccountView,
+	UserList as UserListView,
 	Settings as SettingsView,
 	SignUp as SignUpView,
 	SignIn as SignInView,
@@ -73,10 +73,10 @@ const Routes = () => (
 			path="/dashboard"
 		/>
 		<PrivateRoute
-			component={UserListView}
+			component={ClientListView}
 			exact
 			layout={MainLayout}
-			path="/users"
+			path="/clients"
 		/>
 		<PrivateRoute
 			component={BannersView}
@@ -97,10 +97,10 @@ const Routes = () => (
 			path="/videos"
 		/>
 		<PrivateRouteDev
-			component={AccountView}
+			component={UserListView}
 			exact
 			layout={MainLayout}
-			path="/account"
+			path="/users"
 		/>
 		<PrivateRoute
 			component={SettingsView}
