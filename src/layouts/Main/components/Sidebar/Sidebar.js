@@ -120,6 +120,7 @@ const Sidebar = props => {
 				{perfil[0].title === 'Desenvolvedor' && (
 					<>
 						<Divider className={classes.divider} />
+						Dev menu
 						<SidebarNav className={classes.nav} pages={pagesDev} />
 					</>
 				)}

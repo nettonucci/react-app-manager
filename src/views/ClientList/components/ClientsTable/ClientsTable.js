@@ -90,13 +90,13 @@ const ClientsTable = props => {
 				<IconButton
 					aria-label="Back"
 					onClick={handlePageChangeToBack}
-					disabled={page === 1 ? true : false}
+					disabled={page === 1 ? true : totalPage === 1 ? true : false}
 				>
 					<ArrowBackIosIcon fontSize="small" />
 				</IconButton>
 				<InputPage
 					id="outlined-number"
-					value={page}
+					value={totalPage === 1 ? 1 : page}
 					type="number"
 					variant="outlined"
 					onChange={handleChange}
@@ -106,7 +106,7 @@ const ClientsTable = props => {
 				<IconButton
 					aria-label="Next"
 					onClick={handlePageChangeToNext}
-					disabled={page === totalPage ? true : false}
+					disabled={page === totalPage ? true : totalPage === 1 ? true : false}
 				>
 					<ArrowForwardIosIcon fontSize="small" />
 				</IconButton>
@@ -185,13 +185,13 @@ const ClientsTable = props => {
 				<IconButton
 					aria-label="Back"
 					onClick={handlePageChangeToBack}
-					disabled={page === 1 ? true : false}
+					disabled={page === 1 ? true : totalPage === 1 ? true : false}
 				>
 					<ArrowBackIosIcon fontSize="small" />
 				</IconButton>
 				<InputPage
 					id="outlined-number"
-					value={page}
+					value={totalPage === 1 ? 1 : page}
 					type="number"
 					variant="outlined"
 					onChange={handleChange}
@@ -201,7 +201,7 @@ const ClientsTable = props => {
 				<IconButton
 					aria-label="Next"
 					onClick={handlePageChangeToNext}
-					disabled={page === totalPage ? true : false}
+					disabled={page === totalPage ? true : totalPage === 1 ? true : false}
 				>
 					<ArrowForwardIosIcon fontSize="small" />
 				</IconButton>
