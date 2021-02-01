@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const UsersTable = props => {
+const ClientsTable = props => {
 	const { className, clients, getClients, totalPage, ...rest } = props;
 	const classes = useStyles();
 	const [page, setPage] = useState(1);
@@ -210,7 +210,7 @@ const UsersTable = props => {
 	);
 };
 
-UsersTable.propTypes = {
+ClientsTable.propTypes = {
 	className: PropTypes.string,
 	users: PropTypes.array.isRequired,
 };
@@ -222,4 +222,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(ClientsAction, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ClientsTable);
