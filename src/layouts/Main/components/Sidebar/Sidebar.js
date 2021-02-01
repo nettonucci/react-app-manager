@@ -95,7 +95,7 @@ const Sidebar = props => {
 		},
 		{
 			title: 'Busca de clientes',
-			href: '/sign-in',
+			href: '/searchclients',
 			icon: <SearchIcon />,
 		},
 		// {
