@@ -134,6 +134,16 @@ function* perfilRequest(action) {
 	return;
 }
 
+function* chgPass(action) {
+	const response = yield call(api.put, `/userschgpass`, action.data);
+	if (response.data.result === 'Successfully') {
+		window.alert('Senha alterada com sucesso!');
+	} else {
+		window.alert('Senha atual incorreta!');
+	}
+	return;
+}
+
 function* getUsers() {
 	const token = localStorage.getItem('token_usuario_logado');
 	const response = yield call(api.get, '/users');
@@ -177,6 +187,7 @@ export default function* root() {
 	yield takeLatest('REQUEST_LOGIN', loginRequest);
 
 	yield takeLatest('REQUEST_PERFIL', perfilRequest);
+	yield takeLatest('CHANGE_PASS_REQUEST', chgPass);
 
 	yield takeLatest('REQUEST_GET_USERS', getUsers);
 	yield takeLatest('REQUEST_CREATE_USER', createUsers);

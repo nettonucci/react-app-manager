@@ -45,7 +45,7 @@ const Profile = props => {
 	return (
 		<div {...rest} className={clsx(classes.root, className)}>
 			<Avatar
-				alt="Person"
+				alt={user.name}
 				className={classes.avatar}
 				component={RouterLink}
 				src={`http://app1.cabonnet.com.br:3333/promos/${user.avatar}`}

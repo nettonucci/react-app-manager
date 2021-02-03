@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -11,21 +11,33 @@ import {
 	Button,
 	TextField,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as ProfileAction from '../../../../store/actions/perfil';
 
 const useStyles = makeStyles(() => ({
 	root: {},
 }));
 
 const Password = props => {
-	const { className, ...rest } = props;
+	const { className, changePassRequest, ...rest } = props;
 
 	const classes = useStyles();
 
 	const [values, setValues] = useState({
-		oldpassword: '',
-		newpassword: '',
+		oldpass: '',
+		newpass: '',
 		confirm: '',
+		email: '',
 	});
+
+	useEffect(() => {
+		const email = localStorage.getItem('email_usuario_logado');
+		setValues({
+			...values,
+			email: email,
+		});
+	}, []);
 
 	const handleChange = event => {
 		setValues({
@@ -36,13 +48,21 @@ const Password = props => {
 
 	const handleSave = event => {
 		event.preventDefault();
+		if (
+			values.newpass === '' ||
+			values.oldpass === '' ||
+			values.confirm === ''
+		) {
+			window.alert('Todos os campos precisam estar preenchidos!');
+			return;
+		}
 
-		if (values.newpassword !== values.confirm) {
-			console.log('entrou');
+		if (values.newpass !== values.confirm) {
 			window.alert('Suas senhas novas não batem');
 			return;
 		}
-		console.log(values);
+		const data = values;
+		changePassRequest(data);
 	};
 
 	return (
@@ -54,7 +74,7 @@ const Password = props => {
 					<TextField
 						fullWidth
 						label="Senha atual"
-						name="oldpassword"
+						name="oldpass"
 						onChange={handleChange}
 						type="password"
 						value={values.password}
@@ -63,7 +83,7 @@ const Password = props => {
 					<TextField
 						fullWidth
 						label="Senha nova"
-						name="newpassword"
+						name="newpass"
 						onChange={handleChange}
 						style={{ marginTop: '1rem' }}
 						type="password"
@@ -96,4 +116,7 @@ Password.propTypes = {
 	className: PropTypes.string,
 };
 
-export default Password;
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(ProfileAction, dispatch);
+
+export default connect(null, mapDispatchToProps)(Password);
