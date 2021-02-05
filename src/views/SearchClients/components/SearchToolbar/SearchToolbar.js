@@ -22,7 +22,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as SearchAction from '../../../../store/actions/searchClients';
-import * as ClientsAction from '../../../../store/actions/clients';
 
 const useStyles = makeStyles(theme => ({
 	root: {},
@@ -63,8 +62,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SearchToolbar = props => {
-	const { className, getSearchClients, getClients, clients, ...rest } = props;
-	const [por, setPor] = React.useState('');
+	const { className, SearchClientsFatores, ...rest } = props;
 	const [visible, setVisible] = React.useState(false);
 	const [pesquisa, setPesquisa] = React.useState('');
 
@@ -72,7 +70,11 @@ const SearchToolbar = props => {
 		setPesquisa(event.target.value);
 	};
 
-	const handleClickSearch = event => {};
+	const handleClickSearch = event => {
+		console.log(pesquisa);
+		const cpf = pesquisa;
+		SearchClientsFatores(cpf);
+	};
 
 	const classes = useStyles();
 
@@ -115,6 +117,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ ...SearchAction, ...ClientsAction }, dispatch);
+	bindActionCreators(SearchAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchToolbar);

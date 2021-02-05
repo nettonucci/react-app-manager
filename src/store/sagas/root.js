@@ -88,6 +88,15 @@ function* searchClients(action) {
 		pages: 1,
 	});
 }
+function* searchClientsFatores(action) {
+	const response = yield call(api.get, `/fatoresweb?cpffinal=${action.cpf}`);
+	if (response.data.length === 0) {
+		window.alert('Nenhum cliente encontrato para este CPF/CNPJ!');
+		return;
+	}
+	console.log(response.data.length);
+	console.log(response.data);
+}
 
 function* loginRequest(action) {
 	yield put({
@@ -183,6 +192,7 @@ export default function* root() {
 
 	yield takeLatest('REQUEST_GET_CLIENTS', getClients);
 	yield takeLatest('REQUEST_SEARCH_CLIENTS', searchClients);
+	yield takeLatest('REQUEST_SEARCH_CLIENTS_FATORES', searchClientsFatores);
 
 	yield takeLatest('REQUEST_LOGIN', loginRequest);
 
