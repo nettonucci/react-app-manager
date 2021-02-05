@@ -1,4 +1,4 @@
-## [Cabonnet App Manager - Admin Dashboard](react-app-manager.vercel.app)
+## [Cabonnet App Manager - Admin Dashboard](https://react-app-manager.vercel.app/)
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
