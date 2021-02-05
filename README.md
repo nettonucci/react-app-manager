@@ -4,5 +4,5 @@
 
 [![Cabonnet App Manager - Admin Dashboard](https://i.imgur.com/G6Lolm9.png)](https://react-material-dashboard.devias.io/dashboard)
 
-> 🚧%20README under construction 🚧
+> 🚧. README under construction 🚧
 
