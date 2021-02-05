@@ -127,6 +127,7 @@ const Notifications = props => {
 								/>
 								<img src="/images/camera.svg" alt="Select img" />
 							</label>
+							Editar
 						</Grid>
 					</Grid>
 				</CardContent>
