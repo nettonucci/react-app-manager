@@ -94,8 +94,11 @@ function* searchClientsFatores(action) {
 		window.alert('Nenhum cliente encontrato para este CPF/CNPJ!');
 		return;
 	}
-	console.log(response.data.length);
-	console.log(response.data);
+	const response2 = yield call(api.post, '/assinantesweb', response.data[0]);
+	yield put({
+		type: 'SEARCH_CLIENT_FATORES',
+		data: response2.data,
+	});
 }
 
 function* loginRequest(action) {

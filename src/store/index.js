@@ -11,6 +11,7 @@ import login from './reducers/login';
 import perfil from './reducers/perfil';
 import users from './reducers/user';
 import editUser from './reducers/editUser';
+import searchClientsFatores from './reducers/searchClientsFatores';
 
 import rootSaga from './sagas/root';
 
@@ -28,6 +29,7 @@ const store = createStore(
 		login,
 		perfil,
 		editUser,
+		searchClientsFatores,
 	}),
 	applyMiddleware(sagaMiddleware)
 );

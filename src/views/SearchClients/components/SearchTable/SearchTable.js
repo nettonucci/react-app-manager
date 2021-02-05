@@ -13,7 +13,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ClientsAction from '../../../../store/actions/clients';
+import * as SearchAction from '../../../../store/actions/searchClients';
 import {
 	Card,
 	CardActions,
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ClientsTable = props => {
-	const { className, clients, getClients, totalPage, ...rest } = props;
+	const { className, user, ...rest } = props;
 	const classes = useStyles();
 
 	return (
@@ -76,10 +76,14 @@ const ClientsTable = props => {
 									<TableCell>Ação</TableCell>
 								</TableRow>
 							</TableHead>
-							{/* <TableBody>
-								{clients.data.map(user => (
-									<TableRow className={classes.tableRow} hover key={user.id}>
-										<TableCell>{user.id}</TableCell>
+							<TableBody>
+								{user.map(user => (
+									<TableRow
+										className={classes.tableRow}
+										hover
+										key={user.idassinante}
+									>
+										<TableCell>{user.idassinante}</TableCell>
 										<TableCell>
 											<div className={classes.nameContainer}>
 												<Typography variant="body1">
@@ -87,45 +91,19 @@ const ClientsTable = props => {
 												</Typography>
 											</div>
 										</TableCell>
-										<TableCell>{user.email}</TableCell>
+										<TableCell>{user.nomecidade}</TableCell>
 										<TableCell>{user.cpfcnpj}</TableCell>
+										<TableCell>{user.formapagamento}</TableCell>
+										<TableCell>{user.nomebase}</TableCell>
 										<TableCell>
-											{user.status_fator === 'true' ? (
-												<IsAtivo>
-													<Ativo>Sim</Ativo>
-												</IsAtivo>
-											) : (
-												<IsPausado>
-													<Pausado>Não</Pausado>
-												</IsPausado>
-											)}
+											{user.descricaoclassificacao === null
+												? 'STANDARD'
+												: user.descricaoclassificacao}
 										</TableCell>
-										<TableCell>
-											{user.base === null ? '-' : user.base}
-										</TableCell>
-										<TableCell>
-											{user.plataforma === 'android' ? (
-												<AndroidIcon />
-											) : user.plataforma === 'ios' ? (
-												<AppleIcon />
-											) : (
-												'-'
-											)}
-										</TableCell>
-										<TableCell>
-											{user.avaliou_app === true ? (
-												<IsAtivo>
-													<Ativo>Sim</Ativo>
-												</IsAtivo>
-											) : (
-												<IsPausado>
-													<Pausado>Não</Pausado>
-												</IsPausado>
-											)}
-										</TableCell>
+										<TableCell></TableCell>
 									</TableRow>
 								))}
-							</TableBody> */}
+							</TableBody>
 						</Table>
 					</div>
 				</PerfectScrollbar>
@@ -141,10 +119,10 @@ ClientsTable.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	totalPage: state.pages,
+	user: state.searchClientsFatores,
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators(ClientsAction, dispatch);
+	bindActionCreators(SearchAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClientsTable);

@@ -74,6 +74,7 @@ const SearchToolbar = props => {
 		console.log(pesquisa);
 		const cpf = pesquisa;
 		SearchClientsFatores(cpf);
+		setPesquisa('');
 	};
 
 	const classes = useStyles();
