@@ -10,6 +10,7 @@ import AppleIcon from '@material-ui/icons/Apple';
 import { makeStyles } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -57,6 +58,8 @@ const ClientsTable = props => {
 	const { className, user, ...rest } = props;
 	const classes = useStyles();
 
+	console.log(user);
+
 	return (
 		<Card {...rest} className={clsx(classes.root, className)}>
 			<CardActions className={classes.actions}></CardActions>
@@ -100,7 +103,14 @@ const ClientsTable = props => {
 												? 'STANDARD'
 												: user.descricaoclassificacao}
 										</TableCell>
-										<TableCell></TableCell>
+										<TableCell>
+											<IconButton aria-label="edit">
+												<VisibilityIcon
+													fontSize="small"
+													style={{ color: '#4287f5' }}
+												/>
+											</IconButton>
+										</TableCell>
 									</TableRow>
 								))}
 							</TableBody>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchToolbar, SearchTable } from './components';
+import { SearchToolbar, SearchTable, SearchModal } from './components';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -17,6 +17,7 @@ const SearchClients = () => {
 		<div className={classes.root}>
 			<SearchToolbar />
 			<SearchTable />
+			<SearchModal />
 		</div>
 	);
 };
