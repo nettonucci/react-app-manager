@@ -7,6 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import BusinessIcon from '@material-ui/icons/Business';
 import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -53,6 +54,11 @@ const Sidebar = props => {
 			title: 'Clientes',
 			href: '/clients',
 			icon: <PeopleIcon />,
+		},
+		{
+			title: 'Empresas',
+			href: '/companies',
+			icon: <BusinessIcon />,
 		},
 		{
 			title: 'Banners',

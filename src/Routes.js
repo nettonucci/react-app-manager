@@ -18,6 +18,7 @@ import {
 	SignIn as SignInView,
 	NotFound as NotFoundView,
 	SearchClients as SearchClientsView,
+	Companies as CompaniesView,
 } from './views';
 
 const PrivateRoute = props => {
@@ -102,6 +103,12 @@ const Routes = () => (
 			exact
 			layout={MainLayout}
 			path="/users"
+		/>
+		<PrivateRouteDev
+			component={CompaniesView}
+			exact
+			layout={MainLayout}
+			path="/companies"
 		/>
 		<PrivateRouteDev
 			component={SearchClientsView}

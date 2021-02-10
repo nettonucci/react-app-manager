@@ -9,3 +9,4 @@ export { default as SignUp } from './SignUp';
 export { default as Typography } from './Alert';
 export { default as ClientList } from './ClientList';
 export { default as SearchClients } from './SearchClients';
+export { default as Companies } from './Companies';
