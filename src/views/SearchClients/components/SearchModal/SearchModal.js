@@ -28,6 +28,7 @@ import {
 	Grid,
 	Button,
 	TextField,
+	Paper,
 } from '@material-ui/core';
 
 import './styles.css';
@@ -221,6 +222,16 @@ const SearchModal = ({ modal, closeEditUser, saveEditUser }) => {
 							<p>Nascimento</p>
 							<p>Oi</p>
 						</BoxDiv>
+						<Paper>
+							<p>Forma de pagamento</p>
+							<p>Oi</p>
+							<p>Dia de vencimento</p>
+							<p>Oi</p>
+							<p>Classificaçao</p>
+							<p>Oi</p>
+							<p>Nascimento</p>
+							<p>Oi</p>
+						</Paper>
 					</CardContent>
 					<Divider />
 				</DialogContent>
