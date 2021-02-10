@@ -180,6 +180,16 @@ function* editUsers(action) {
 	return;
 }
 
+function* getCompanies() {
+	const response = yield call(api.get, '/empresas');
+	yield put({
+		type: 'GET_COMPANIES',
+		companies: response.data,
+	});
+
+	return;
+}
+
 export default function* root() {
 	yield takeLatest('REQUEST_GET_ALERTS', getAlerts);
 	yield takeLatest('REQUEST_CREATE_ALERTS', createAlerts);
@@ -205,4 +215,6 @@ export default function* root() {
 	yield takeLatest('REQUEST_GET_USERS', getUsers);
 	yield takeLatest('REQUEST_CREATE_USER', createUsers);
 	yield takeLatest('REQUEST_EDIT_USER', editUsers);
+
+	yield takeLatest('REQUEST_GET_COMPANIES', getCompanies);
 }
