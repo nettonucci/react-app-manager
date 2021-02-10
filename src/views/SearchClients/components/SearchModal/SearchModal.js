@@ -32,7 +32,7 @@ import {
 
 import './styles.css';
 
-import { ButtonColor } from './styles';
+import { BoxDiv } from './styles';
 
 const thumbsContainer = {
 	display: 'flex',
@@ -189,111 +189,49 @@ const SearchModal = ({ modal, closeEditUser, saveEditUser }) => {
 	return (
 		<div className={classes.root}>
 			<Dialog
-				aria-labelledby="form-dialog-title"
+				aria-labelledby="max-width-dialog-title"
+				fullWidth={true}
+				maxWidth="xs"
 				onClose={closeEditUser}
-				open={modal.open}
+				open={true}
 			>
-				{alert && (
-					<Alert severity="error">Campos com (*) são obrigatórios</Alert>
-				)}
-				<form onSubmit={handleEditUser}>
-					<DialogTitle id="form-dialog-title">
-						Informações do cliente
-					</DialogTitle>
-					<DialogContent>
-						<form autoComplete="off" noValidate>
-							<Divider />
-							<CardContent>
-								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									{modal.data.photo !== null ? (
-										<Avatar
-											alt={modal.data.name}
-											className={classes.avatar}
-											src={`http://app1.cabonnet.com.br:3333/web/${modal.data.photo}`}
-										/>
-									) : (
-										<Avatar alt={modal.data.name} className={classes.avatar} />
-									)}
-								</div>
-								<div style={{ marginBottom: 10 }}>
-									<TextField
-										fullWidth
-										label="Nome"
-										margin="dense"
-										name="name"
-										onChange={handleChange}
-										required
-										value={values.name}
-										variant="outlined"
-									/>
-								</div>
-
-								<TextField
-									fullWidth
-									label="Email"
-									margin="dense"
-									name="email"
-									onChange={handleChange}
-									required
-									value={values.email}
-									variant="outlined"
-									style={{ marginBottom: 10 }}
-								/>
-
-								<TextField
-									fullWidth
-									label="Função"
-									margin="dense"
-									name="title"
-									onChange={handleChange}
-									required
-									select
-									// eslint-disable-next-line react/jsx-sort-props
-									SelectProps={{ native: true }}
-									value={values.title}
-									variant="outlined"
-									style={{ marginBottom: 10 }}
-								>
-									{states.map(option => (
-										<option key={option.value} value={option.value}>
-											{option.label}
-										</option>
-									))}
-								</TextField>
-
-								<TextField
-									fullWidth
-									label="Base"
-									margin="dense"
-									name="id_base"
-									onChange={handleChange}
-									required
-									select
-									// eslint-disable-next-line react/jsx-sort-props
-									SelectProps={{ native: true }}
-									value={values.id_base}
-									variant="outlined"
-									style={{ marginBottom: 10 }}
-								>
-									{bases.map(option => (
-										<option key={option.value} value={option.value}>
-											{option.label}
-										</option>
-									))}
-								</TextField>
-							</CardContent>
-							<Divider />
-						</form>
-					</DialogContent>
-					<DialogActions>
-						<Button color="primary" onClick={closeEditUser}>
-							Cancelar
-						</Button>
-						<Button color="primary" type="submit">
-							Salvar
-						</Button>
-					</DialogActions>
-				</form>
+				<DialogTitle id="form-dialog-title">Informações do cliente</DialogTitle>
+				<DialogContent>
+					<Divider />
+					<CardContent>
+						<BoxDiv>
+							<p>Base</p>
+							<p>Oi</p>
+							<p>Nome</p>
+							<p>Oi</p>
+							<p>CPF/CNPJ</p>
+							<p>Oi</p>
+							<p>RG</p>
+							<p>Oi</p>
+							<p>Nascimento</p>
+							<p>Oi</p>
+						</BoxDiv>
+						<BoxDiv>
+							<p>Forma de pagamento</p>
+							<p>Oi</p>
+							<p>Dia de vencimento</p>
+							<p>Oi</p>
+							<p>Classificaçao</p>
+							<p>Oi</p>
+							<p>Nascimento</p>
+							<p>Oi</p>
+						</BoxDiv>
+					</CardContent>
+					<Divider />
+				</DialogContent>
+				<DialogActions>
+					<Button color="primary" onClick={closeEditUser}>
+						Cancelar
+					</Button>
+					<Button color="primary" type="submit">
+						Salvar
+					</Button>
+				</DialogActions>
 			</Dialog>
 		</div>
 	);
