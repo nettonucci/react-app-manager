@@ -160,7 +160,7 @@ const SearchModal = ({ modal, closeEditUser }) => {
 											</Typography>
 										</AccordionSummary>
 										{console.log(contrato.pacotes)}
-										{contrato.pacotes(pacote => (
+										{contrato.pacotes.map(pacote => (
 											<BoxPaper>
 												<p>Nome do pacote</p>
 												<p>{pacote.nomepacote}</p>
