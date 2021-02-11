@@ -90,6 +90,7 @@ function* searchClients(action) {
 }
 function* searchClientsFatores(action) {
 	const response = yield call(api.get, `/fatoresweb?cpffinal=${action.cpf}`);
+	console.log(response.data);
 	if (response.data.length === 0) {
 		window.alert('Nenhum cliente encontrato para este CPF/CNPJ!');
 		return;

@@ -16,6 +16,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
 import { Alert } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UsersAction from '../../../../store/actions/users';
@@ -33,40 +38,7 @@ import {
 
 import './styles.css';
 
-import { BoxDiv } from './styles';
-
-const thumbsContainer = {
-	display: 'flex',
-	flexDirection: 'row',
-	flexWrap: 'wrap',
-	marginTop: 16,
-};
-
-const thumb = {
-	display: 'inline-flex',
-	borderRadius: 2,
-	border: '1px solid #eaeaea',
-	marginBottom: 8,
-	marginRight: 8,
-	marginLeft: 8,
-	width: 400,
-	height: 300,
-	padding: 4,
-	boxSizing: 'border-box',
-};
-
-const thumbInner = {
-	display: 'flex',
-	minWidth: 0,
-	overflow: 'hidden',
-};
-
-const img = {
-	display: 'block',
-	width: 400,
-	height: 300,
-	resizeMode: 'cover',
-};
+import { BoxDiv, BoxPaper } from './styles';
 
 const useStyles = makeStyles(theme => ({
 	root: {},
@@ -101,90 +73,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SearchModal = ({ modal, closeEditUser, saveEditUser }) => {
-	const [alert, setalert] = React.useState(false);
-	const [values, setValues] = useState({
-		id: '',
-		name: '',
-		email: '',
-		title: '',
-		id_base: '',
-		photo: '',
-	});
-
-	useEffect(() => {
-		setValues({
-			id: modal.data.id,
-			name: modal.data.name,
-			email: modal.data.email,
-			title: modal.data.title,
-			id_base: modal.data.id_base,
-			photo: modal.data.photo,
-			ativo: modal.data.ativo,
-		});
-	}, [modal]);
-
-	const states = [
-		{
-			value: 'Administrador',
-			label: 'Administrador',
-		},
-		{
-			value: 'Moderador',
-			label: 'Moderador',
-		},
-		{
-			value: 'Desenvolvedor',
-			label: 'Desenvolvedor',
-		},
-	];
-
-	const bases = [
-		{
-			value: 1,
-			label: 'TVC Assis',
-		},
-		{
-			value: 3,
-			label: 'IFASTNET',
-		},
-		{
-			value: 2,
-			label: 'R&R',
-		},
-		{
-			value: 4,
-			label: 'TVC Tupã',
-		},
-		{
-			value: 5,
-			label: 'Giga TV',
-		},
-	];
-
-	const handleChange = event => {
-		setValues({
-			...values,
-			[event.target.name]: event.target.value,
-		});
-	};
-
-	const handleEditUser = event => {
-		event.preventDefault();
-		const data = values;
-		saveEditUser(data);
-		closeEditUser();
-		// setValues({
-		// 	id: '',
-		// 	name: '',
-		// 	email: '',
-		// 	title: '',
-		// 	id_base: '',
-		// 	photo: '',
-		// 	ativo: '',
-		// });
-	};
-
+const SearchModal = ({ modal, closeEditUser }) => {
 	const classes = useStyles();
 
 	return (
@@ -194,45 +83,101 @@ const SearchModal = ({ modal, closeEditUser, saveEditUser }) => {
 				fullWidth={true}
 				maxWidth="xs"
 				onClose={closeEditUser}
-				open={true}
+				open={modal.open}
 			>
 				<DialogTitle id="form-dialog-title">Informações do cliente</DialogTitle>
 				<DialogContent>
 					<Divider />
-					<CardContent>
-						<BoxDiv>
-							<p>Base</p>
-							<p>Oi</p>
-							<p>Nome</p>
-							<p>Oi</p>
-							<p>CPF/CNPJ</p>
-							<p>Oi</p>
-							<p>RG</p>
-							<p>Oi</p>
-							<p>Nascimento</p>
-							<p>Oi</p>
-						</BoxDiv>
-						<BoxDiv>
-							<p>Forma de pagamento</p>
-							<p>Oi</p>
-							<p>Dia de vencimento</p>
-							<p>Oi</p>
-							<p>Classificaçao</p>
-							<p>Oi</p>
-							<p>Nascimento</p>
-							<p>Oi</p>
-						</BoxDiv>
-						<Paper>
-							<p>Forma de pagamento</p>
-							<p>Oi</p>
-							<p>Dia de vencimento</p>
-							<p>Oi</p>
-							<p>Classificaçao</p>
-							<p>Oi</p>
-							<p>Nascimento</p>
-							<p>Oi</p>
-						</Paper>
-					</CardContent>
+					{modal.data.map(user => (
+						<CardContent>
+							<BoxPaper>
+								<p>Base</p>
+								<p>{user.nomebase}</p>
+								<p>Nome</p>
+								<p>{user.nomeassinante}</p>
+								<p>CPF/CNPJ</p>
+								<p>{user.cpfcnpj}</p>
+								<p>RG</p>
+								<p>{user.inscrest_rg}</p>
+								<p>Nascimento</p>
+								<p>{user.datanascimento}</p>
+							</BoxPaper>
+							<BoxPaper>
+								<p>Forma de pagamento</p>
+								<p>{user.formapagamento}</p>
+								<p>Dia de vencimento</p>
+								<p>{user.diavencimento}</p>
+								<p>Classificaçao</p>
+								<p>{user.descricaoclassificacao}</p>
+							</BoxPaper>
+							{user.contratos.map(contrato => (
+								<Accordion>
+									<AccordionSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										<Typography className={classes.heading}>
+											Contrato {contrato.logradouro}
+										</Typography>
+									</AccordionSummary>
+
+									<BoxPaper>
+										<p>Id do contrato</p>
+										<p>{contrato.idcontrato}</p>
+										<p>Situação do contrato</p>
+										<p>{contrato.descricaosituacao}</p>
+										<p>Forma de pagamento</p>
+										<p>{contrato.formapagamento}</p>
+										<p>Dia de vencimento</p>
+										<p>{contrato.diavencimento}</p>
+									</BoxPaper>
+									<BoxPaper>
+										<p>Logradouro</p>
+										<p>{contrato.logradouro}</p>
+										<p>Numero</p>
+										<p>{contrato.numero}</p>
+										<p>Bairro</p>
+										<p>{contrato.bairro}</p>
+										<p>CEP</p>
+										<p>{contrato.cep}</p>
+										<p>Complemento</p>
+										<p>
+											{contrato.complemento === ''
+												? 'Não informado'
+												: contrato.complemento}
+										</p>
+									</BoxPaper>
+
+									<Accordion>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											<Typography className={classes.heading}>
+												Pacotes
+											</Typography>
+										</AccordionSummary>
+										{console.log(contrato.pacotes)}
+										{contrato.pacotes(pacote => (
+											<BoxPaper>
+												<p>Nome do pacote</p>
+												<p>{pacote.nomepacote}</p>
+												<p>Tipo do pacote</p>
+												<p>{pacote.tipopacote}</p>
+												<p>Valor do pacote</p>
+												<p>{pacote.valorpacote}</p>
+												<p>Situação do pacote</p>
+												<p>{pacote.situacaopacote}</p>
+											</BoxPaper>
+										))}
+									</Accordion>
+								</Accordion>
+							))}
+						</CardContent>
+					))}
+
 					<Divider />
 				</DialogContent>
 				<DialogActions>
@@ -253,7 +198,7 @@ SearchModal.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	modal: state.editUser,
+	modal: state.seeClients,
 });
 
 const mapDispatchToProps = dispatch =>

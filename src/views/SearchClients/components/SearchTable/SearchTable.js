@@ -55,10 +55,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ClientsTable = props => {
-	const { className, user, ...rest } = props;
+	const { className, user, openModalSearch, ...rest } = props;
 	const classes = useStyles();
 
 	console.log(user);
+
+	const seeMore = () => {
+		console.log('see');
+		openModalSearch(user);
+	};
 
 	return (
 		<Card {...rest} className={clsx(classes.root, className)}>
@@ -104,7 +109,7 @@ const ClientsTable = props => {
 												: user.descricaoclassificacao}
 										</TableCell>
 										<TableCell>
-											<IconButton aria-label="edit">
+											<IconButton aria-label="edit" onClick={seeMore}>
 												<VisibilityIcon
 													fontSize="small"
 													style={{ color: '#4287f5' }}
