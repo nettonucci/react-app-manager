@@ -23,7 +23,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as UsersAction from '../../../../store/actions/users';
+import * as SearchAction from '../../../../store/actions/searchClients';
 import {
 	Avatar,
 	CardHeader,
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const SearchModal = ({ modal, closeEditUser }) => {
+const SearchModal = ({ modal, closeModalSearch, closeEditUser }) => {
 	const classes = useStyles();
 
 	return (
@@ -181,11 +181,8 @@ const SearchModal = ({ modal, closeEditUser }) => {
 					<Divider />
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary" onClick={closeEditUser}>
-						Cancelar
-					</Button>
-					<Button color="primary" type="submit">
-						Salvar
+					<Button color="primary" onClick={closeModalSearch}>
+						OK
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -202,6 +199,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators(UsersAction, dispatch);
+	bindActionCreators(SearchAction, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchModal);
