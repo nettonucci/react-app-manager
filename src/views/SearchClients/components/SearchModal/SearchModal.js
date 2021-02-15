@@ -91,25 +91,60 @@ const SearchModal = ({ modal, closeModalSearch, closeEditUser }) => {
 					{modal.data.map(user => (
 						<CardContent>
 							<BoxPaper>
-								<p>Base</p>
-								<p>{user.nomebase}</p>
-								<p>Nome</p>
-								<p>{user.nomeassinante}</p>
-								<p>CPF/CNPJ</p>
-								<p>{user.cpfcnpj}</p>
-								<p>RG</p>
-								<p>{user.inscrest_rg}</p>
-								<p>Nascimento</p>
-								<p>{user.datanascimento}</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									Base
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.nomebase}
+								</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									Nome
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.nomeassinante}
+								</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									CPF/CNPJ
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.cpfcnpj}
+								</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									RG
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.inscrest_rg}
+								</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									Nascimento
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.datanascimento}
+								</p>
 							</BoxPaper>
 							<BoxPaper>
-								<p>Forma de pagamento</p>
-								<p>{user.formapagamento}</p>
-								<p>Dia de vencimento</p>
-								<p>{user.diavencimento}</p>
-								<p>Classificaçao</p>
-								<p>{user.descricaoclassificacao}</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									Forma de pagamento
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.formapagamento}
+								</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									Dia de vencimento
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.diavencimento}
+								</p>
+								<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+									Classificaçao
+								</p>
+								<p style={{ color: '#7E7E7E', fontSize: 14, marginBottom: 5 }}>
+									{user.descricaoclassificacao}
+								</p>
 							</BoxPaper>
+							<p style={{ color: '#618CF3', fontSize: 16, marginBottom: 5 }}>
+								Contratos
+							</p>
 							{user.contratos.map(contrato => (
 								<Accordion>
 									<AccordionSummary
@@ -118,31 +153,173 @@ const SearchModal = ({ modal, closeModalSearch, closeEditUser }) => {
 										id="panel1a-header"
 									>
 										<Typography className={classes.heading}>
-											Contrato {contrato.logradouro}
+											{contrato.logradouro}
 										</Typography>
 									</AccordionSummary>
 
 									<BoxPaper>
-										<p>Id do contrato</p>
-										<p>{contrato.idcontrato}</p>
-										<p>Situação do contrato</p>
-										<p>{contrato.descricaosituacao}</p>
-										<p>Forma de pagamento</p>
-										<p>{contrato.formapagamento}</p>
-										<p>Dia de vencimento</p>
-										<p>{contrato.diavencimento}</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Id do contrato
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.idcontrato}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Situação do contrato
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.descricaosituacao}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Forma de pagamento
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.formapagamento}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Dia de vencimento
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.diavencimento}
+										</p>
 									</BoxPaper>
 									<BoxPaper>
-										<p>Logradouro</p>
-										<p>{contrato.logradouro}</p>
-										<p>Numero</p>
-										<p>{contrato.numero}</p>
-										<p>Bairro</p>
-										<p>{contrato.bairro}</p>
-										<p>CEP</p>
-										<p>{contrato.cep}</p>
-										<p>Complemento</p>
-										<p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Logradouro
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.logradouro}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Numero
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.numero}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Bairro
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.bairro}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											CEP
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
+											{contrato.cep}
+										</p>
+										<p
+											style={{
+												color: '#618CF3',
+												fontSize: 16,
+												marginBottom: 5,
+											}}
+										>
+											Complemento
+										</p>
+										<p
+											style={{
+												color: '#7E7E7E',
+												fontSize: 14,
+												marginBottom: 5,
+											}}
+										>
 											{contrato.complemento === ''
 												? 'Não informado'
 												: contrato.complemento}
@@ -162,14 +339,78 @@ const SearchModal = ({ modal, closeModalSearch, closeEditUser }) => {
 										{console.log(contrato.pacotes)}
 										{contrato.pacotes.map(pacote => (
 											<BoxPaper>
-												<p>Nome do pacote</p>
-												<p>{pacote.nomepacote}</p>
-												<p>Tipo do pacote</p>
-												<p>{pacote.tipopacote}</p>
-												<p>Valor do pacote</p>
-												<p>{pacote.valorpacote}</p>
-												<p>Situação do pacote</p>
-												<p>{pacote.situacaopacote}</p>
+												<p
+													style={{
+														color: '#618CF3',
+														fontSize: 16,
+														marginBottom: 5,
+													}}
+												>
+													Nome do pacote
+												</p>
+												<p
+													style={{
+														color: '#7E7E7E',
+														fontSize: 14,
+														marginBottom: 5,
+													}}
+												>
+													{pacote.nomepacote}
+												</p>
+												<p
+													style={{
+														color: '#618CF3',
+														fontSize: 16,
+														marginBottom: 5,
+													}}
+												>
+													Tipo do pacote
+												</p>
+												<p
+													style={{
+														color: '#7E7E7E',
+														fontSize: 14,
+														marginBottom: 5,
+													}}
+												>
+													{pacote.tipopacote}
+												</p>
+												<p
+													style={{
+														color: '#618CF3',
+														fontSize: 16,
+														marginBottom: 5,
+													}}
+												>
+													Valor do pacote
+												</p>
+												<p
+													style={{
+														color: '#7E7E7E',
+														fontSize: 14,
+														marginBottom: 5,
+													}}
+												>
+													{pacote.valorpacote}
+												</p>
+												<p
+													style={{
+														color: '#618CF3',
+														fontSize: 16,
+														marginBottom: 5,
+													}}
+												>
+													Situação do pacote
+												</p>
+												<p
+													style={{
+														color: '#7E7E7E',
+														fontSize: 14,
+														marginBottom: 5,
+													}}
+												>
+													{pacote.situacaopacote}
+												</p>
 											</BoxPaper>
 										))}
 									</Accordion>

@@ -71,10 +71,13 @@ const SearchToolbar = props => {
 	};
 
 	const handleClickSearch = event => {
-		console.log(pesquisa);
-		const cpf = pesquisa;
-		SearchClientsFatores(cpf);
-		setPesquisa('');
+		if (pesquisa !== '') {
+			const cpf = pesquisa;
+			SearchClientsFatores(cpf);
+			setPesquisa('');
+		} else {
+			window.alert('O campo CPF/CNPJ não pode estar vazio!');
+		}
 	};
 
 	const classes = useStyles();

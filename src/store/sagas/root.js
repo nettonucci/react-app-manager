@@ -89,10 +89,17 @@ function* searchClients(action) {
 	});
 }
 function* searchClientsFatores(action) {
+	yield put({
+		type: 'SEARCH_CLIENT_FATORES_LOAD',
+	});
 	const response = yield call(api.get, `/fatoresweb?cpffinal=${action.cpf}`);
 	console.log(response.data);
 	if (response.data.length === 0) {
 		window.alert('Nenhum cliente encontrato para este CPF/CNPJ!');
+		yield put({
+			type: 'SEARCH_CLIENT_FATORES',
+			data: [],
+		});
 		return;
 	}
 	const response2 = yield call(api.post, '/assinantesweb', response.data[0]);

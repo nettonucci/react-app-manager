@@ -8,10 +8,13 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import AndroidIcon from '@material-ui/icons/Android';
 import AppleIcon from '@material-ui/icons/Apple';
 import { makeStyles } from '@material-ui/styles';
+import palette from 'theme/palette';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
+import Spinner from 'react-activity/lib/Spinner';
+import 'react-activity/lib/Spinner/Spinner.css';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as SearchAction from '../../../../store/actions/searchClients';
@@ -62,7 +65,7 @@ const ClientsTable = props => {
 
 	const seeMore = () => {
 		console.log('see');
-		openModalSearch(user);
+		openModalSearch(user.data);
 	};
 
 	return (
@@ -71,55 +74,75 @@ const ClientsTable = props => {
 			<CardContent className={classes.content}>
 				<PerfectScrollbar>
 					<div className={classes.inner}>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>ID</TableCell>
-									<TableCell>Nome</TableCell>
-									<TableCell>Cidade</TableCell>
-									<TableCell>CPF/CNPJ</TableCell>
-									<TableCell>Forma de pagamento</TableCell>
-									<TableCell>Base</TableCell>
-									<TableCell>Classificação</TableCell>
-									<TableCell>Ação</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{user.map(user => (
-									<TableRow
-										className={classes.tableRow}
-										hover
-										key={user.idassinante}
-									>
-										<TableCell>{user.idassinante}</TableCell>
-										<TableCell>
-											<div className={classes.nameContainer}>
-												<Typography variant="body1">
-													{user.nomeassinante}
-												</Typography>
-											</div>
-										</TableCell>
-										<TableCell>{user.nomecidade}</TableCell>
-										<TableCell>{user.cpfcnpj}</TableCell>
-										<TableCell>{user.formapagamento}</TableCell>
-										<TableCell>{user.nomebase}</TableCell>
-										<TableCell>
-											{user.descricaoclassificacao === null
-												? 'STANDARD'
-												: user.descricaoclassificacao}
-										</TableCell>
-										<TableCell>
-											<IconButton aria-label="edit" onClick={seeMore}>
-												<VisibilityIcon
-													fontSize="small"
-													style={{ color: '#4287f5' }}
-												/>
-											</IconButton>
-										</TableCell>
+						{user.load ? (
+							<div
+								style={{
+									alignItems: 'center',
+									justifyContent: 'center',
+									// backgroundColor: '#f1f',
+									width: 70,
+									marginLeft: '50%',
+									padding: 10,
+								}}
+							>
+								<Spinner
+									animating
+									color={palette.secondary.main}
+									size={40}
+									speed={1}
+								/>
+							</div>
+						) : (
+							<Table>
+								<TableHead>
+									<TableRow>
+										<TableCell>ID</TableCell>
+										<TableCell>Nome</TableCell>
+										<TableCell>Cidade</TableCell>
+										<TableCell>CPF/CNPJ</TableCell>
+										<TableCell>Forma de pagamento</TableCell>
+										<TableCell>Base</TableCell>
+										<TableCell>Classificação</TableCell>
+										<TableCell>Ação</TableCell>
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+								</TableHead>
+								<TableBody>
+									{user.data.map(user => (
+										<TableRow
+											className={classes.tableRow}
+											hover
+											key={user.idassinante}
+										>
+											<TableCell>{user.idassinante}</TableCell>
+											<TableCell>
+												<div className={classes.nameContainer}>
+													<Typography variant="body1">
+														{user.nomeassinante}
+													</Typography>
+												</div>
+											</TableCell>
+											<TableCell>{user.nomecidade}</TableCell>
+											<TableCell>{user.cpfcnpj}</TableCell>
+											<TableCell>{user.formapagamento}</TableCell>
+											<TableCell>{user.nomebase}</TableCell>
+											<TableCell>
+												{user.descricaoclassificacao === null
+													? 'STANDARD'
+													: user.descricaoclassificacao}
+											</TableCell>
+											<TableCell>
+												<IconButton aria-label="edit" onClick={seeMore}>
+													<VisibilityIcon
+														fontSize="small"
+														style={{ color: '#4287f5' }}
+													/>
+												</IconButton>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						)}
 					</div>
 				</PerfectScrollbar>
 			</CardContent>
